@@ -43,7 +43,6 @@ class Combo(BasicSkeeball):
         self.just_scored = True
         if self.ball_scores[-1] == self.ball_scores[-2]:
             self.combo += 1
-            self.combo = min(self.combo, self.ball_scores[-1]//100, 5)
         else:
             self.combo = 1
         if self.ball_scores[-1] == 0:
@@ -64,8 +63,10 @@ class Combo(BasicSkeeball):
         panel.draw.text((5,31), "BALL" ,font=res.FONTS['Medium'],fill=res.BALL_COLORS[self.balls])
         panel.draw.text((5,41), "LEFT" ,font=res.FONTS['Medium'],fill=res.BALL_COLORS[self.balls])
 
-        if self.combo == 5:
-            colour = tuple(int(255*i) for i in colorsys.hsv_to_rgb((self.ticks*18)%360/360,1,1))
+        if self.combo >= 5:
+            hue = (self.ticks*18)%360
+            print(hue)
+            colour = tuple(int(255*i) for i in colorsys.hsv_to_rgb(hue/360,1,1))
         else:
             colour = COMBO_COLORS[self.combo]
         #if self.ball_scores[-1] == '0':
