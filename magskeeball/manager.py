@@ -17,7 +17,6 @@ from .target import Target
 from .combo import Combo
 from .speedrun import Speedrun
 from .world import World
-from .battle_royale import BattleRoyale
 from .timed import Timed
 from .dummy import Dummy
 from .debug import Debug
@@ -47,7 +46,6 @@ class Manager():
                 "SPEEDRUN": Speedrun(manager=self),
                 "WORLD": World(manager=self),
                 "TIMED": Timed(manager=self),
-                "ROYALE": BattleRoyale(manager=self),
                 "DUMMY": Dummy(manager=self),
                 "DEBUG": Debug(manager=self),
                 "GAMEMENU": GameMenu(manager=self),
