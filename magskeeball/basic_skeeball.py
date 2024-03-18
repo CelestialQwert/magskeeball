@@ -6,11 +6,10 @@ class BasicSkeeball(GameMode):
 
     has_high_scores = True
     intro_text = [
-        "NO FANCY STUFF...",
-        "THE SKEE-BALL YOU",
-        "KNOW AND LOVE"
+        "GET THE HIGH SCORE",
+        "WITH 9 BALLS!",
+        "NO SPECIAL BONUSES!"
     ]
-
 
     def startup(self):
         print("Starting Skeeball!")
