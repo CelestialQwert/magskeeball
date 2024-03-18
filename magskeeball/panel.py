@@ -62,7 +62,7 @@ class Panel():
             self.buffer_canvas.paste(bottom,(96,0))
             self.matrix.SetImage(self.buffer_canvas.convert('RGB'))
         if self.emulated_panel:
-            data = self.canvas.resize(self.e_size).tobytes()
+            data = self.canvas.resize(self.e_size, Image.NEAREST).tobytes()
             mode = self.canvas.mode
             pyg_canvas = pygame.image.fromstring(data,self.e_size,mode)
             self.emu_panel.fill((0,0,0))
