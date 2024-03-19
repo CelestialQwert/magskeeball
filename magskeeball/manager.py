@@ -18,6 +18,7 @@ from .combo import Combo
 from .speedrun import Speedrun
 from .world import World
 from .timed import Timed
+from .cricket import Cricket
 from .dummy import Dummy
 from .debug import Debug
 from .game_menu import GameMenu
@@ -46,12 +47,13 @@ class Manager():
                 "SPEEDRUN": Speedrun(manager=self),
                 "WORLD": World(manager=self),
                 "TIMED": Timed(manager=self),
+                "CRICKET": Cricket(manager=self),
                 "DUMMY": Dummy(manager=self),
                 "DEBUG": Debug(manager=self),
                 "GAMEMENU": GameMenu(manager=self),
             }
             self.game_modes = ['BASIC','TARGET','COMBO','TIMED','SPEEDRUN','WORLD']
-            self.selectable_modes = self.game_modes + ['DUMMY','DEBUG','GAMEMENU']
+            self.selectable_modes = self.game_modes + ['CRICKET','DUMMY','DEBUG','GAMEMENU']
 
             self.has_high_scores = {}
             for game_mode in self.selectable_modes:
