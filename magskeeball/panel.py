@@ -5,6 +5,8 @@ import pygame
 import platform
 import time
 
+from . import resources as res
+
 REAL = 0
 EMULATED = 1
 BOTH = 2
@@ -77,3 +79,10 @@ class Panel():
 
     def fill(self,color):
         self.draw.rectangle((0,0,96,64),fill=color)
+    
+    def draw_text(self, pos, text, font, color):
+        if isinstance(color, str):
+            colour_tuple = res.COLORS[color]
+        else:
+            colour_tuple = color
+        self.draw.text(pos, text, font=res.FONTS[font], fill=colour_tuple)
