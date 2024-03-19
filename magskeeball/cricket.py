@@ -36,7 +36,6 @@ class Player():
 
 class Cricket(GameMode):
 
-    has_high_scores = True
     intro_text = [
         "THE POPULAR DART",
         "GAME, BUT WITH",
