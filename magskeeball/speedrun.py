@@ -7,6 +7,7 @@ import time
 class Speedrun(GameMode):
 
     has_high_scores = True
+    is_speed_game = True
     intro_text = [
         "HOW FAST CAN YOU",
         "SCORE 5000 POINTS?"
