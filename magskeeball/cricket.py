@@ -5,7 +5,6 @@ from .state import GameMode
 from . import resources as res
 
 COLOR_MATRIX = ['BLUE','RED']
-COLOR_PLAYER = ['GREEN', 'MAGENTA']
 
 SCORING_BUTTONS = {
     res.B.B100: 0,
@@ -164,11 +163,9 @@ class Cricket(GameMode):
         panel.clear()
 
         for x,p in enumerate([self.p1,self.p2]):
-            panel.draw_text(
-                (3+52*x,2), p.short_name, font='Medium', color=p.color
-            )
+            panel.draw_text((3+52*x,2), p.short_name, 'Medium', p.color)
             score = f'{p.score//10: >4}'
-            panel.draw_text((18+52*x,2), score, font='Medium', color=p.color)
+            panel.draw_text((18+52*x,2), score, 'Medium', p.color)
 
             for y in range(5):
                 posx = 32+26*x
@@ -188,34 +185,29 @@ class Cricket(GameMode):
                     txt = f'{num: >3}' if num < 1000 else 'XXX'
                     l = len(txt)
                     panel.draw_text(
-                        (11+58*x,12+8*y), 
-                        txt, 
-                        font='Medium', 
-                        color=COLOR_MATRIX[x]
+                        (11+58*x,12+8*y), txt, 'Medium', COLOR_MATRIX[x]
                     )
 
         for i,txt in enumerate([50,40,30,20,10]):
-            panel.draw_text((43,12+8*i), str(txt), font='Medium', color='YELLOW')
+            panel.draw_text((43,12+8*i), txt, 'Medium', 'YELLOW')
         
         match self.game_state:
             case CricketState.PLAY | CricketState.PLAYER_DONE:
                 panel.draw_text(
                     (3,54), 
                     f"{self.active_player.short_name} BALL LEFT: {self.balls}",
-                    font='Medium',
-                    color=self.active_player.color
+                    'Medium',
+                    self.active_player.color
                 )
             case CricketState.PLAYER_CHANGE:
-                panel.draw_text(
-                    (9,54), f"CHANGE PLAYER", font='Medium', color='WHITE'
-                )
+                panel.draw_text((9,54), f"CHANGE PLAYER", 'Medium', 'WHITE')
             case CricketState.GAME_END:
                 if self.p1.score > self.p2.score:
-                    panel.draw_text((9,54), "PLAYER 1 WIN!", font='Medium', color='GREEN')
+                    panel.draw_text((9,54), "PLAYER 1 WIN!", 'Medium', 'GREEN')
                 if self.p1.score < self.p2.score:
-                    panel.draw_text((9,54), "PLAYER 2 WIN!", font='Medium', color='MAGENTA')
+                    panel.draw_text((9,54), "PLAYER 2 WIN!", 'Medium', 'MAGENTA')
                 if self.p1.score == self.p2.score:
-                    panel.draw_text((18,54), "TIED GAME!", font='Medium', color='WHITE')
+                    panel.draw_text((18,54), "TIED GAME!", 'Medium', 'WHITE')
 
 
 

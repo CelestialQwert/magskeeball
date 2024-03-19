@@ -65,17 +65,15 @@ class BasicSkeeball(GameMode):
 
     def draw_panel(self,panel):
         panel.clear()
-        d = 6 if self.debug else 0
-        panel.draw.text((42-d, 39), "%d" % self.balls ,font=res.FONTS['Digital14'], fill=res.BALL_COLORS[self.balls])
-        panel.draw.text((17-d, 4), "%04d" % self.score, font=res.FONTS['Digital16'], fill=res.COLORS['PURPLE'])
-        panel.draw.text((16-d,44), "BALL", font=res.FONTS['Medium'], fill=res.BALL_COLORS[self.balls])
-        panel.draw.text((57-d,44), "LEFT", font=res.FONTS['Medium'], fill=res.BALL_COLORS[self.balls])
+        shared_color = res.BALL_COLORS[self.balls]
+        panel.draw_text((42, 39), self.balls , 'Digital14', shared_color)
+        panel.draw_text((17, 4), f"{self.score:04d}", 'Digital16', 'PURPLE')
+        panel.draw_text((16, 44), "BALL", 'Medium', shared_color)
+        panel.draw_text((57, 44), "LEFT", 'Medium', shared_color)
         if self.debug:
             for i,num in enumerate(self.ball_scores):
-                num = str(num)
-                t = 4*len(num)
-                panel.draw.text((96-t,1+6*i),num,font=res.FONTS['Tiny'],fill=res.COLORS['RED'])
-            panel.draw.text((90,57), "%d" % self.returned_balls,font=res.FONTS['Small'],fill=res.COLORS['ORANGE'])
+                panel.draw_text((80, 1+6*i), f"{num: >4}", 'Tiny', 'RED')
+            panel.draw_text((90,57), self.returned_balls, 'Small', 'ORANGE')
 
     def cleanup(self):
         print("Pausing for 1 seconds")

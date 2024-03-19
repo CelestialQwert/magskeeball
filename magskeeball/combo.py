@@ -3,13 +3,7 @@ from . import resources as res
 import random
 import colorsys
 
-COMBO_COLORS = [
-    res.COLORS['WHITE'],
-    res.COLORS['BLUE'],
-    res.COLORS['GREEN'],
-    res.COLORS['ORANGE'],
-    res.COLORS['MAGENTA'],
-]
+COMBO_COLORS = ['WHITE', 'BLUE', 'GREEN', 'ORANGE', 'MAGENTA']
 
 class Combo(BasicSkeeball):
 
@@ -56,36 +50,30 @@ class Combo(BasicSkeeball):
 
     def draw_panel(self,panel):  
         panel.clear()
-        d = 6 if self.debug else 0
-        score_x = 17 if self.score < 10000 else 4#1
-        panel.draw.text((score_x, 4), "%04d" % self.score ,font=res.FONTS['Digital16'],fill=res.COLORS['PURPLE'])
-        panel.draw.text((31, 31), "%d" % self.balls,font=res.FONTS['Digital14'],fill=res.BALL_COLORS[self.balls])
-        panel.draw.text((5,31), "BALL" ,font=res.FONTS['Medium'],fill=res.BALL_COLORS[self.balls])
-        panel.draw.text((5,41), "LEFT" ,font=res.FONTS['Medium'],fill=res.BALL_COLORS[self.balls])
+        score_x = 17 if self.score < 10000 else 4
+        shared_color = res.BALL_COLORS[self.balls]
+        panel.draw_text((score_x, 4), f"{self.score:04d}", 'Digital16', 'PURPLE')
+        panel.draw_text((31, 31), self.balls, 'Digital14', shared_color)
+        panel.draw_text((5,31), "BALL", 'Medium', shared_color)
+        panel.draw_text((5,41), "LEFT", 'Medium', shared_color)
 
         if self.combo >= 5:
             hue = (self.ticks*18)%360
-            print(hue)
             colour = tuple(int(255*i) for i in colorsys.hsv_to_rgb(hue/360,1,1))
         else:
             colour = COMBO_COLORS[self.combo]
-        #if self.ball_scores[-1] == '0':
-        #    self.combo = 0
         ballscore_x = 63-3*len(str(self.ball_scores[-1]))
-        panel.draw.text((80,31), str(self.combo) ,font=res.FONTS['Digital14'],fill=colour)
-        panel.draw.text((ballscore_x,41),str(self.ball_scores[-1]) ,font=res.FONTS['Medium'],fill=colour)
-        panel.draw.text((48,31), "CHAIN" ,font=res.FONTS['Medium'],fill=colour)
-
+        panel.draw_text((80,31), self.combo, 'Digital14', colour)
+        panel.draw_text((ballscore_x,41), self.ball_scores[-1] ,'Medium', colour)
+        panel.draw_text((48,31), "CHAIN", 'Medium', colour)
 
         if self.just_scored:
-            text = '{} x {}'.format(self.ball_scores[-1],self.combo)
-            panel.draw.text((27,53), text ,font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
+            text = f'{self.ball_scores[-1]} x {self.combo}'
+            panel.draw_text((27,53), text, 'Medium', 'WHITE')
 
         if self.debug:
-            for i,num in enumerate(self.ball_scores):
-                num = str(num)
-                t = 4*len(num)
-                panel.draw.text((96-t,1+6*i),num,font=res.FONTS['Tiny'],fill=res.COLORS['RED'])
-            panel.draw.text((90,57), "%d" % self.returned_balls,font=res.FONTS['Small'],fill=res.COLORS['ORANGE'])
+            for i,num in enumerate(self.ball_scores[1:]):
+                panel.draw_text((80, 1+6*i), f"{num: >4}", 'Tiny', 'RED')
+            panel.draw_text((90,57), self.returned_balls, 'Small', 'ORANGE')
 
 

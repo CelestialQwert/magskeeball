@@ -121,14 +121,14 @@ COLORS = {
 }
 
 BALL_COLORS = [
-    COLORS['RED'],
-    COLORS['RED'],
-    COLORS['YELLOW'],
-    COLORS['YELLOW'],
-    COLORS['GREEN'],
-    COLORS['GREEN'],
-    COLORS['GREEN'],
-    COLORS['GREEN'],
-    COLORS['GREEN'],
-    COLORS['GREEN']
+    'RED',
+    'RED',
+    'YELLOW',
+    'YELLOW',
+    'GREEN',
+    'GREEN',
+    'GREEN',
+    'GREEN',
+    'GREEN',
+    'GREEN'
 ]
