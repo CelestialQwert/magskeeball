@@ -15,10 +15,10 @@ class HighScore(State):
 
     def startup(self):
         self.manager.next_state = 'GAMEOVER'
-        self.active_game_mode = self.persist['active_game_mode']
+        self.last_mode = self.persist['active_game_mode']
 
         print('old list',self.persist['hs_game_hist'])
-        self.persist['hs_game_hist'] = [self.active_game_mode] + self.persist['hs_game_hist']
+        self.persist['hs_game_hist'] = [self.last_mode] + self.persist['hs_game_hist']
         temp_hist = []
         for game in self.persist['hs_game_hist']:
             if game not in temp_hist:
@@ -27,7 +27,7 @@ class HighScore(State):
         print('new list',self.persist['hs_game_hist'])
 
         self.score = self.persist['last_score']
-        self.game_high_scores = self.high_scores[self.active_game_mode]
+        self.game_high_scores = self.high_scores[self.last_mode]
 
         place = 0
 
@@ -36,14 +36,19 @@ class HighScore(State):
         self.ticks = 0
         self.new_score = False
 
-        for their_name,their_score in self.game_high_scores:
+        for their_name, their_score in self.game_high_scores:
             place += 1
             their_score = int(their_score)
-            if (self.score > their_score and 'SPEED' not in self.persist['active_game_mode']) \
-            or (self.score < their_score and 'SPEED' in self.persist['active_game_mode']):
+            if (
+                self.score > their_score 
+                and not self.manager.states[self.last_mode].is_speed_game
+            ) or (
+                self.score < their_score 
+                and self.manager.states[self.last_mode].is_speed_game
+            ):
                 self.new_score = True
                 self.place = place
-                res.SOUNDS['PLACE%d' % self.place].play()
+                res.SOUNDS[f'PLACE{self.place}'].play()
                 return
 
 
@@ -93,7 +98,7 @@ class HighScore(State):
             return
         panel.clear()
 
-        if 'SPEED' in self.persist['active_game_mode']:
+        if self.manager.states[self.last_mode].is_speed_game:
             display_time = self.persist['last_score']
 
             minutes = display_time // (60 * res.FPS)
@@ -134,7 +139,7 @@ class HighScore(State):
             time.sleep(2)
             self.name = self.name[:3]
             new_high_scores = self.game_high_scores[:self.place-1] + [(self.name, self.score)] + self.game_high_scores[self.place-1:4]
-            self.save_high_scores(self.active_game_mode,new_high_scores)
+            self.save_high_scores(self.last_mode,new_high_scores)
 
 
     def load_all_high_scores(self):
@@ -192,7 +197,7 @@ class HighScore(State):
             archive_file = './high_scores/{}_{}.txt'.format(game_mode,timestamp)
             shutil.move(filename,archive_file)
         with open(filename,'w') as sf:
-            if 'SPEED' in game_mode:
+            if self.manager.states[game_mode].is_speed_game:
                 sf.write('MAG,1195\nFES,1196\nTIS,1197\nADO,1198\nNUT,1199\n')
             else:
                 sf.write('MAG,2000\nFES,1600\nTIS,1200\nADO,800\nNUT,400\n')
