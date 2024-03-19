@@ -115,7 +115,6 @@ class Manager():
     def flip_state(self):            
         #shutdown old state
         self.state.cleanup()
-        self.state.done = False
         print('Ending old state',self.state_name)
         #clear events to prevent buffering
         #sleep prevents weird bug where an extra buttonup and buttondown event are generated
@@ -137,6 +136,7 @@ class Manager():
         self.state = self.states[self.state_name]
         #startup new state
         print('Starting new state',self.state_name)
+        self.state.done = False
         self.state.startup()
 
     def main_loop(self):
