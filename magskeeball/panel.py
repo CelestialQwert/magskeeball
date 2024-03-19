@@ -85,4 +85,4 @@ class Panel():
             colour_tuple = res.COLORS[color]
         else:
             colour_tuple = color
-        self.draw.text(pos, text, font=res.FONTS[font], fill=colour_tuple)
+        self.draw.text(pos, str(text), font=res.FONTS[font], fill=colour_tuple)

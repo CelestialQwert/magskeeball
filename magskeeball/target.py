@@ -1,7 +1,7 @@
 from .basic_skeeball import BasicSkeeball
 from . import resources as res
 import random
-
+import time
 
 class Target(BasicSkeeball):
 
@@ -53,8 +53,7 @@ class Target(BasicSkeeball):
 
     def add_score(self,score):
         self.ball_scores.append(score)
-        self.balls-=1
-        if self.ball_scores[-1] == self.bonus[8-self.balls]:
+        if self.ball_scores[-1] == self.bonus[9-self.balls]:
             self.score_buffer += 1000
             self.got_bonus = 'yes'
             self.ball_bonuses.append(True)
@@ -63,33 +62,32 @@ class Target(BasicSkeeball):
             self.score_buffer += score
             self.got_bonus = 'no'
             self.ball_bonuses.append(False)
-            res.TARGET_SFX['TARGET_MISS'].play()
+            # res.TARGET_SFX['TARGET_MISS'].play()
         self.advance_score = True
+        self.balls-=1
         #if self.balls in [3,6]:
         #    self.sensor.release_balls()
         self.ticks_last_ball = self.ticks
 
     def draw_panel(self,panel):
         panel.clear() 
-        d = 6 if self.debug else 0
-        panel.draw.text((34-d, 31), "%d" % self.balls,font=res.FONTS['Digital14'],fill=res.BALL_COLORS[self.balls])
-        panel.draw.text((17-d, 4), "%04d" % self.score ,font=res.FONTS['Digital16'],fill=res.COLORS['PURPLE'])
-        panel.draw.text((8-d,31), "BALL" ,font=res.FONTS['Medium'],fill=res.BALL_COLORS[self.balls])
-        panel.draw.text((8-d,41), "LEFT" ,font=res.FONTS['Medium'],fill=res.BALL_COLORS[self.balls])
-        panel.draw.text((52-d,31), "TARGET" ,font=res.FONTS['Medium'],fill=res.COLORS['YELLOW'])
+        shared_color = res.BALL_COLORS[self.balls]
+        panel.draw_text((34, 31), self.balls, 'Digital14',shared_color)
+        panel.draw_text((17, 4), f"{self.score:04d}", 'Digital16', 'PURPLE')
+        panel.draw_text((8, 31), "BALL" , 'Medium', shared_color)
+        panel.draw_text((8, 41), "LEFT" , 'Medium', shared_color)
+        panel.draw_text((52, 31), "TARGET", 'Medium', 'YELLOW')
         if self.balls > 0:
-            panel.draw.text((61-d,41), str(self.bonus[9-self.balls]) ,font=res.FONTS['Medium'],fill=res.COLORS['YELLOW'])
+            panel.draw_text((61,41), self.bonus[9-self.balls], 'Medium', 'YELLOW')
         if self.got_bonus == 'yes':
-            panel.draw.text((16-d,53), "BONUS! 1000" ,font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
+            panel.draw_text((16,53), "BONUS! 1000", 'Medium', 'WHITE')
         if self.got_bonus == 'no':
-            panel.draw.text((27-d,53), "MISSED!" ,font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
+            panel.draw_text((27,53), "MISSED!", 'Medium', 'WHITE')
         if self.debug:
             for i,(num,b) in enumerate(zip(self.ball_scores,self.ball_bonuses)):
-                num = str(num)
-                t = 4*len(num)
-                color = res.COLORS['WHITE'] if b else res.COLORS['RED']
-                panel.draw.text((96-t,1+6*i),num,font=res.FONTS['Tiny'],fill=color)
-            panel.draw.text((90,57), "%d" % self.returned_balls,font=res.FONTS['Small'],fill=res.COLORS['ORANGE'])
+                color = 'WHITE' if b else 'RED'
+                panel.draw_text((80, 1+6*i), f"{num: >4}", 'Tiny', color)
+            panel.draw_text((90,57), self.returned_balls, 'Small', 'ORANGE')
 
     #def cleanup(self):
     #    super(Target,self).cleanup()
