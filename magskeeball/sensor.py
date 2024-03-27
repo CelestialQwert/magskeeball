@@ -1,11 +1,11 @@
 from . import resources as res
 from .findserial import find_serial_ports
-from pkg_resources import resource_filename
 import sys
 import pygame
 import serial
 import time
 import os
+import traceback
 
 Button = res.Button
 B = res.Button
@@ -52,19 +52,26 @@ class Sensor:
             self.arduino = True
             print('Hello arduino!')
         except:
+            traceback.print_exc()
             print('Setup of Arduino FAILED')
             self.arduino = False
 
-        #keyboard input requires a window to capture key presses
-        #so either running on Windows or though SSH
-        #When running on actual Skeeball Pi, it's assumed the Arduino will be present
-        #But this can be overridden with force_keyboard
-        if sys.platform.startswith('win') or ('SSH_CONNECTION' in os.environ) or force_keyboard:
+        # keyboard input requires a window to capture key presses
+        # so either running on Windows or though SSH
+        # When running on actual Skeeball Pi, it's assumed 
+        # the Arduino will be present
+        # But this can be overridden with force_keyboard
+        if (
+            sys.platform.startswith('win') 
+            or ('SSH_CONNECTION' in os.environ) 
+            or force_keyboard
+        ):
             try:
                 self.init_keyboard()
                 self.keyboard = True
                 print('Hello keyboard!')
             except:
+                traceback.print_exc()
                 print('Setup of keyboard FAILED')
                 self.keyboard = False
         else:
@@ -88,10 +95,10 @@ class Sensor:
         )
 
     def init_keyboard(self):
-        self.button_panel = pygame.display.set_mode((320,240))
-        font = pygame.font.Font(resource_filename('magskeeball','fonts/DroidSans.ttf'),16)
-        text = font.render('Click here to capture keyboard presses', True, (255,255,255))
-        self.button_panel.blit(text,(5,5))
+        self.button_panel = pygame.display.set_mode((480,320))
+        pygame.display.set_caption(
+            'MAGskeeball - Click to capture keyboard presses'
+        )
         pygame.display.update()
 
 

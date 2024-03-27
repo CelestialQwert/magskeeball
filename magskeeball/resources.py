@@ -1,67 +1,73 @@
 from PIL import Image, ImageFont
-from pkg_resources import resource_filename
+# from pkg_resources import resource_filename
 import pygame
 from enum import Enum
 
-def getfile(path):
-    return resource_filename('magskeeball',path)
+from importlib import resources as impres
+from . import fonts
+from . import imgs
+from . import sounds
+
+FONTS_DIR = impres.files(fonts)
+IMGS_DIR = impres.files(imgs)
+SOUNDS_DIR = impres.files(sounds)
 
 pygame.mixer.init()
 
 FONTS = {
-    'GameOver': ImageFont.truetype(getfile("fonts/GameCube.ttf"), 14),
-    'MAGFest': ImageFont.truetype(getfile("fonts/radio_stars.otf"), 15),
-    'MAGMini': ImageFont.truetype(getfile("fonts/radio_stars.otf"), 12),
-    'Tiny': ImageFont.load(getfile('fonts/4x6.pil')),
-    'Small': ImageFont.load(getfile('fonts/5x7.pil')),
-    'Medium': ImageFont.load(getfile('fonts/6x10.pil')),
-    'Digital14': ImageFont.load(getfile('fonts/digital-14.pil')),
-    'Digital16': ImageFont.load(getfile('fonts/digital-16.pil'))
+    'GameOver': ImageFont.truetype(FONTS_DIR / 'GameCube.ttf', 14),
+    'MAGFest': ImageFont.truetype(FONTS_DIR / 'radio_stars.otf', 15),
+    'MAGMini': ImageFont.truetype(FONTS_DIR / 'radio_stars.otf', 12),
+    'Tiny': ImageFont.load(FONTS_DIR / '4x6.pil'),
+    'Small': ImageFont.load(FONTS_DIR / '5x7.pil'),
+    'Medium': ImageFont.load(FONTS_DIR / '6x10.pil'),
+    'Digital14': ImageFont.load(FONTS_DIR / 'digital-14.pil'),
+    'Digital16': ImageFont.load(FONTS_DIR / 'digital-16.pil')
 }
 
 IMAGES = {
-    'MainLogo' : Image.open(getfile('imgs/combined-logo.png'))
+    'MainLogo' : Image.open(IMGS_DIR / 'combined-logo.png')
 }
 
 SOUNDS = {
-    'OVER9000': pygame.mixer.Sound(getfile("sounds/its_over_9000.ogg")),
-    'PLACE1': pygame.mixer.Sound(getfile("sounds/place_1.ogg")),
-    'PLACE2': pygame.mixer.Sound(getfile("sounds/place_2.ogg")),
-    'PLACE3': pygame.mixer.Sound(getfile("sounds/place_3.ogg")),
-    'PLACE4': pygame.mixer.Sound(getfile("sounds/place_4.ogg")),
-    'PLACE5': pygame.mixer.Sound(getfile("sounds/place_5.ogg")),
-    'MISS': pygame.mixer.Sound(getfile("sounds/mario_death.ogg")),
-    'B100': pygame.mixer.Sound(getfile("sounds/sonic_ring.ogg")),
-    'B200': pygame.mixer.Sound(getfile("sounds/mario_coin.ogg")),
-    'B300': pygame.mixer.Sound(getfile("sounds/pac_man_wakka.ogg")),
-    'B400': pygame.mixer.Sound(getfile("sounds/mega_man_item_get.ogg")),
-    'B500': pygame.mixer.Sound(getfile("sounds/colossus_roar.ogg")),
-    'B1000L': pygame.mixer.Sound(getfile("sounds/colossus_roar.ogg")),
-    'B1000R': pygame.mixer.Sound(getfile("sounds/colossus_roar.ogg")),
-    'READY': pygame.mixer.Sound(getfile("sounds/ready.ogg")),
-    'GO': pygame.mixer.Sound(getfile("sounds/go.ogg")),
+    'OVER9000': pygame.mixer.Sound(SOUNDS_DIR / 'its_over_9000.ogg'),
+    'PLACE1': pygame.mixer.Sound(SOUNDS_DIR / 'place_1.ogg'),
+    'PLACE2': pygame.mixer.Sound(SOUNDS_DIR / 'place_2.ogg'),
+    'PLACE3': pygame.mixer.Sound(SOUNDS_DIR / 'place_3.ogg'),
+    'PLACE4': pygame.mixer.Sound(SOUNDS_DIR / 'place_4.ogg'),
+    'PLACE5': pygame.mixer.Sound(SOUNDS_DIR / 'place_5.ogg'),
+    'MISS': pygame.mixer.Sound(SOUNDS_DIR / 'mario_death.ogg'),
+    'B100': pygame.mixer.Sound(SOUNDS_DIR / 'sonic_ring.ogg'),
+    'B200': pygame.mixer.Sound(SOUNDS_DIR / 'mario_coin.ogg'),
+    'B300': pygame.mixer.Sound(SOUNDS_DIR / 'pac_man_wakka.ogg'),
+    'B400': pygame.mixer.Sound(SOUNDS_DIR / 'mega_man_item_get.ogg'),
+    'B500': pygame.mixer.Sound(SOUNDS_DIR / 'colossus_roar.ogg'),
+    'B1000L': pygame.mixer.Sound(SOUNDS_DIR / 'colossus_roar.ogg'),
+    'B1000R': pygame.mixer.Sound(SOUNDS_DIR / 'colossus_roar.ogg'),
+    'READY': pygame.mixer.Sound(SOUNDS_DIR / 'ready.ogg'),
+    'GO': pygame.mixer.Sound(SOUNDS_DIR / 'go.ogg'),
 }
 
 ATTRACT_MUSIC = {
-    'BK2000': pygame.mixer.Sound(getfile("sounds/black_knight_2000.ogg")),
-    'SKEEBALL': pygame.mixer.Sound(getfile("sounds/skeeball_jingle.ogg")),
-    'SF2': pygame.mixer.Sound(getfile("sounds/street_fighter_ii.ogg")),
-    'SANIC': pygame.mixer.Sound(getfile("sounds/sonic_title.ogg")),
+    'BK2000': pygame.mixer.Sound(SOUNDS_DIR / 'black_knight_2000.ogg'),
+    'SKEEBALL': pygame.mixer.Sound(SOUNDS_DIR / 'skeeball_jingle.ogg'),
+    'SF2': pygame.mixer.Sound(SOUNDS_DIR / 'street_fighter_ii.ogg'),
+    'SANIC': pygame.mixer.Sound(SOUNDS_DIR / 'sonic_title.ogg'),
 }
 
 START_MUSIC = {
-    'FIRE': pygame.mixer.Sound(getfile("sounds/great_balls_of_fire.ogg")),
-    'WRECKING': pygame.mixer.Sound(getfile("sounds/wrecking_ball.ogg")),
-    #'STEEL': pygame.mixer.Sound(getfile("sounds/balls_of_steel.ogg")),
-    #'BIGBALLS': pygame.mixer.Sound(getfile("sounds/big_balls.ogg")),
+    'FIRE': pygame.mixer.Sound(SOUNDS_DIR / 'great_balls_of_fire.ogg'),
+    'WRECKING': pygame.mixer.Sound(SOUNDS_DIR / 'wrecking_ball.ogg'),
+    #'STEEL': pygame.mixer.Sound(SOUNDS_DIR / 'balls_of_steel.ogg'),
+    #'BIGBALLS': pygame.mixer.Sound(SOUNDS_DIR / 'big_balls.ogg'),
 }
 
 TARGET_SFX = {
-    'TARGET_INTRO': pygame.mixer.Sound(getfile("sounds/break_the_targets.ogg")),
-    'TARGET_BG': pygame.mixer.Sound(getfile("sounds/target_theme.ogg")),
-    'COMPLETE': pygame.mixer.Sound(getfile("sounds/complete.ogg")),
-    'TARGET_HIT': pygame.mixer.Sound(getfile("sounds/target_hit.ogg")),
-    'TARGET_MISS': pygame.mixer.Sound(getfile("sounds/target_miss.ogg")),
+    'TARGET_INTRO': pygame.mixer.Sound(SOUNDS_DIR / 'break_the_targets.ogg'),
+    'TARGET_BG': pygame.mixer.Sound(SOUNDS_DIR / 'target_theme.ogg'),
+    'COMPLETE': pygame.mixer.Sound(SOUNDS_DIR / 'complete.ogg'),
+    'TARGET_HIT': pygame.mixer.Sound(SOUNDS_DIR / 'target_hit.ogg'),
+    'TARGET_MISS': pygame.mixer.Sound(SOUNDS_DIR / 'target_miss.ogg'),
 }
 
 ATTRACT_MUSIC_KEYS = list(ATTRACT_MUSIC.keys())

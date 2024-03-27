@@ -54,7 +54,7 @@ class Panel():
     def init_emulated_panel(self,scale):
         self.e_size = tuple([x*scale for x in (96,64)])
         self.emu_panel = pygame.display.set_mode(self.e_size)
-
+        pygame.display.set_caption('MAGskeeball (virtual score panel)')
 
     def update(self):
         if self.real_panel:
