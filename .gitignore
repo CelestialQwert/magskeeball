@@ -94,7 +94,5 @@ ENV/
 #skeeball stuff
 *config.json
 high_scores/
-skeeballenv/
-skeeball-env/
-
-poetry.lock
+venv_skeeball/
+rgbmatrix
