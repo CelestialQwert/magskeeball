@@ -52,20 +52,26 @@ class Manager():
                 "DEBUG": Debug(manager=self),
                 "GAMEMENU": GameMenu(manager=self),
             }
-            self.game_modes = ['BASIC','TARGET','COMBO','TIMED','SPEEDRUN','WORLD']
-            self.selectable_modes = self.game_modes + ['CRICKET','DUMMY','DEBUG','GAMEMENU']
+            self.game_modes = [
+                'BASIC', 'TARGET', 'COMBO', 'TIMED', 'SPEEDRUN', 'WORLD'
+            ]
+            self.selectable_modes = (
+                self.game_modes + ['CRICKET', 'DUMMY', 'DEBUG', 'GAMEMENU']
+            )
 
             self.has_high_scores = {}
             for game_mode in self.selectable_modes:
-                self.has_high_scores[game_mode] = self.states[game_mode].has_high_scores
+                self.has_high_scores[game_mode] = \
+                    self.states[game_mode].has_high_scores
             self.has_high_scores['SETTINGS'] = False
 
         else:
             self.states = {}
             for state in states:
                 self.states[state] = states[state](manager=self)
-        #starting state
-        self.state_name = starting_state if starting_state != None else 'ATTRACT'
+        self.state_name = starting_state 
+        if self.state_name is None:
+             self.state_name = 'ATTRACT'
 
         self.done = False
         self.sensor = sensor.Sensor()
@@ -95,14 +101,17 @@ class Manager():
             self.settings[key] = value
 
         self.global_ticks = 0
-        self.sensor.set_repeat(0,0)
+        self.sensor.set_repeat(0, 0)
 
     def handle_events(self):
         for event in self.sensor.get_events():
-            if isinstance(event,sensor.InputEvent):
-                print('Tick {}, Handling InputEvent, button = {}, down = {}'.format(self.global_ticks,event.button,event.down))
+            if isinstance(event, sensor.InputEvent):
+                print(
+                    f'Tick {self.global_ticks}, Handling InputEvent, '
+                    f'button = {event.button}, down = {event.down}'
+                )
             else:
-                print('Tick {},Handling event'.format(self.global_ticks),type(event))
+                print(f'Tick {self.global_ticks}, Handling event', type(event))
             self.state.handle_event(event)
 
     def update(self):
@@ -115,12 +124,13 @@ class Manager():
     def flip_state(self):            
         #shutdown old state
         self.state.cleanup()
-        print('Ending old state',self.state_name)
-        #clear events to prevent buffering
-        #sleep prevents weird bug where an extra buttonup and buttondown event are generated
-        time.sleep(1/res.FPS)
+        print('Ending old state', self.state_name)
+        # clear events to prevent buffering
+        # sleep prevents weird bug where an extra 
+        # buttonup and buttondown event are generated
+        time.sleep(1 / res.FPS)
         self.sensor.get_events()
-        time.sleep(1/res.FPS)
+        time.sleep(1 / res.FPS)
         #switch to new state
         self.last_state = self.state_name
         self.state_name = self.next_state
@@ -135,7 +145,7 @@ class Manager():
         self.next_state = ''
         self.state = self.states[self.state_name]
         #startup new state
-        print('Starting new state',self.state_name)
+        print('Starting new state', self.state_name)
         self.state.done = False
         self.state.startup()
 
@@ -165,7 +175,7 @@ def test():
         }
     starting_state = 'INTRO'
     
-    game = Manager(states,starting_state)
+    game = Manager(states, starting_state)
     game.main_loop()
 
 if __name__ == "__main__":
