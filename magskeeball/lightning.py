@@ -66,6 +66,10 @@ class Lightning(GameMode):
         panel.draw_text((17, 4), f"{self.score:04d}", "Digital16", "PURPLE")
         panel.draw_text((16, 44), "BALL", "Medium", shared_color)
         panel.draw_text((57, 44), "LEFT", "Medium", shared_color)
+
+        counter = (self.ticks % (res.FPS * 2)) // (res.FPS // 2)
+        panel.draw_text((2, 2), counter, "Medium", "WHITE")
+
         if self.debug:
             for i, num in enumerate(self.ball_scores):
                 panel.draw_text((80, 1 + 6 * i), f"{num: >4}", "Tiny", "RED")
