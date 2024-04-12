@@ -10,7 +10,7 @@ LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ._<%'
 class HighScore(State):
 
     def __init__(self,manager):
-        super(HighScore,self).__init__(manager)
+        super(HighScore, self).__init__(manager)
         self.high_scores = {}
 
     def startup(self):
@@ -18,7 +18,8 @@ class HighScore(State):
         self.last_mode = self.persist['active_game_mode']
 
         print('old list',self.persist['hs_game_hist'])
-        self.persist['hs_game_hist'] = [self.last_mode] + self.persist['hs_game_hist']
+        self.persist['hs_game_hist'] = \
+            [self.last_mode] + self.persist['hs_game_hist']
         temp_hist = []
         for game in self.persist['hs_game_hist']:
             if game not in temp_hist:
@@ -78,9 +79,10 @@ class HighScore(State):
                     self.cursor = 0
                 #underscores are there so spaces can be seen
                 self.name = self.name.replace('_',' ')
-            #if name is 3 letters, lock out everything but OK and < (last 2 chars)
-            if len(self.name) == 3 and self.cursor < len(LETTERS)-2:
-                self.cursor = len(LETTERS)-2 
+            # if name is 3 letters, lock out everything but OK and < 
+            # (last 2 chars)
+            if len(self.name) == 3 and self.cursor < len(LETTERS) - 2:
+                self.cursor = len(LETTERS) - 2 
 
 
     def update(self):
@@ -138,7 +140,11 @@ class HighScore(State):
             print("Pausing for 2 seconds")
             time.sleep(2)
             self.name = self.name[:3]
-            new_high_scores = self.game_high_scores[:self.place-1] + [(self.name, self.score)] + self.game_high_scores[self.place-1:4]
+            new_high_scores = (
+                self.game_high_scores[:self.place-1] 
+                + [(self.name, self.score)] 
+                + self.game_high_scores[self.place-1:4]
+            )
             self.save_high_scores(self.last_mode,new_high_scores)
 
 

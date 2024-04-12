@@ -3,8 +3,10 @@ from . import resources as res
 
 class Dummy(GameMode):
 
-    #def __init__(self,manager):
-    #    super(Dummy,self).__init__(manager)
+    intro_text = [
+        "STUB GAME MODE",
+        "FOR TESTING",
+    ]
 
     def handle_event(self,event):
         if event.button == res.B.QUIT:
@@ -15,7 +17,7 @@ class Dummy(GameMode):
 
     def draw_panel(self,panel):
         panel.clear()
-        panel.draw.text((1,0), 'DUMMY GAME',font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
-        panel.draw.text((1,9), 'RED TO QUIT',font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
-        panel.draw.text((1,20), 'DUMMY GAME',font=res.FONTS['MAGFest'],fill=res.COLORS['WHITE'])
-        panel.draw.text((1,40), 'RED TO QUIT',font=res.FONTS['MAGFest'],fill=res.COLORS['WHITE'])
+        panel.draw_text((1, 0), 'DUMMY MODE','Medium', 'WHITE')
+        panel.draw_text((1, 9), 'RED TO QUIT','Medium', 'WHITE')
+        panel.draw_text((1, 20), 'DUMMY GAME','MAGFest', 'WHITE')
+        panel.draw_text((1, 40), 'RED TO QUIT','MAGFest', 'WHITE')

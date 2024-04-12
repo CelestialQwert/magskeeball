@@ -2,18 +2,17 @@ from .state import GameMode
 from . import resources as res
 import time
 
-class BasicSkeeball(GameMode):
+class Classic(GameMode):
 
     has_high_scores = True
     intro_text = [
+
+        "THE ORIGINAL!",
         "GET THE HIGH SCORE",
         "WITH 9 BALLS!",
-        "NO SPECIAL BONUSES!"
     ]
 
     def startup(self):
-        print("Starting Skeeball!")
-
         self.score = 0
         self.score_buffer = 0
         self.balls = 9
@@ -25,11 +24,9 @@ class BasicSkeeball(GameMode):
         self.ticks_last_ball = 0
 
         self.debug = self.settings['debug']
-        self.timeout = self.settings['timeout']*res.FPS
+        self.timeout = self.settings['timeout'] * res.FPS
 
-        self.persist['active_game_mode'] = 'BASIC'
-
-        #self.sensor.release_balls()
+        self.persist['active_game_mode'] = 'CLASSIC'
 
     def handle_event(self,event):
         if event.button == res.B.QUIT:
@@ -40,7 +37,7 @@ class BasicSkeeball(GameMode):
             self.add_score(res.POINTS[event.button])
             res.SOUNDS[event.button.name].play()
         if event.down and event.button == res.B.RETURN:
-            self.returned_balls-=1
+            self.returned_balls -= 1
             if self.returned_balls < self.balls:
                 self.add_score(0)
                 res.SOUNDS['MISS'].play()
@@ -56,7 +53,6 @@ class BasicSkeeball(GameMode):
         if self.score_buffer == 0:
             self.advance_score = False
         self.ticks += 1
-        #print(self.ticks)
         if (self.ticks - self.ticks_last_ball) > self.timeout:
             self.balls = 0
         if self.balls == 0 and not self.advance_score:

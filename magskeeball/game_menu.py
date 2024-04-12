@@ -4,9 +4,6 @@ import random
 
 class GameMenu(GameMode):
 
-    #def __init__(self,manager):
-    #    super(Dummy,self).__init__(manager)
-
     def startup(self):
         self.game_modes = self.manager.game_modes
         for bangame in ['DUMMY','GAMEMENU']:
@@ -32,7 +29,8 @@ class GameMenu(GameMode):
                 if self.mode_name == 'TARGET':
                     self.start_song = res.TARGET_SFX['TARGET_INTRO']
                 else:
-                    self.start_song = res.START_MUSIC[random.choice(res.START_MUSIC_KEYS)]
+                    self.start_song = \
+                        res.START_MUSIC[random.choice(res.START_MUSIC_KEYS)]
                 self.start_song.play()
         else:
             if event.button in [res.B.START,res.B.SELECT] and event.down:

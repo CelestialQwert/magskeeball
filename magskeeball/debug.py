@@ -57,25 +57,23 @@ class Debug(GameMode):
     def draw_panel(self,panel):
         panel.clear()
 
-        score_x = 17 if self.score < 10000 else 4
-        panel.draw.text((score_x, 4), "%04d" % self.score ,font=res.FONTS['Digital16'],fill=res.COLORS['PURPLE'])
+        sc_x = 17 if self.score < 10000 else 4
+        panel.draw_text((sc_x, 4), f"{self.score:04d}", 'Digital16', 'PURPLE')
             
-        panel.draw.text((47,31), "BALLS" ,font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
-        panel.draw.text((53, 41), "{:03d}".format(self.balls),font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
+        panel.draw_text((47, 31), "BALLS" , 'Medium', 'WHITE')
+        panel.draw_text((53, 41), f"{self.balls:03d}", 'Medium', 'WHITE')
 
-        panel.draw.text((7,31), "TIME",font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
-        panel.draw.text((7, 41), "{:04d}".format(self.ticks),font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
-
-
+        panel.draw_text((7, 31), "TIME", 'Medium', 'WHITE')
+        panel.draw_text((7, 41), f"{self.ticks:04d}", 'Medium', 'WHITE')
 
         for i,num in enumerate(self.ball_scores[-9:]):
             num = str(num)
-            t = 4*len(num)
-            panel.draw.text((96-t,1+6*i),num,font=res.FONTS['Tiny'],fill=res.COLORS['RED'])
-        panel.draw.text((85,57), "{:02}".format(self.returned_balls),font=res.FONTS['Small'],fill=res.COLORS['ORANGE'])
+            t = 4 * len(num)
+            panel.draw_text((96 - t, 1 + 6*i), num, 'Tiny', 'RED')
+        panel.draw.text((85, 57), f"{self.returned_balls:02}", 'Small', 'ORANGE')
 
         if self.done:
-            panel.draw.text((15,54), "EXITING...",font=res.FONTS['Medium'],fill=res.COLORS['WHITE'])
+            panel.draw_text((15, 54), "EXITING...", 'Medium', 'WHITE')
 
 
 
@@ -88,5 +86,5 @@ class Debug(GameMode):
     def add_score(self,score):
         self.score_buffer += score
         self.ball_scores.append(score)
-        self.balls+=1
+        self.balls += 1
         self.advance_score = True

@@ -30,5 +30,5 @@ class GameMode(State):
         "I'M A SKEE-BALL",
         "MODE!",
         "ALLAN PLEASE",
-        'ADD DETAILS'
+        "ADD DETAILS"
     ]

@@ -12,13 +12,15 @@ from .settings import Settings
 from .intro import Intro
 from .high_scores import HighScore
 from .gameover import GameOver
-from .basic_skeeball import BasicSkeeball
+
+from .classic import Classic
 from .target import Target
 from .combo import Combo
 from .speedrun import Speedrun
 from .world import World
 from .timed import Timed
 from .cricket import Cricket
+
 from .dummy import Dummy
 from .debug import Debug
 from .game_menu import GameMenu
@@ -41,19 +43,22 @@ class Manager():
                 "INTRO": Intro(manager=self),
                 "HIGHSCORE": HighScore(manager=self),
                 "GAMEOVER": GameOver(manager=self),
-                "BASIC": BasicSkeeball(manager=self),
+
+                "CLASSIC": Classic(manager=self),
                 "TARGET": Target(manager=self),
                 "COMBO": Combo(manager=self),
                 "SPEEDRUN": Speedrun(manager=self),
                 "WORLD": World(manager=self),
                 "TIMED": Timed(manager=self),
                 "CRICKET": Cricket(manager=self),
+
                 "DUMMY": Dummy(manager=self),
                 "DEBUG": Debug(manager=self),
+
                 "GAMEMENU": GameMenu(manager=self),
             }
             self.game_modes = [
-                'BASIC', 'TARGET', 'COMBO', 'TIMED', 'SPEEDRUN', 'WORLD'
+                'CLASSIC', 'TARGET', 'COMBO', 'TIMED', 'SPEEDRUN', 'WORLD'
             ]
             self.selectable_modes = (
                 self.game_modes + ['CRICKET', 'DUMMY', 'DEBUG', 'GAMEMENU']
@@ -79,13 +84,13 @@ class Manager():
         self.clock = pygame.time.Clock()
         self.state = self.states[self.state_name]
 
-        self.settings['red_game'] = 'BASIC'
+        self.settings['red_game'] = 'CLASSIC'
         self.settings['yellow_game'] = 'DUMMY'
         self.settings['timeout'] = 60
         self.settings['save_high_scores'] = True
         self.settings['debug'] = False
 
-        self.persist['hs_game_hist'] = ['BASIC']
+        self.persist['hs_game_hist'] = ['CLASSIC']
         self.persist['active_game_mode'] = 'DUMMY'
 
         self.last_state = ''
@@ -97,7 +102,7 @@ class Manager():
         self.high_scores = self.states['HIGHSCORE'].load_all_high_scores()
         #lol mutable
         temp_settings = self.states['SETTINGS'].load_settings()
-        for key,value in temp_settings.items():
+        for key, value in temp_settings.items():
             self.settings[key] = value
 
         self.global_ticks = 0

@@ -3,9 +3,6 @@ from . import resources as res
 
 class GameOver(State):
 
-    #def __init__(self,manager):
-    #    super(Dummy,self).__init__(manager)
-
     def startup(self):
         self.ticks = 0
         self.game_modes = self.manager.game_modes

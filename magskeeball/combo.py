@@ -1,22 +1,34 @@
-from .basic_skeeball import BasicSkeeball
 from . import resources as res
+from .state import GameMode
 import random
 import colorsys
 
 COMBO_COLORS = ['WHITE', 'BLUE', 'GREEN', 'ORANGE', 'MAGENTA']
 
-class Combo(BasicSkeeball):
+class Combo(GameMode):
 
+    has_high_scores = True
     intro_text = [
         "HIT THE SAME TARGET",
         "TO BUILD A COMBO",
-        "AND GET MASSIVE",
+        "AND GET BONUS",
         "POINTS!"
     ]
 
     def startup(self):
-        super(Combo,self).startup()
-        print("Special Mode: Combo")
+
+        self.score = 0
+        self.score_buffer = 0
+        self.balls = 9
+        self.returned_balls = 9
+        self.advance_score = False
+
+        self.ticks = 0
+        self.ticks_last_ball = 0
+
+        self.debug = self.settings['debug']
+        self.timeout = self.settings['timeout'] * res.FPS
+
         self.persist['active_game_mode'] = 'COMBO'
         self.combo = 0
         self.ball_scores = ['0']
@@ -24,10 +36,24 @@ class Combo(BasicSkeeball):
 
 
     def update(self):
-        super(Combo,self).update()
-        if self.advance_score and self.score == 9100:
-            res.SOUNDS['OVER9000'].play()
-        if self.just_scored and (self.ticks - self.ticks_last_ball) >= 2*res.FPS:
+        if self.advance_score:
+            if self.score_buffer > 0:
+                self.score += 100
+                self.score_buffer -= 100
+            if self.score == 9100:
+                res.SOUNDS['OVER9000'].play()
+        if self.score_buffer == 0:
+            self.advance_score = False
+        self.ticks += 1
+        if (self.ticks - self.ticks_last_ball) > self.timeout:
+            self.balls = 0
+        if self.balls == 0 and not self.advance_score:
+            self.manager.next_state = "HIGHSCORE"
+            self.done = True
+        if (
+            self.just_scored 
+            and (self.ticks - self.ticks_last_ball) >= 2 * res.FPS
+        ):
                 self.just_scored = False
             
 
@@ -58,7 +84,7 @@ class Combo(BasicSkeeball):
         panel.draw_text((5,41), "LEFT", 'Medium', shared_color)
 
         if self.combo >= 5:
-            hue = (self.ticks*18)%360
+            hue = (self.ticks * 18) % 360
             colour = tuple(int(255*i) for i in colorsys.hsv_to_rgb(hue/360,1,1))
         else:
             colour = COMBO_COLORS[self.combo]

@@ -36,9 +36,6 @@ times = [30,45,60,75,90,9999]
 
 class Settings(State):
 
-    #def __init__(self,manager):
-    #    super(Dummy,self).__init__(manager)
-
     def startup(self):
         self.cur_loc = 0
         self.manager.next_state = 'ATTRACT'
@@ -64,7 +61,7 @@ class Settings(State):
                     spot = (spot + 1) % len(times)
                     self.settings[key] = times[spot]
             if  event.button == res.B.SELECT and event.down:
-                self.cur_loc = (self.cur_loc+1)%(len(options))
+                self.cur_loc = (self.cur_loc + 1) % len(options)
         if event.button == res.B.CONFIG and event.down:
             self.page += 1
 
@@ -140,7 +137,7 @@ class Settings(State):
             print(e)
             print('json is busted, using default settings')
             settings = {
-                'red_game': 'BASIC',
+                'red_game': 'CLASSIC',
                 'yellow_game': 'TARGET',
                 'timeout': 60,
                 'save_high_scores': True,
