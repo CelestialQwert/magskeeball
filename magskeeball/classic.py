@@ -82,6 +82,4 @@ class Classic(GameMode):
         self.ball_scores.append(score)
         self.balls -= 1
         self.advance_score = True
-        # if self.balls in [3,6]:
-        #    self.sensor.release_balls()
         self.ticks_last_ball = self.ticks

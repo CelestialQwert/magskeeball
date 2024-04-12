@@ -98,7 +98,7 @@ class Timed(GameMode):
         if self.time_remain > 30 * res.FPS:
             display_time = self.time_remain - 30 * res.FPS
             seconds = (display_time // res.FPS) % 60 + 1
-            panel.draw_text((15, 54), "READY... {format:1}", "Medium", "WHITE")
+            panel.draw_text((15, 54), f"READY... {seconds}", "Medium", "WHITE")
         elif self.time_remain > 28 * res.FPS:
             panel.draw_text((39, 54), "GO!", "Medium", "WHITE")
 

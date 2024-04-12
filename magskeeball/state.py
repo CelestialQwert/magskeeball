@@ -1,3 +1,5 @@
+from . import resources as res
+
 class State:
 
     def __init__(self, manager):
@@ -11,7 +13,7 @@ class State:
         pass
 
     def handle_event(self, event):
-        if event.button == Button.QUIT:
+        if event.button == res.B.QUIT:
             self.quit = True
 
     def update(self):

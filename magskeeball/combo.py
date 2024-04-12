@@ -2,6 +2,7 @@ from . import resources as res
 from .state import GameMode
 import random
 import colorsys
+import time
 
 COMBO_COLORS = ["WHITE", "BLUE", "GREEN", "ORANGE", "MAGENTA"]
 
@@ -35,6 +36,23 @@ class Combo(GameMode):
         self.combo = 0
         self.ball_scores = ["0"]
         self.just_scored = False
+    
+    def handle_event(self, event):
+        if event.button == res.B.QUIT:
+            self.quit = True
+        if self.balls == 0:
+            return
+        if event.down and event.button in res.POINTS:
+            self.add_score(res.POINTS[event.button])
+            res.SOUNDS[event.button.name].play()
+        if event.down and event.button == res.B.RETURN:
+            self.returned_balls -= 1
+            if self.returned_balls < self.balls:
+                self.add_score(0)
+                res.SOUNDS["MISS"].play()
+        if event.button == res.B.CONFIG:
+            self.balls = 0
+            self.returned_balls = 0
 
     def update(self):
         if self.advance_score:
@@ -67,8 +85,6 @@ class Combo(GameMode):
             self.just_scored = False
         self.score_buffer += self.combo * self.ball_scores[-1]
         self.advance_score = True
-        # if self.balls in [3,6]:
-        #    self.sensor.release_balls()
         self.ticks_last_ball = self.ticks
 
     def draw_panel(self, panel):
@@ -98,3 +114,9 @@ class Combo(GameMode):
             for i, num in enumerate(self.ball_scores[1:]):
                 panel.draw_text((80, 1 + 6 * i), f"{num: >4}", "Tiny", "RED")
             panel.draw_text((90, 57), self.returned_balls, "Small", "ORANGE")
+
+    def cleanup(self):
+        print("Pausing for 1 seconds")
+        time.sleep(1)
+        self.persist["last_score"] = self.score
+        return
