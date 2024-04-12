@@ -40,16 +40,7 @@ class GameOver(State):
         if self.manager.states[self.persist["active_game_mode"]].is_speed_game:
             display_time = self.persist["last_score"]
 
-            minutes = display_time // (60 * res.FPS)
-            seconds = (display_time // res.FPS) % 60
-            fraction = round(100.0 / res.FPS * (display_time % res.FPS))
-
-            panel.draw_text((7, 6), f"{minutes:01d}", "Digital14", "YELLOW")
-            panel.draw_text((28, 6), f"{seconds:02d}", "Digital14", "YELLOW")
-            panel.draw_text((63, 6), f"{fraction:02d}", "Digital14", "YELLOW")
-            panel.draw.rectangle([21, 18, 24, 21], fill=res.COLORS["YELLOW"])
-            panel.draw.rectangle([21, 9, 24, 12], fill=res.COLORS["YELLOW"])
-            panel.draw.rectangle([56, 21, 59, 24], fill=res.COLORS["YELLOW"])
+            panel.draw_time((7, 6), display_time, 'YELLOW')
 
         else:
             score = self.persist["last_score"]

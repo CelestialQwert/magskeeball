@@ -88,3 +88,17 @@ class Panel:
         else:
             colour_tuple = color
         self.draw.text(pos, str(text), font=res.FONTS[font], fill=colour_tuple)
+
+    def draw_time(self, pos=(7, 6), display_time=0, color='WHITE'):
+        posx, posy = pos
+        minutes = display_time // (60 * res.FPS)
+        seconds = (display_time // res.FPS) % 60
+        fraction = round(100.0 / res.FPS * (display_time % res.FPS))
+        fill_col = res.COLORS[color]
+
+        self.draw_text((posx, posy), f"{minutes:01d}", "Digital14", color)
+        self.draw_text((21 + posx, posy), f"{seconds:02d}", "Digital14", color)
+        self.draw_text((56 + posx, posy), f"{fraction:02d}", "Digital14", color)
+        self.draw.rectangle([14 + posx, 12 + posy, 17 + posx, 15 + posy], fill=fill_col)
+        self.draw.rectangle([14 + posx, 3 + posy, 17 + posx, 6 + posy], fill=fill_col)
+        self.draw.rectangle([49 + posx, 15 + posy, 52 + posx, 18 + posy], fill=fill_col)

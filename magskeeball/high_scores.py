@@ -7,10 +7,7 @@ from pathlib import Path
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ._<%"
 
-
 class HighScore(State):
-
-    
 
     def __init__(self, manager):
         super(HighScore, self).__init__(manager)
@@ -64,11 +61,10 @@ class HighScore(State):
             self.cursor = (self.cursor + 1) % len(LETTERS)
         if event.down and event.button == res.B.START:
             if self.curr_letter == "<":
-                self.cursor = LETTERS.find(self.name[-1])
-                if self.cursor == -1:
-                    # space isn't in LETTERS, so make it a _ instead
-                    self.cursor = LETTERS.find("_")
+                # keep cursor at same location in LETTERS
                 self.name = self.name[:-1]
+                if len(self.name) == 0:
+                    self.cursor = 0
             elif self.curr_letter == "%":
                 # name is done so pad with spaces
                 while len(self.name) < 4:
@@ -81,10 +77,10 @@ class HighScore(State):
                     self.cursor = 0
                 # underscores are there so spaces can be seen
                 self.name = self.name.replace("_", " ")
-            # if name is 3 letters, lock out everything but OK and <
-            # (last 2 chars)
-            if len(self.name) == 3 and self.cursor < len(LETTERS) - 2:
-                self.cursor = len(LETTERS) - 2
+        # if name is 3 letters, lock out everything but OK and <
+        # (last 2 chars)
+        if len(self.name) == 3 and self.cursor < len(LETTERS) - 2:
+            self.cursor = len(LETTERS) - 2
 
     def update(self):
         if not self.new_score:
@@ -102,24 +98,11 @@ class HighScore(State):
 
         if self.manager.states[self.last_mode].is_speed_game:
             display_time = self.persist["last_score"]
-
-            minutes = display_time // (60 * res.FPS)
-            seconds = (display_time // res.FPS) % 60
-            fraction = round(100.0 / res.FPS * (display_time % res.FPS))
-
-            panel.draw_text((7, 6), f"{minutes:01d}", "Digital14", "PURPLE")
-            panel.draw_text((28, 6), f"{seconds:02d}", "Digital14", "PURPLE")
-            panel.draw_text((63, 6), f"{fraction:02d}", "Digital14", "PURPLE")
-            panel.draw.rectangle([21, 18, 24, 21], fill=res.COLORS["PURPLE"])
-            panel.draw.rectangle([21, 9, 24, 12], fill=res.COLORS["PURPLE"])
-            panel.draw.rectangle([56, 21, 59, 24], fill=res.COLORS["PURPLE"])
-
+            panel.draw_time((7, 6), display_time, 'PURPLE')
             panel.draw_text((16, 30), "GREAT TIME!", "Medium", "YELLOW")
-
         else:
             score_x = 17 if self.score < 10000 else 4
             panel.draw_text((score_x, 4), f"{self.score:04d}", "Digital16", "PURPLE")
-
             panel.draw_text((16, 30), "HIGH SCORE!", "Medium", "YELLOW")
 
         # each line is shown for 3/2 (1.5) seconds
