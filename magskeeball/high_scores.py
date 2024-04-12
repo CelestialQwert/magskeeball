@@ -4,15 +4,19 @@ import os
 import time
 import shutil
 import json
+from pathlib import Path
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ._<%"
 
 
 class HighScore(State):
 
+    
+
     def __init__(self, manager):
         super(HighScore, self).__init__(manager)
         self.high_scores = {}
+        self.high_score_dir = Path('high_scores')
 
     def startup(self):
         self.manager.next_state = "GAMEOVER"
@@ -100,13 +104,13 @@ class HighScore(State):
         if self.manager.states[self.last_mode].is_speed_game:
             display_time = self.persist["last_score"]
 
-            minutes = display_time // (60 * res.FPS)
-            seconds = (display_time // res.FPS) % 60
-            fraction = round(100.0 / res.FPS * (display_time % res.FPS))
+            mins = display_time // (60 * res.FPS)
+            secs = (display_time // res.FPS) % 60
+            frac = round(100.0 / res.FPS * (display_time % res.FPS))
 
-            panel.draw_text((7, 6), "%01d" % minutes, "Digital14", "PURPLE")
-            panel.draw_text((28, 6), "%02d" % seconds, "Digital14", "PURPLE")
-            panel.draw_text((63, 6), "%02d" % fraction, "Digital14", "PURPLE")
+            panel.draw_text((7, 6), f"mins:01d", "Digital14", "PURPLE")
+            panel.draw_text((28, 6), f"secs:02d", "Digital14", "PURPLE")
+            panel.draw_text((63, 6), f"frac:02d", "Digital14", "PURPLE")
             panel.draw.rectangle([21, 18, 24, 21], fill=res.COLORS["PURPLE"])
             panel.draw.rectangle([21, 9, 24, 12], fill=res.COLORS["PURPLE"])
             panel.draw.rectangle([56, 21, 59, 24], fill=res.COLORS["PURPLE"])
@@ -115,7 +119,7 @@ class HighScore(State):
 
         else:
             score_x = 17 if self.score < 10000 else 4
-            panel.draw_text((score_x, 4), "%04d" % self.score, "Digital16", "PURPLE")
+            panel.draw_text((score_x, 4), f"{self.score}:04d", "Digital16", "PURPLE")
 
             panel.draw_text((16, 30), "HIGH SCORE!", "Medium", "YELLOW")
 
@@ -132,7 +136,7 @@ class HighScore(State):
             panel.draw_text(
                 (39 + 6 * len(self.name), 50), self.curr_letter, "Medium", "WHITE"
             )
-        panel.draw_text((19, 50), "#%d" % self.place, "Medium", "WHITE")
+        panel.draw_text((19, 50), f"#{self.place}", "Medium", "WHITE")
 
     def cleanup(self):
         if self.new_score:
@@ -159,73 +163,72 @@ class HighScore(State):
         return self.high_scores
 
     def init_game_log(self):
-        filename = "./high_scores/game_log.txt"
-        if not os.path.isdir("./high_scores"):
-            os.mkdir("./high_scores")
-            os.chmod("./high_scores", 0o777)
-        if os.path.isfile(filename):
-            timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
-            archive_file = "./high_scores/game_log_{}.txt".format(timestamp)
-            shutil.move(filename, archive_file)
+        self.high_score_dir.mkdir(mode=0o777, parents=True, exist_ok=True)
+
+        game_plays_log = self.high_score_dir / "game_plays.txt"
+        if game_plays_log.exists():
+            ts = time.strftime("%Y-%m-%d_%H-%M-%S")
+            dest = self.high_score_dir / f"game_plays_{ts}.txt"
+            shutil.move(game_plays_log, dest)
+
         game_log = {}
         for game in self.manager.game_modes:
             game_log[game] = 0
-        with open("high_scores/game_log.txt", "w") as game_log_file:
-            game_log_file.write(json.dumps(game_log))
-        os.chmod(filename, 0o777)
-        return self.load_game_log()
 
-        return self.load_high_scores(game_mode)
+        with open(game_plays_log, "w") as f:
+            f.write(json.dumps(game_log))
+        game_plays_log.chmod(0o777)
+        
+        return game_log
 
     def load_game_log(self):
-        filename = "./high_scores/game_log.txt"
+        game_plays_log = self.high_score_dir / "game_plays.txt"
         try:
-            with open(filename, "r") as game_log_file:
-                return json.loads(game_log_file.read())
+            with open(game_plays_log, "r") as f:
+                return json.loads(f.read())
         except:
             print("loading game log failed, remaking")
             return self.init_game_log()
 
     def save_game_log(self):
-        with open("high_scores/game_log.txt", "w") as game_log_file:
-            game_log_file.write(json.dumps(self.manager.game_log))
+        with open(self.high_score_dir / "game_plays.txt", "w") as f:
+            f.write(json.dumps(self.manager.game_log))
 
     def init_high_scores(self, game_mode):
-        filename = "./high_scores/{}.txt".format(game_mode)
-        if not os.path.isdir("./high_scores"):
-            os.mkdir("./high_scores")
-            os.chmod("./high_scores", 0o777)
-        if os.path.isfile(filename):
-            timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
-            archive_file = "./high_scores/{}_{}.txt".format(game_mode, timestamp)
-            shutil.move(filename, archive_file)
-        with open(filename, "w") as sf:
+        self.high_score_dir.mkdir(mode=0o777, parents=True, exist_ok=True)
+        
+        mode_scores_file = self.high_score_dir / f"{game_mode}.txt"
+        if mode_scores_file.exists():
+            ts = time.strftime("%Y-%m-%d_%H-%M-%S")
+            dest = self.high_score_dir / f"{game_mode}_{ts}.txt"
+            shutil.move(mode_scores_file, dest)
+        with open(mode_scores_file, "w") as sf:
             if self.manager.states[game_mode].is_speed_game:
                 sf.write("MAG,1195\nFES,1196\nTIS,1197\nADO,1198\nNUT,1199\n")
             else:
                 sf.write("MAG,2000\nFES,1600\nTIS,1200\nADO,800\nNUT,400\n")
-        os.chmod(filename, 0o777)
+        mode_scores_file.chmod(0o777)
         return self.load_high_scores(game_mode)
 
     def load_high_scores(self, game_mode):
-        filename = "./high_scores/{}.txt".format(game_mode)
+        mode_scores_file = self.high_score_dir / f"{game_mode}.txt"
         high_scores = []
         try:
-            with open(filename, "r") as score_file:
-                for line in score_file.readlines():
+            with open(mode_scores_file, "r") as f:
+                for line in f.readlines():
                     name, score = line.split(",")
                     if len(name) > 3:
                         raise IOError("Name is too long")
                     score = int(score)
                     high_scores.append((name, score))
         except:
-            print("Error in hi score file, creating new...")
+            print(f"Error in high score file for mode {game_mode}, creating new...")
             high_scores = self.init_high_scores(game_mode)
         return high_scores
 
     def save_high_scores(self, game_mode, scores):
-        filename = "./high_scores/{}.txt".format(game_mode)
-        with open(filename, "w") as sf:
+        mode_scores_file = self.high_score_dir / f"{game_mode}.txt"
+        with open(mode_scores_file, "w") as sf:
             for name, score in scores:
-                sf.write("{},{}\n".format(name, score))
+                sf.write(f"{name},{score}\n")
         self.high_scores[game_mode] = scores
