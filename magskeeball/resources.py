@@ -48,17 +48,11 @@ SOUNDS = {
 }
 
 ATTRACT_MUSIC = {
-    "BK2000": pygame.mixer.Sound(SOUNDS_DIR / "black_knight_2000.ogg"),
     "SKEEBALL": pygame.mixer.Sound(SOUNDS_DIR / "skeeball_jingle.ogg"),
-    "SF2": pygame.mixer.Sound(SOUNDS_DIR / "street_fighter_ii.ogg"),
-    "SANIC": pygame.mixer.Sound(SOUNDS_DIR / "sonic_title.ogg"),
 }
 
 START_MUSIC = {
     "FIRE": pygame.mixer.Sound(SOUNDS_DIR / "great_balls_of_fire.ogg"),
-    "WRECKING": pygame.mixer.Sound(SOUNDS_DIR / "wrecking_ball.ogg"),
-    #'STEEL': pygame.mixer.Sound(SOUNDS_DIR / 'balls_of_steel.ogg'),
-    #'BIGBALLS': pygame.mixer.Sound(SOUNDS_DIR / 'big_balls.ogg'),
 }
 
 TARGET_SFX = {
