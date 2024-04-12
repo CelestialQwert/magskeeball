@@ -93,14 +93,14 @@ class Speedrun(GameMode):
         seconds = (display_time // res.FPS) % 60
         fraction = round(100.0 / res.FPS * (display_time % res.FPS))
 
-        panel.draw_text((7, 6), "%01d" % minutes, "Digital14", "PURPLE")
-        panel.draw_text((28, 6), "%02d" % seconds, "Digital14", "PURPLE")
-        panel.draw_text((63, 6), "%02d" % fraction, "Digital14", "PURPLE")
+        panel.draw_text((7, 6), f"{minutes:01d}", "Digital14", "PURPLE")
+        panel.draw_text((28, 6), f"{seconds:02d}", "Digital14", "PURPLE")
+        panel.draw_text((63, 6), f"{fraction:02d}", "Digital14", "PURPLE")
         panel.draw.rectangle([21, 18, 24, 21], fill=res.COLORS["PURPLE"])
         panel.draw.rectangle([21, 9, 24, 12], fill=res.COLORS["PURPLE"])
         panel.draw.rectangle([56, 21, 59, 24], fill=res.COLORS["PURPLE"])
         panel.draw_text((57, 31), "BALLS", "Medium", "WHITE")
-        panel.draw_text((66, 41), "%02d" % self.balls, "Medium", "WHITE")
+        panel.draw_text((66, 41), f"{self.balls:02d}", "Medium", "WHITE")
 
         if self.score <= 500:
             score_color = "RED"
@@ -111,7 +111,7 @@ class Speedrun(GameMode):
 
         panel.draw_text((9, 31), "SCORE", "Medium", score_color)
         score = self.score if self.score > 0 else 0
-        panel.draw_text((12, 41), "%04d" % score, "Medium", score_color)
+        panel.draw_text((12, 41), f"{score:04d}", "Medium", score_color)
 
         if self.time_elapsed < 0:
             display_time = self.time_elapsed

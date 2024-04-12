@@ -118,7 +118,7 @@ class World(GameMode):
         if self.time_elapsed < 0:
             display_time = self.time_elapsed
             secs = (-display_time // res.FPS) % 60 + 1
-            panel.draw_text((15, 54), f"READY... {secs:1}", "Medium", "WHITE")
+            panel.draw_text((15, 54), f"READY... {secs}", "Medium", "WHITE")
         elif self.time_elapsed < 2 * res.FPS:
             panel.draw_text((39, 54), "GO!", "Medium", "WHITE")
 
@@ -127,7 +127,7 @@ class World(GameMode):
                 num = str(num)
                 t = 4 * len(num)
                 panel.draw_text((96 - t, 1 + 6 * i), num, "Tiny", "RED")
-            panel.draw_text((85, 57), f"{self.returned_balls:02}", "Small", "ORANGE")
+            panel.draw_text((85, 57), f"{self.returned_balls:02d}", "Small", "ORANGE")
 
     def cleanup(self):
         if self.last_sound:

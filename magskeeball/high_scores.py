@@ -103,13 +103,13 @@ class HighScore(State):
         if self.manager.states[self.last_mode].is_speed_game:
             display_time = self.persist["last_score"]
 
-            mins = display_time // (60 * res.FPS)
-            secs = (display_time // res.FPS) % 60
-            frac = round(100.0 / res.FPS * (display_time % res.FPS))
+            minutes = display_time // (60 * res.FPS)
+            seconds = (display_time // res.FPS) % 60
+            fraction = round(100.0 / res.FPS * (display_time % res.FPS))
 
-            panel.draw_text((7, 6), f"mins:01d", "Digital14", "PURPLE")
-            panel.draw_text((28, 6), f"secs:02d", "Digital14", "PURPLE")
-            panel.draw_text((63, 6), f"frac:02d", "Digital14", "PURPLE")
+            panel.draw_text((7, 6), f"{minutes:01d}", "Digital14", "PURPLE")
+            panel.draw_text((28, 6), f"{seconds:02d}", "Digital14", "PURPLE")
+            panel.draw_text((63, 6), f"{fraction:02d}", "Digital14", "PURPLE")
             panel.draw.rectangle([21, 18, 24, 21], fill=res.COLORS["PURPLE"])
             panel.draw.rectangle([21, 9, 24, 12], fill=res.COLORS["PURPLE"])
             panel.draw.rectangle([56, 21, 59, 24], fill=res.COLORS["PURPLE"])
@@ -118,7 +118,7 @@ class HighScore(State):
 
         else:
             score_x = 17 if self.score < 10000 else 4
-            panel.draw_text((score_x, 4), f"{self.score}:04d", "Digital16", "PURPLE")
+            panel.draw_text((score_x, 4), f"{self.score:04d}", "Digital16", "PURPLE")
 
             panel.draw_text((16, 30), "HIGH SCORE!", "Medium", "YELLOW")
 

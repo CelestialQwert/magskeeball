@@ -16,9 +16,10 @@ from .gameover import GameOver
 from .classic import Classic
 from .target import Target
 from .combo import Combo
+from .timed import Timed
+from .lightning import Lightning
 from .speedrun import Speedrun
 from .world import World
-from .timed import Timed
 from .cricket import Cricket
 
 from .dummy import Dummy
@@ -47,9 +48,10 @@ class Manager:
                 "CLASSIC": Classic(manager=self),
                 "TARGET": Target(manager=self),
                 "COMBO": Combo(manager=self),
+                "TIMED": Timed(manager=self),
+                "LIGHTNING": Lightning(manager=self),
                 "SPEEDRUN": Speedrun(manager=self),
                 "WORLD": World(manager=self),
-                "TIMED": Timed(manager=self),
                 "CRICKET": Cricket(manager=self),
                 "DUMMY": Dummy(manager=self),
                 "DEBUG": Debug(manager=self),
@@ -60,6 +62,7 @@ class Manager:
                 "TARGET",
                 "COMBO",
                 "TIMED",
+                "LIGHTNING",
                 "SPEEDRUN",
                 "WORLD",
             ]

@@ -66,7 +66,7 @@ class Debug(GameMode):
             num = str(num)
             t = 4 * len(num)
             panel.draw_text((96 - t, 1 + 6 * i), num, "Tiny", "RED")
-        panel.draw_text((85, 57), f"{self.returned_balls:02}", "Small", "ORANGE")
+        panel.draw_text((85, 57), f"{self.returned_balls:02d}", "Small", "ORANGE")
 
         if self.done:
             panel.draw_text((15, 54), "EXITING...", "Medium", "WHITE")

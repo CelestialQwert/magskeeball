@@ -44,9 +44,9 @@ class GameOver(State):
             seconds = (display_time // res.FPS) % 60
             fraction = round(100.0 / res.FPS * (display_time % res.FPS))
 
-            panel.draw_text((7, 6), "%01d" % minutes, "Digital14", "YELLOW")
-            panel.draw_text((28, 6), "%02d" % seconds, "Digital14", "YELLOW")
-            panel.draw_text((63, 6), "%02d" % fraction, "Digital14", "YELLOW")
+            panel.draw_text((7, 6), f"{minutes:01d}", "Digital14", "YELLOW")
+            panel.draw_text((28, 6), f"{seconds:02d}", "Digital14", "YELLOW")
+            panel.draw_text((63, 6), f"{fraction:02d}", "Digital14", "YELLOW")
             panel.draw.rectangle([21, 18, 24, 21], fill=res.COLORS["YELLOW"])
             panel.draw.rectangle([21, 9, 24, 12], fill=res.COLORS["YELLOW"])
             panel.draw.rectangle([56, 21, 59, 24], fill=res.COLORS["YELLOW"])
@@ -54,7 +54,7 @@ class GameOver(State):
         else:
             score = self.persist["last_score"]
             score_x = 17 if score < 10000 else 4
-            panel.draw_text((score_x, 4), "%04d" % score, "Digital16", "YELLOW")
+            panel.draw_text((score_x, 4), f"{score:04d}", "Digital16", "YELLOW")
 
         if self.ticks % (2 * res.FPS) < (1.5 * res.FPS):
             panel.draw_text((15, 54), "PRESS START", "Medium", "WHITE")

@@ -80,10 +80,9 @@ class Timed(GameMode):
         fraction = round(100.0 / res.FPS * (display_time % res.FPS))
 
         score_x = 17 if self.score < 10000 else 4
-        panel.draw_text((score_x, 4), "%04d" % self.score, "Digital16", "PURPLE")
-
+        panel.draw_text((score_x, 4), f"{self.score:04d}", "Digital16", "PURPLE")
         panel.draw_text((57, 31), "BALLS", "Medium", "WHITE")
-        panel.draw_text((66, 41), "%02d" % self.balls, "Medium", "WHITE")
+        panel.draw_text((66, 41), f"{self.balls:02d}", "Medium", "WHITE")
 
         if self.time_remain < 3 * res.FPS:
             time_color = "RED"
@@ -93,7 +92,7 @@ class Timed(GameMode):
             time_color = "GREEN"
 
         panel.draw_text((12, 31), "TIME", "Medium", time_color)
-        panel.draw_text((9, 41), f"{seconds:02}.{fraction:02}", "Medium", time_color)
+        panel.draw_text((9, 41), f"{seconds:02d}.{fraction:02d}", "Medium", time_color)
 
         if self.time_remain > 30 * res.FPS:
             display_time = self.time_remain - 30 * res.FPS
@@ -107,7 +106,7 @@ class Timed(GameMode):
                 num = str(num)
                 t = 4 * len(num)
                 panel.draw_text((96 - t, 1 + 6 * i), num, "Tiny", "RED")
-            panel.draw_text((85, 57), f"{self.returned_balls:02}", "Small", "ORANGE")
+            panel.draw_text((85, 57), f"{self.returned_balls:02d}", "Small", "ORANGE")
 
     def cleanup(self):
         print("Pausing for 1 seconds")
