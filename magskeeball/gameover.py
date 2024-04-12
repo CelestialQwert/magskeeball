@@ -35,9 +35,7 @@ class GameOver(State):
 
     def draw_panel(self, panel):
         panel.clear()
-        panel.draw.text(
-            (3, 34), "GAME OVER", font=res.FONTS["MAGMini"], fill=res.COLORS["RED"]
-        )
+        panel.draw_text((3, 34), "GAME OVER", "MAGMini", "RED")
 
         if self.manager.states[self.persist["active_game_mode"]].is_speed_game:
             display_time = self.persist["last_score"]
@@ -46,24 +44,9 @@ class GameOver(State):
             seconds = (display_time // res.FPS) % 60
             fraction = round(100.0 / res.FPS * (display_time % res.FPS))
 
-            panel.draw.text(
-                (7, 6),
-                "%01d" % minutes,
-                font=res.FONTS["Digital14"],
-                fill=res.COLORS["YELLOW"],
-            )
-            panel.draw.text(
-                (28, 6),
-                "%02d" % seconds,
-                font=res.FONTS["Digital14"],
-                fill=res.COLORS["YELLOW"],
-            )
-            panel.draw.text(
-                (63, 6),
-                "%02d" % fraction,
-                font=res.FONTS["Digital14"],
-                fill=res.COLORS["YELLOW"],
-            )
+            panel.draw_text((7, 6), "%01d" % minutes, "Digital14", "YELLOW")
+            panel.draw_text((28, 6), "%02d" % seconds, "Digital14", "YELLOW")
+            panel.draw_text((63, 6), "%02d" % fraction, "Digital14", "YELLOW")
             panel.draw.rectangle([21, 18, 24, 21], fill=res.COLORS["YELLOW"])
             panel.draw.rectangle([21, 9, 24, 12], fill=res.COLORS["YELLOW"])
             panel.draw.rectangle([56, 21, 59, 24], fill=res.COLORS["YELLOW"])
@@ -71,17 +54,7 @@ class GameOver(State):
         else:
             score = self.persist["last_score"]
             score_x = 17 if score < 10000 else 4
-            panel.draw.text(
-                (score_x, 4),
-                "%04d" % score,
-                font=res.FONTS["Digital16"],
-                fill=res.COLORS["YELLOW"],
-            )
+            panel.draw_text((score_x, 4), "%04d" % score, "Digital16", "YELLOW")
 
         if self.ticks % (2 * res.FPS) < (1.5 * res.FPS):
-            panel.draw.text(
-                (15, 54),
-                "PRESS START",
-                font=res.FONTS["Medium"],
-                fill=res.COLORS["WHITE"],
-            )
+            panel.draw_text((15, 54), "PRESS START", "Medium", "WHITE")

@@ -3,13 +3,7 @@ from . import resources as res
 import random
 
 
-HISCORE_COLORS = [
-    res.COLORS["BLUE"],
-    res.COLORS["RED"],
-    res.COLORS["YELLOW"],
-    res.COLORS["GREEN"],
-    res.COLORS["PINK"],
-]
+HISCORE_COLORS = ["BLUE", "RED", "YELLOW", "GREEN", "PINK"]
 
 
 class Attract(State):
@@ -100,53 +94,41 @@ class Attract(State):
         self.current_display_func(panel)
 
         if self.ticks % (2 * res.FPS) < (1.5 * res.FPS):
-            panel.draw.text(
-                (15, 54),
-                "PRESS START",
-                font=res.FONTS["Medium"],
-                fill=res.COLORS["WHITE"],
-            )
+            panel.draw_text((15, 54), "PRESS START", "Medium", "WHITE")
 
     def draw_high_scores(self, panel, game):
         if self.manager.states[game].is_speed_game:
-            title_text = "{} TOP TIMES".format(game)
+            title_text = f"{game} TOP TIMES"
         else:
-            title_text = "{} HI SCORES".format(game)
+            title_text = f"{game} HI SCORES"
         x = int(48 - len(title_text) * 2.5) + 1
-        panel.draw.text(
-            (x, 2), title_text, font=res.FONTS["Small"], fill=res.COLORS["WHITE"]
-        )
+        panel.draw_text((x, 2), title_text, "Small", "WHITE")
 
         for i, (name, score) in enumerate(self.high_scores[game]):
             if self.manager.states[game].is_speed_game:
-                seconds = (score // res.FPS) % 60
-                fraction = 5 * (score % res.FPS)
-                panel.draw.text(
+                s = (score // res.FPS) % 60
+                f = 5 * (score % res.FPS)
+                panel.draw_text(
                     (5 + 8 * i, (i + 1) * 9),
-                    "{} {:2d}.{:02d}".format(name, seconds, fraction),
-                    font=res.FONTS["Medium"],
-                    fill=HISCORE_COLORS[i],
+                    f"{name} {s:2d}.{f:02d}",
+                    "Medium",
+                    HISCORE_COLORS[i],
                 )
             else:
                 if self.high_scores[game][0][1] > 9999:
-                    panel.draw.text(
+                    panel.draw_text(
                         (5 + 8 * i, (i + 1) * 9),
-                        "{} {:5d}".format(name, score),
-                        font=res.FONTS["Medium"],
-                        fill=HISCORE_COLORS[i],
+                        f"{name} {score:5d}",
+                        "Medium",
+                        HISCORE_COLORS[i],
                     )
                 else:
-                    panel.draw.text(
+                    panel.draw_text(
                         (8 + 8 * i, (i + 1) * 9),
-                        "{} {:4d}".format(name, score),
-                        font=res.FONTS["Medium"],
-                        fill=HISCORE_COLORS[i],
+                        f"{name} {score:4d}",
+                        "Medium",
+                        HISCORE_COLORS[i],
                     )
-
-        # self.panel.draw.text((24,10),'{} {}'.format(name,score),font=FONTS['Medium'],fill=HISCORE_COLORS[0])
-        # for i in [1,2,3,4]:
-        #     (name,score) = game.high_scores[i]
-        #     self.panel.draw.text((28,i*8+12),'{} {}'.format(name,score),font=FONTS['Small'],fill=HISCORE_COLORS[i])
 
     def cleanup(self):
         self.attract_song.stop()

@@ -35,20 +35,8 @@ class Intro(State):
         panel.clear()
         title = "{} MODE".format(self.mode_name)
         x = 48 - 3 * len(title)
-        panel.draw.text(
-            (x, 1), title, font=res.FONTS["Medium"], fill=res.COLORS["PURPLE"]
-        )
+        panel.draw_text((x, 1), title, "Medium", "PURPLE")
         for i, line in enumerate(self.intro_text):
-            panel.draw.text(
-                (1, 15 + 8 * i),
-                line,
-                font=res.FONTS["Small"],
-                fill=res.COLORS["YELLOW"],
-            )
+            panel.draw_text((1, 15 + 8 * i), line, "Small", "YELLOW")
             if self.ticks > (3 * res.FPS):
-                panel.draw.text(
-                    (15, 48),
-                    "PRESS START",
-                    font=res.FONTS["Medium"],
-                    fill=res.COLORS["WHITE"],
-                )
+                panel.draw_text((15, 48), "PRESS START", "Medium", "WHITE")

@@ -104,90 +104,35 @@ class HighScore(State):
             seconds = (display_time // res.FPS) % 60
             fraction = round(100.0 / res.FPS * (display_time % res.FPS))
 
-            panel.draw.text(
-                (7, 6),
-                "%01d" % minutes,
-                font=res.FONTS["Digital14"],
-                fill=res.COLORS["PURPLE"],
-            )
-            panel.draw.text(
-                (28, 6),
-                "%02d" % seconds,
-                font=res.FONTS["Digital14"],
-                fill=res.COLORS["PURPLE"],
-            )
-            panel.draw.text(
-                (63, 6),
-                "%02d" % fraction,
-                font=res.FONTS["Digital14"],
-                fill=res.COLORS["PURPLE"],
-            )
+            panel.draw_text((7, 6), "%01d" % minutes, "Digital14", "PURPLE")
+            panel.draw_text((28, 6), "%02d" % seconds, "Digital14", "PURPLE")
+            panel.draw_text((63, 6), "%02d" % fraction, "Digital14", "PURPLE")
             panel.draw.rectangle([21, 18, 24, 21], fill=res.COLORS["PURPLE"])
             panel.draw.rectangle([21, 9, 24, 12], fill=res.COLORS["PURPLE"])
             panel.draw.rectangle([56, 21, 59, 24], fill=res.COLORS["PURPLE"])
 
-            panel.draw.text(
-                (16, 30),
-                "GREAT TIME!",
-                font=res.FONTS["Medium"],
-                fill=res.COLORS["YELLOW"],
-            )
+            panel.draw_text((16, 30), "GREAT TIME!", "Medium", "YELLOW")
 
         else:
             score_x = 17 if self.score < 10000 else 4
-            panel.draw.text(
-                (score_x, 4),
-                "%04d" % self.score,
-                font=res.FONTS["Digital16"],
-                fill=res.COLORS["PURPLE"],
-            )
+            panel.draw_text((score_x, 4), "%04d" % self.score, "Digital16", "PURPLE")
 
-            panel.draw.text(
-                (16, 30),
-                "HIGH SCORE!",
-                font=res.FONTS["Medium"],
-                fill=res.COLORS["YELLOW"],
-            )
+            panel.draw_text((16, 30), "HIGH SCORE!", "Medium", "YELLOW")
 
         # each line is shown for 3/2 (1.5) seconds
         if self.ticks % 90 < 30:
-            panel.draw.text(
-                (7, 40),
-                "ENTER INITIALS",
-                font=res.FONTS["Medium"],
-                fill=res.COLORS["YELLOW"],
-            )
+            panel.draw_text((7, 40), "ENTER INITIALS", "Medium", "YELLOW")
         elif self.ticks % 90 < 60:
-            panel.draw.text(
-                (3, 40),
-                "YELLOW = CHANGE",
-                font=res.FONTS["Medium"],
-                fill=res.COLORS["YELLOW"],
-            )
+            panel.draw_text((3, 40), "YELLOW = CHANGE", "Medium", "YELLOW")
         else:
-            panel.draw.text(
-                (18, 40),
-                "RED = PICK",
-                font=res.FONTS["Medium"],
-                fill=res.COLORS["YELLOW"],
-            )
-        panel.draw.text(
-            (39, 50), self.name, font=res.FONTS["Medium"], fill=res.COLORS["WHITE"]
-        )
+            panel.draw_text((18, 40), "RED = PICK", "Medium", "YELLOW")
+        panel.draw_text((39, 50), self.name, "Medium", "WHITE")
         if self.ticks % 4 < 3 and len(self.name) < 4:
             # blink current letter
-            panel.draw.text(
-                (39 + 6 * len(self.name), 50),
-                self.curr_letter,
-                font=res.FONTS["Medium"],
-                fill=res.COLORS["WHITE"],
+            panel.draw_text(
+                (39 + 6 * len(self.name), 50), self.curr_letter, "Medium", "WHITE"
             )
-        panel.draw.text(
-            (19, 50),
-            "#%d" % self.place,
-            font=res.FONTS["Medium"],
-            fill=res.COLORS["WHITE"],
-        )
+        panel.draw_text((19, 50), "#%d" % self.place, "Medium", "WHITE")
 
     def cleanup(self):
         if self.new_score:

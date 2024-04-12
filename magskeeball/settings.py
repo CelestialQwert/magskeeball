@@ -79,26 +79,14 @@ class Settings(State):
 
     def draw_stats(self, panel):
         panel.clear()
-        panel.draw.text(
-            (23, 1), "GAME STATS", font=res.FONTS["Small"], fill=res.COLORS["WHITE"]
-        )
+        panel.draw_text((23, 1), "GAME STATS", "Small", "WHITE")
         for i, key in enumerate(self.manager.game_modes):
             alltext = "{:9}{:4d}".format(key, self.manager.game_log[key])
-            panel.draw.text(
-                (15, 12 + 8 * i),
-                alltext,
-                font=res.FONTS["Small"],
-                fill=res.COLORS["WHITE"],
-            )
+            panel.draw_text((15, 12 + 8 * i), alltext, "Small", "WHITE")
 
     def draw_settings(self, panel):
         panel.clear()
-        panel.draw.text(
-            (8, 1),
-            "SKEE-BALL CONFIG",
-            font=res.FONTS["Small"],
-            fill=res.COLORS["WHITE"],
-        )
+        panel.draw_text((8, 1), "SKEE-BALL CONFIG", "Small", "WHITE")
         for i, key in enumerate(options):
             if settings_type[key] == "boolean":
                 setting_text = "YES" if self.settings[key] else "NO"
@@ -107,34 +95,14 @@ class Settings(State):
                     "NONE" if self.settings[key] == 9999 else str(self.settings[key])
                 )
             alltext = "{}: {}".format(settings_desc_text[key], setting_text)
-            panel.draw.text(
-                (6, 12 + 8 * i),
-                alltext,
-                font=res.FONTS["Small"],
-                fill=res.COLORS["WHITE"],
-            )
-        panel.draw.text(
-            (0, 12 + 8 * self.cur_loc),
-            ">",
-            font=res.FONTS["Small"],
-            fill=res.COLORS["WHITE"],
-        )
+            panel.draw_text((6, 12 + 8 * i), alltext, "Small", "WHITE")
+        panel.draw_text((0, 12 + 8 * self.cur_loc), ">", "Small", "WHITE")
 
     def draw_end(self, panel):
         panel.clear()
-        panel.draw.text(
-            (8, 20),
-            "SETTINGS SAVED!",
-            font=res.FONTS["Small"],
-            fill=res.COLORS["WHITE"],
-        )
+        panel.draw_text((8, 20), "SETTINGS SAVED!", "Small", "WHITE")
         if self.settings["erase_high_scores"]:
-            panel.draw.text(
-                (8, 28),
-                "HI SCORES ERASED",
-                font=res.FONTS["Small"],
-                fill=res.COLORS["RED"],
-            )
+            panel.draw_text((8, 28), "HI SCORES ERASED", "Small", "RED")
 
     def cleanup(self):
         if self.settings.pop("erase_high_scores"):

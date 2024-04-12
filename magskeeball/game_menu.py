@@ -47,37 +47,15 @@ class GameMenu(GameMode):
         panel.clear()
         title = "{} MODE".format(self.mode_name)
         x = 48 - 3 * len(title)
-        panel.draw.text(
-            (x, 1), title, font=res.FONTS["Medium"], fill=res.COLORS["PURPLE"]
-        )
+        panel.draw_text((x, 1), title, "Medium", "PURPLE")
         for i, line in enumerate(self.intro_text):
-            panel.draw.text(
-                (1, 13 + 8 * i),
-                line,
-                font=res.FONTS["Small"],
-                fill=res.COLORS["YELLOW"],
-            )
+            panel.draw_text((1, 13 + 8 * i), line, "Small", "YELLOW")
         if not self.locked:
-            panel.draw.text(
-                (20, 49),
-                "SELECT MODE",
-                font=res.FONTS["Small"],
-                fill=res.COLORS["WHITE"],
-            )
+            panel.draw_text((20, 49), "SELECT MODE", "Small", "WHITE")
             if self.ticks % (3 * res.FPS) < 1.5 * res.FPS:
-                panel.draw.text(
-                    (10, 56),
-                    "YELLOW = CHANGE",
-                    font=res.FONTS["Small"],
-                    fill=res.COLORS["WHITE"],
-                )
+                panel.draw_text((10, 56), "YELLOW = CHANGE", "Small", "WHITE")
             else:
-                panel.draw.text(
-                    (20, 56),
-                    "RED = START",
-                    font=res.FONTS["Small"],
-                    fill=res.COLORS["WHITE"],
-                )
+                panel.draw_text((20, 56), "RED = START", "Small", "WHITE")
 
     def next_game(self):
         self.game_position = (self.game_position + 1) % len(self.game_modes)
