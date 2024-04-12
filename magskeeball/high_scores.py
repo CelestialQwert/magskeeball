@@ -1,6 +1,5 @@
 from .state import State
 from . import resources as res
-import os
 import time
 import shutil
 import json
