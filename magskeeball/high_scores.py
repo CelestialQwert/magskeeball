@@ -7,12 +7,13 @@ from pathlib import Path
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ._<%"
 
+
 class HighScore(State):
 
     def __init__(self, manager):
         super(HighScore, self).__init__(manager)
         self.high_scores = {}
-        self.high_score_dir = Path('high_scores')
+        self.high_score_dir = Path("high_scores")
 
     def startup(self):
         self.manager.next_state = "GAMEOVER"
@@ -98,7 +99,7 @@ class HighScore(State):
 
         if self.manager.states[self.last_mode].is_speed_game:
             display_time = self.persist["last_score"]
-            panel.draw_time((7, 6), display_time, 'PURPLE')
+            panel.draw_time((7, 6), display_time, "PURPLE")
             panel.draw_text((16, 30), "GREAT TIME!", "Medium", "YELLOW")
         else:
             score_x = 17 if self.score < 10000 else 4
@@ -160,7 +161,7 @@ class HighScore(State):
         with open(game_plays_log, "w") as f:
             f.write(json.dumps(game_log))
         game_plays_log.chmod(0o777)
-        
+
         return game_log
 
     def load_game_log(self):
@@ -178,7 +179,7 @@ class HighScore(State):
 
     def init_high_scores(self, game_mode):
         self.high_score_dir.mkdir(mode=0o777, parents=True, exist_ok=True)
-        
+
         mode_scores_file = self.high_score_dir / f"{game_mode}.txt"
         if mode_scores_file.exists():
             ts = time.strftime("%Y-%m-%d_%H-%M-%S")

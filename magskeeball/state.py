@@ -1,5 +1,6 @@
 from . import resources as res
 
+
 class State:
 
     def __init__(self, manager):

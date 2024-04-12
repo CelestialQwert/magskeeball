@@ -40,7 +40,7 @@ class GameOver(State):
         if self.manager.states[self.persist["active_game_mode"]].is_speed_game:
             display_time = self.persist["last_score"]
 
-            panel.draw_time((7, 6), display_time, 'YELLOW')
+            panel.draw_time((7, 6), display_time, "YELLOW")
 
         else:
             score = self.persist["last_score"]

@@ -87,7 +87,7 @@ class World(GameMode):
             display_time = 0
         else:
             display_time = self.time_elapsed
-        panel.draw_time((7, 6), display_time, 'PURPLE')
+        panel.draw_time((7, 6), display_time, "PURPLE")
 
         panel.draw_text((78, 31), "B", "Medium", "WHITE")
         panel.draw_text((75, 41), f"{self.balls:02d}", "Medium", "WHITE")

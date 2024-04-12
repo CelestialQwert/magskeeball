@@ -89,7 +89,7 @@ class Speedrun(GameMode):
         else:
             display_time = self.time_elapsed
 
-        panel.draw_time((7, 6), display_time, 'PURPLE')
+        panel.draw_time((7, 6), display_time, "PURPLE")
 
         panel.draw_text((57, 31), "BALLS", "Medium", "WHITE")
         panel.draw_text((66, 41), f"{self.balls:02d}", "Medium", "WHITE")

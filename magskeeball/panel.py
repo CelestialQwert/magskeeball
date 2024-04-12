@@ -89,7 +89,7 @@ class Panel:
             colour_tuple = color
         self.draw.text(pos, str(text), font=res.FONTS[font], fill=colour_tuple)
 
-    def draw_time(self, pos=(7, 6), display_time=0, color='WHITE'):
+    def draw_time(self, pos=(7, 6), display_time=0, color="WHITE"):
         posx, posy = pos
         minutes = display_time // (60 * res.FPS)
         seconds = (display_time // res.FPS) % 60
