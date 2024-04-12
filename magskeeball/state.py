@@ -1,6 +1,6 @@
-class State():
+class State:
 
-    def __init__(self,manager):
+    def __init__(self, manager):
         self.manager = manager
         self.settings = self.manager.settings
         self.persist = self.manager.persist
@@ -10,25 +10,21 @@ class State():
     def startup(self):
         pass
 
-    def handle_event(self,event):
+    def handle_event(self, event):
         if event.button == Button.QUIT:
             self.quit = True
 
     def update(self):
         pass
 
-    def draw_panel(self,panel):
+    def draw_panel(self, panel):
         pass
 
     def cleanup(self):
         pass
 
+
 class GameMode(State):
     has_high_scores = False
     is_speed_game = False
-    intro_text = [
-        "I'M A SKEE-BALL",
-        "MODE!",
-        "ALLAN PLEASE",
-        "ADD DETAILS"
-    ]
+    intro_text = ["I'M A SKEE-BALL", "MODE!", "ALLAN PLEASE", "ADD DETAILS"]

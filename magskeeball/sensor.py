@@ -21,7 +21,7 @@ KEYMAP = {
     pygame.K_0: B.RETURN,
     pygame.K_TAB: B.CONFIG,
     pygame.K_RSHIFT: B.SELECT,
-    pygame.K_RETURN: B.START
+    pygame.K_RETURN: B.START,
 }
 
 NUM_BUTTONS = len(Button)
@@ -31,18 +31,20 @@ ARDUINOUP = pygame.USEREVENT + 2
 
 pygame.init()
 
+
 class InputEvent:
     def __init__(self, button, down):
         self.button = button
         self.down = down
         self.up = not down
 
+
 class Sensor:
 
-    def __init__(self, force_keyboard = False):
-        self.arduino_buttons = [False]*NUM_BUTTONS
-        self.keyboard_buttons = [False]*NUM_BUTTONS
-        self.buttons = [0]*NUM_BUTTONS
+    def __init__(self, force_keyboard=False):
+        self.arduino_buttons = [False] * NUM_BUTTONS
+        self.keyboard_buttons = [False] * NUM_BUTTONS
+        self.buttons = [0] * NUM_BUTTONS
 
         self.delay = 0
         self.interval = 0
@@ -50,76 +52,69 @@ class Sensor:
         try:
             self.init_arduino()
             self.arduino = True
-            print('Hello arduino!')
+            print("Hello arduino!")
         except:
             traceback.print_exc()
-            print('Setup of Arduino FAILED')
+            print("Setup of Arduino FAILED")
             self.arduino = False
 
         # keyboard input requires a window to capture key presses
         # so either running on Windows or though SSH
-        # When running on actual Skeeball Pi, it's assumed 
+        # When running on actual Skeeball Pi, it's assumed
         # the Arduino will be present
         # But this can be overridden with force_keyboard
         if (
-            sys.platform.startswith('win') 
-            or ('SSH_CONNECTION' in os.environ) 
+            sys.platform.startswith("win")
+            or ("SSH_CONNECTION" in os.environ)
             or force_keyboard
         ):
             try:
                 self.init_keyboard()
                 self.keyboard = True
-                print('Hello keyboard!')
+                print("Hello keyboard!")
             except:
                 traceback.print_exc()
-                print('Setup of keyboard FAILED')
+                print("Setup of keyboard FAILED")
                 self.keyboard = False
         else:
-            print('Keyboard not set up')
+            print("Keyboard not set up")
             self.keyboard = False
 
-        if not(self.arduino) and not(self.keyboard):
-            raise RuntimeError('No sensors are setup properly!')
+        if not (self.arduino) and not (self.keyboard):
+            raise RuntimeError("No sensors are setup properly!")
 
     def init_arduino(self):
         ports = find_serial_ports()
         if len(ports) > 1:
-            print('Found mroe than one port...')
+            print("Found mroe than one port...")
         port = ports[0]
         print("Using port {}".format(port))
 
-        self.serial = serial.Serial(
-            port=port,
-            baudrate=9600,
-            timeout=.1
-        )
+        self.serial = serial.Serial(port=port, baudrate=9600, timeout=0.1)
 
     def init_keyboard(self):
         self.button_panel = pygame.display.set_mode((480, 320))
-        pygame.display.set_caption(
-            'MAGskeeball - Click to capture keyboard presses'
-        )
+        pygame.display.set_caption("MAGskeeball - Click to capture keyboard presses")
         pygame.display.update()
-
 
     def release_balls(self):
         if self.arduino:
-            self.serial.write(bytes('R', 'ascii'))
+            self.serial.write(bytes("R", "ascii"))
 
     def get_arduino_buttons(self):
-        self.serial.write(bytes('B', 'ascii'))
+        self.serial.write(bytes("B", "ascii"))
         arduino_data = self.serial.read(4)
-        if arduino_data != None and arduino_data != b'':
-            arduino_buttons = int.from_bytes(arduino_data, byteorder='little')
+        if arduino_data != None and arduino_data != b"":
+            arduino_buttons = int.from_bytes(arduino_data, byteorder="little")
             return [arduino_buttons & 2**i for i in range(NUM_BUTTONS)]
         else:
-            return [0]*NUM_BUTTONS
+            return [0] * NUM_BUTTONS
 
     def update_arduino(self):
         new_ard = self.get_arduino_buttons()
         # if max(new_arduino) > 0:
         #     print(new_arduino)
-        for i,(pressed, held) in enumerate(zip(new_ard, self.arduino_buttons)):
+        for i, (pressed, held) in enumerate(zip(new_ard, self.arduino_buttons)):
             if pressed and not held:
                 ev = pygame.event.Event(ARDUINODOWN, button=B(i))
                 pygame.event.post(ev)
@@ -130,63 +125,60 @@ class Sensor:
 
     def get_events(self):
 
-        #create secondary event queue
+        # create secondary event queue
         if self.arduino:
             self.update_arduino()
         events = []
         for event in pygame.event.get():
             if (
-                event.type == pygame.QUIT 
-                or event.type == pygame.KEYDOWN 
+                event.type == pygame.QUIT
+                or event.type == pygame.KEYDOWN
                 and event.key == pygame.K_ESCAPE
             ):
                 pygame.quit()
                 sys.exit()
-            if (
-                event.type in [pygame.KEYDOWN, pygame.KEYUP] 
-                and event.key in KEYMAP
-            ):
-                buttondown = (event.type == pygame.KEYDOWN)
+            if event.type in [pygame.KEYDOWN, pygame.KEYUP] and event.key in KEYMAP:
+                buttondown = event.type == pygame.KEYDOWN
                 button = KEYMAP[event.key]
                 events.append(InputEvent(button, buttondown))
                 self.keyboard_buttons[button.value] = buttondown
             if event.type in [ARDUINODOWN, ARDUINOUP]:
                 buttondown = event.type == ARDUINODOWN
                 events.append(InputEvent(event.button, buttondown))
-                #self.arduino_buttons[event.button] = buttondown
+                # self.arduino_buttons[event.button] = buttondown
 
-        #combine button lists and track hold time
+        # combine button lists and track hold time
         bothbuttons = [
-            1 if any(x) else 0 
-            for x in zip(self.keyboard_buttons, self.arduino_buttons)
+            1 if any(x) else 0 for x in zip(self.keyboard_buttons, self.arduino_buttons)
         ]
         self.buttons = [
-            hold_time + 1 if held else 0 
+            hold_time + 1 if held else 0
             for hold_time, held in zip(self.buttons, bothbuttons)
         ]
 
         if self.delay != 0 and self.interval != 0:
             for i, holdtime in enumerate(self.buttons):
                 if (
-                    holdtime-self.delay >= 0 
-                    and (holdtime-self.delay) % self.interval == 0
+                    holdtime - self.delay >= 0
+                    and (holdtime - self.delay) % self.interval == 0
                 ):
-                    events.append(InputEvent(B(i),True))
+                    events.append(InputEvent(B(i), True))
 
         return events
 
     def set_repeat(self, delay, interval):
         self.delay = delay
         self.interval = interval
-        #reset hold times
+        # reset hold times
         self.buttons = [1 if i else 0 for i in self.buttons]
 
     def get_repeat(self):
         return (self.delay, self.interval)
 
+
 def main():
     clock = pygame.time.Clock()
-    i=0
+    i = 0
     sensor = Sensor()
     while True:
         for event in sensor.get_events():
@@ -194,11 +186,11 @@ def main():
                 print("Button pressed!", event.button)
             if event.up:
                 print("Button released!", event.button)
-        if not(i % 10):
+        if not (i % 10):
             print(sensor.buttons)
         i += 1
         clock.tick(20)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
