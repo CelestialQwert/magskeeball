@@ -17,7 +17,7 @@ from .classic import Classic
 from .target import Target
 from .combo import Combo
 from .timed import Timed
-from .lightning import Lightning
+from .flash import Flash
 from .speedrun import Speedrun
 from .world import World
 from .cricket import Cricket
@@ -49,7 +49,7 @@ class Manager:
                 "TARGET": Target(manager=self),
                 "COMBO": Combo(manager=self),
                 "TIMED": Timed(manager=self),
-                "LIGHTNING": Lightning(manager=self),
+                "FLASH": Flash(manager=self),
                 "SPEEDRUN": Speedrun(manager=self),
                 "WORLD": World(manager=self),
                 "CRICKET": Cricket(manager=self),
@@ -62,7 +62,7 @@ class Manager:
                 "TARGET",
                 "COMBO",
                 "TIMED",
-                "LIGHTNING",
+                "FLASH",
                 "SPEEDRUN",
                 "WORLD",
             ]
