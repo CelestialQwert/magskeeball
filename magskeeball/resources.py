@@ -13,6 +13,8 @@ FONTS_DIR = impres.files(fonts)
 IMGS_DIR = impres.files(imgs)
 SOUNDS_DIR = impres.files(sounds)
 
+
+pygame.mixer.pre_init(buffer=2048)
 pygame.mixer.init()
 
 FONTS = {

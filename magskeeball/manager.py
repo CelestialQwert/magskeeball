@@ -3,9 +3,9 @@ import pygame
 import time
 import json
 
+from . import resources as res
 from . import panel
 from . import sensor
-from . import resources as res
 
 from .attract import Attract
 from .settings import Settings
