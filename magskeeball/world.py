@@ -11,7 +11,8 @@ class World(GameMode):
     intro_text = [
         "AROUND THE WORLD!",
         "HIT EVERY TARGET",
-        "INCLUDING 0!",
+        "INCLUDING 0 IN",
+        "UNDER TWO MINUTES!",
     ]
 
     def startup(self):

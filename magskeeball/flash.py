@@ -98,8 +98,8 @@ class Flash(GameMode):
             p1_fill = res.COLORS["RED"]
             p1_outl = res.COLORS["RED"]
         elif self.flash_counter == 2:
-            p2_fill = res.COLORS["YELLOW"]
-            p2_outl = res.COLORS["YELLOW"]
+            p2_fill = res.COLORS["RED"]
+            p2_outl = res.COLORS["RED"]
         elif self.flash_counter == 1:
             p3_fill = res.COLORS["YELLOW"]
             p3_outl = res.COLORS["YELLOW"]
@@ -115,7 +115,7 @@ class Flash(GameMode):
         panel.draw.ellipse((85, 4, 91, 10), fill=p1_fill, outline=p1_outl)
         panel.draw.ellipse((85, 19, 91, 25), fill=p2_fill, outline=p2_outl)
         panel.draw.ellipse((85, 34, 91, 40), fill=p3_fill, outline=p3_outl)
-        panel.draw.ellipse((84, 48, 93, 58), fill=p4_fill, outline=p4_outl)
+        panel.draw.ellipse((83, 48, 93, 58), fill=p4_fill, outline=p4_outl)
 
         if self.debug:
             for i, num in enumerate(self.ball_scores):
