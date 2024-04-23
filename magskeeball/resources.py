@@ -14,9 +14,6 @@ IMGS_DIR = impres.files(imgs)
 SOUNDS_DIR = impres.files(sounds)
 
 
-# pygame.mixer.pre_init(buffer=2048)
-# pygame.mixer.init()
-
 FONTS = {
     "GameOver": ImageFont.truetype(FONTS_DIR / "GameCube.ttf", 14),
     "MAGFest": ImageFont.truetype(FONTS_DIR / "radio_stars.otf", 15),
@@ -65,6 +62,8 @@ SOUNDS = {
 }
 
 def load_sounds():
+    # pygame.mixer.pre_init(buffer=2048)
+    pygame.mixer.init()
     sounds = {}
     for n1, v1 in SOUNDS.items():
         loaded_sound_group = {}
@@ -73,6 +72,7 @@ def load_sounds():
             print(f'loading sound {n2}')
             loaded_sound_group[n2] = pygame.mixer.Sound(v2)
         sounds[n1] = loaded_sound_group
+    return sounds
 
 FPS = 20
 

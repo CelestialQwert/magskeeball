@@ -39,9 +39,9 @@ class Manager:
         self.settings = {}
         self.persist = {}
 
-        self.sounds = res.load_sounds()
         
         self.panel = panel.Panel()
+        self.sounds = res.load_sounds()
 
 
         if states == None:

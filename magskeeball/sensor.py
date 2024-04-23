@@ -29,8 +29,6 @@ NUM_BUTTONS = len(Button)
 ARDUINODOWN = pygame.USEREVENT + 1
 ARDUINOUP = pygame.USEREVENT + 2
 
-pygame.init()
-
 
 class InputEvent:
     def __init__(self, button, down):
@@ -93,6 +91,7 @@ class Sensor:
         self.serial = serial.Serial(port=port, baudrate=9600, timeout=0.1)
 
     def init_keyboard(self):
+        pygame.display.init()
         self.button_panel = pygame.display.set_mode((480, 320))
         pygame.display.set_caption("MAGskeeball - Click to capture keyboard presses")
         pygame.display.update()

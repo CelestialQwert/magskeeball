@@ -20,7 +20,7 @@ class Panel:
 
         if platform.system() != "Windows":
             self.init_real_panel()
-            self.buffer_canvas = Image.new("RGBA", (192, 32))
+            self.buffer_canvas = Image.new("RGB", (192, 32))
             self.real_panel = True
             self.emulated_panel = False
             print("Hello LED panel!")
@@ -30,12 +30,12 @@ class Panel:
             self.emulated_panel = True
             print("Hello emulated panel!")
 
-        self.canvas = Image.new("RGBA", (96, 64))
+        self.canvas = Image.new("RGB", (96, 64))
         self.draw = ImageDraw.Draw(self.canvas)
         self.paste = self.canvas.paste
 
         self.draw_load_screen()
-        print('drawwwwwwww')
+
 
     def init_real_panel(self):
         from rgbmatrix import RGBMatrix, RGBMatrixOptions
@@ -45,16 +45,9 @@ class Panel:
         self.options.chain_length = 6
         self.options.parallel = 1
         self.options.brightness = 50
-        # self.options.show_refresh_rate = 1
-        self.options.pwm_bits = 11
-        self.gpio_slowdown = 2
-        self.options.pwm_lsb_nanoseconds = 130
-        # self.options.disable_hardware_pulsing = True
         self.options.hardware_mapping = "adafruit-hat-pwm"
-        self.no_drop_privs = True
+        self.options.drop_privileges = False
         self.matrix = RGBMatrix(options=self.options)
-        # print('real panel loaded, waiting 5 seconds to drop root...')
-        # time.sleep(5)
 
     def init_emulated_panel(self, scale):
         self.e_size = tuple([x * scale for x in (96, 64)])
@@ -63,11 +56,12 @@ class Panel:
 
     def update(self):
         if self.real_panel:
+            print('real')
             top = self.canvas.crop((0, 0, 96, 32))
             bottom = self.canvas.crop((0, 32, 96, 64))
             self.buffer_canvas.paste(top, (0, 0))
             self.buffer_canvas.paste(bottom, (96, 0))
-            self.matrix.SetImage(self.buffer_canvas.convert("RGB"))
+            self.matrix.SetImage(self.buffer_canvas, 0, 0)
         if self.emulated_panel:
             data = self.canvas.resize(self.e_size, Image.NEAREST).tobytes()
             mode = self.canvas.mode
@@ -108,5 +102,7 @@ class Panel:
 
     def draw_load_screen(self):
         self.clear()
-        self.draw_text((2, 2), "LOADING...", "Digital16", "WHITE")
+        self.draw.text(
+            (2, 2), 'LOADING...', font=res.FONTS["Medium"], fill=(255, 0, 0)
+        )
         self.update()

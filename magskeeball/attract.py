@@ -22,7 +22,7 @@ class Attract(State):
         self.current_display_ticks = 0
         self.current_display_func, self.current_display_time = self.display_queue[0]
         self.current_display = 0
-        self.attract_song = res.ATTRACT_MUSIC[random.choice(res.ATTRACT_MUSIC_KEYS)]
+        self.attract_song = None
 
     def get_display_queue(self):
         if len(self.persist["hs_game_hist"]) == 2:
@@ -74,7 +74,7 @@ class Attract(State):
         self.current_display_ticks += 1
         if self.ticks % (90 * res.FPS) == res.FPS * 30:
             # play jingle once every 90 seconds if idle, starting 30 seconds in
-            self.attract_song = res.ATTRACT_MUSIC[random.choice(res.ATTRACT_MUSIC_KEYS)]
+            self.attract_song = random.choice([self.sounds['attract'].values()])
             self.attract_song.play()
         if self.current_display_ticks >= (self.current_display_time * res.FPS):
             self.current_display_ticks = 0
