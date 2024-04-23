@@ -28,6 +28,7 @@ from .game_menu import GameMenu
 
 print("init pygame")
 pygame.init()
+pygame.mixer.stop()
 print("done init pygame")
 
 
@@ -37,6 +38,11 @@ class Manager:
 
         self.settings = {}
         self.persist = {}
+
+        self.sounds = res.load_sounds()
+        
+        self.panel = panel.Panel()
+
 
         if states == None:
             self.states = {
@@ -88,7 +94,6 @@ class Manager:
 
         self.done = False
         self.sensor = sensor.Sensor()
-        self.panel = panel.Panel()
         self.clock = pygame.time.Clock()
         self.state = self.states[self.state_name]
 

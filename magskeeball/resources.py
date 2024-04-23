@@ -14,8 +14,8 @@ IMGS_DIR = impres.files(imgs)
 SOUNDS_DIR = impres.files(sounds)
 
 
-pygame.mixer.pre_init(buffer=2048)
-pygame.mixer.init()
+# pygame.mixer.pre_init(buffer=2048)
+# pygame.mixer.init()
 
 FONTS = {
     "GameOver": ImageFont.truetype(FONTS_DIR / "GameCube.ttf", 14),
@@ -31,43 +31,48 @@ FONTS = {
 IMAGES = {"MainLogo": Image.open(IMGS_DIR / "combined-logo.png")}
 
 SOUNDS = {
-    "OVER9000": pygame.mixer.Sound(SOUNDS_DIR / "its_over_9000.ogg"),
-    "PLACE1": pygame.mixer.Sound(SOUNDS_DIR / "place_1.ogg"),
-    "PLACE2": pygame.mixer.Sound(SOUNDS_DIR / "place_2.ogg"),
-    "PLACE3": pygame.mixer.Sound(SOUNDS_DIR / "place_3.ogg"),
-    "PLACE4": pygame.mixer.Sound(SOUNDS_DIR / "place_4.ogg"),
-    "PLACE5": pygame.mixer.Sound(SOUNDS_DIR / "place_5.ogg"),
-    "MISS": pygame.mixer.Sound(SOUNDS_DIR / "mario_death.ogg"),
-    "B100": pygame.mixer.Sound(SOUNDS_DIR / "sonic_ring.ogg"),
-    "B200": pygame.mixer.Sound(SOUNDS_DIR / "mario_coin.ogg"),
-    "B300": pygame.mixer.Sound(SOUNDS_DIR / "pac_man_wakka.ogg"),
-    "B400": pygame.mixer.Sound(SOUNDS_DIR / "mega_man_item_get.ogg"),
-    "B500": pygame.mixer.Sound(SOUNDS_DIR / "colossus_roar.ogg"),
-    "B1000L": pygame.mixer.Sound(SOUNDS_DIR / "colossus_roar.ogg"),
-    "B1000R": pygame.mixer.Sound(SOUNDS_DIR / "colossus_roar.ogg"),
-    "READY": pygame.mixer.Sound(SOUNDS_DIR / "ready.ogg"),
-    "GO": pygame.mixer.Sound(SOUNDS_DIR / "go.ogg"),
+    'general': {
+        "OVER9000": SOUNDS_DIR / "its_over_9000.ogg",
+        "PLACE1": SOUNDS_DIR / "place_1.ogg",
+        "PLACE2": SOUNDS_DIR / "place_2.ogg",
+        "PLACE3": SOUNDS_DIR / "place_3.ogg",
+        "PLACE4": SOUNDS_DIR / "place_4.ogg",
+        "PLACE5": SOUNDS_DIR / "place_5.ogg",
+        "MISS": SOUNDS_DIR / "mario_death.ogg",
+        "B100": SOUNDS_DIR / "sonic_ring.ogg",
+        "B200": SOUNDS_DIR / "mario_coin.ogg",
+        "B300": SOUNDS_DIR / "pac_man_wakka.ogg",
+        "B400": SOUNDS_DIR / "mega_man_item_get.ogg",
+        "B500": SOUNDS_DIR / "colossus_roar.ogg",
+        "B1000L": SOUNDS_DIR / "colossus_roar.ogg",
+        "B1000R": SOUNDS_DIR / "colossus_roar.ogg",
+        "READY": SOUNDS_DIR / "ready.ogg",
+        "GO": SOUNDS_DIR / "go.ogg",
+    },
+    'attract':{
+        "SKEEBALL": SOUNDS_DIR / "skeeball_jingle.ogg",
+    },
+    'start': {
+       "FIRE": SOUNDS_DIR / "great_balls_of_fire.ogg",
+    },
+    'target': {
+        "TARGET_INTRO": SOUNDS_DIR / "break_the_targets.ogg",
+        "TARGET_BG": SOUNDS_DIR / "target_theme.ogg",
+        "COMPLETE": SOUNDS_DIR / "complete.ogg",
+        "TARGET_HIT": SOUNDS_DIR / "target_hit.ogg",
+        "TARGET_MISS": SOUNDS_DIR / "target_miss.ogg",
+    }
 }
 
-ATTRACT_MUSIC = {
-    "SKEEBALL": pygame.mixer.Sound(SOUNDS_DIR / "skeeball_jingle.ogg"),
-}
-
-START_MUSIC = {
-    "FIRE": pygame.mixer.Sound(SOUNDS_DIR / "great_balls_of_fire.ogg"),
-}
-
-TARGET_SFX = {
-    "TARGET_INTRO": pygame.mixer.Sound(SOUNDS_DIR / "break_the_targets.ogg"),
-    "TARGET_BG": pygame.mixer.Sound(SOUNDS_DIR / "target_theme.ogg"),
-    "COMPLETE": pygame.mixer.Sound(SOUNDS_DIR / "complete.ogg"),
-    "TARGET_HIT": pygame.mixer.Sound(SOUNDS_DIR / "target_hit.ogg"),
-    "TARGET_MISS": pygame.mixer.Sound(SOUNDS_DIR / "target_miss.ogg"),
-}
-
-ATTRACT_MUSIC_KEYS = list(ATTRACT_MUSIC.keys())
-START_MUSIC_KEYS = list(START_MUSIC.keys())
-
+def load_sounds():
+    sounds = {}
+    for n1, v1 in SOUNDS.items():
+        loaded_sound_group = {}
+        print(f'loading sound group {n1}')
+        for n2, v2 in v1.items():
+            print(f'loading sound {n2}')
+            loaded_sound_group[n2] = pygame.mixer.Sound(v2)
+        sounds[n1] = loaded_sound_group
 
 FPS = 20
 

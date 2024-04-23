@@ -34,6 +34,9 @@ class Panel:
         self.draw = ImageDraw.Draw(self.canvas)
         self.paste = self.canvas.paste
 
+        self.draw_load_screen()
+        print('drawwwwwwww')
+
     def init_real_panel(self):
         from rgbmatrix import RGBMatrix, RGBMatrixOptions
 
@@ -102,3 +105,8 @@ class Panel:
         self.draw.rectangle([14 + posx, 12 + posy, 17 + posx, 15 + posy], fill=fill_col)
         self.draw.rectangle([14 + posx, 3 + posy, 17 + posx, 6 + posy], fill=fill_col)
         self.draw.rectangle([49 + posx, 15 + posy, 52 + posx, 18 + posy], fill=fill_col)
+
+    def draw_load_screen(self):
+        self.clear()
+        self.draw_text((2, 2), "LOADING...", "Digital16", "WHITE")
+        self.update()
