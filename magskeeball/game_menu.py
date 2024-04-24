@@ -28,11 +28,11 @@ class GameMenu(GameMode):
                 self.locked = True
                 self.lock_time = self.ticks
                 if self.mode_name == "TARGET":
-                    self.start_song = res.TARGET_SFX["TARGET_INTRO"]
+                    self.start_song = self.sounds['target']["TARGET_INTRO"]
                 else:
-                    self.start_song = res.START_MUSIC[
-                        random.choice(res.START_MUSIC_KEYS)
-                    ]
+                    self.start_song = random.choice(
+                        list(self.sounds['start'].values())
+                    )
                 self.start_song.play()
         else:
             if event.button in [res.B.START, res.B.SELECT] and event.down:

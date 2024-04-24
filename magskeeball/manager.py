@@ -1,7 +1,8 @@
-import sys
-import pygame
-import time
 import json
+import pygame
+import sys
+import time
+import traceback
 
 from . import resources as res
 from . import panel
@@ -26,23 +27,40 @@ from .dummy import Dummy
 from .debug import Debug
 from .game_menu import GameMenu
 
-print("init pygame")
-pygame.init()
-pygame.mixer.stop()
-print("done init pygame")
-
 
 class Manager:
 
     def __init__(self, states=None, starting_state=None):
+        self.panel = None
+        try:
+            self.init(states, starting_state)
+        except Exception as e:
+            if self.panel:
+                self.crash(e)
+            else:
+                raise e
+                
+    def init(self, states=None, starting_state=None):
+
+        print("init pygame")
+        pygame.init()
+        print("done init pygame")
 
         self.settings = {}
         self.persist = {}
-
         
         self.panel = panel.Panel()
-        self.sounds = res.load_sounds()
+        self.panel.draw_message_screen('LOADING...')
+        
+        try:
+            self.sensor = sensor.Sensor()
+            self.sensor.set_repeat(0, 0)
+        except RuntimeError:
+            self.panel.draw_message_screen('SENSOR ERROR', color="RED")
+            while True:
+                pass
 
+        self.sounds = res.load_sounds()
 
         if states == None:
             self.states = {
@@ -93,7 +111,6 @@ class Manager:
             self.state_name = "ATTRACT"
 
         self.done = False
-        self.sensor = sensor.Sensor()
         self.clock = pygame.time.Clock()
         self.state = self.states[self.state_name]
 
@@ -119,7 +136,7 @@ class Manager:
             self.settings[key] = value
 
         self.global_ticks = 0
-        self.sensor.set_repeat(0, 0)
+        
 
     def handle_events(self):
         for event in self.sensor.get_events():
@@ -168,19 +185,28 @@ class Manager:
         self.state.startup()
 
     def main_loop(self):
-        self.state.startup()
-        while not self.done:
-            self.global_ticks += 1
-            self.clock.tick(res.FPS)
-            self.handle_events()
-            self.update()
-            self.draw_panel()
-            if self.state.quit:
-                self.done = True
-            elif self.state.done:
-                self.flip_state()
-        self.state.cleanup()
-        pygame.quit()
+        try:
+            self.state.startup()
+            while not self.done:
+                self.global_ticks += 1
+                self.clock.tick(res.FPS)
+                self.handle_events()
+                self.update()
+                self.draw_panel()
+                if self.state.quit:
+                    self.done = True
+                elif self.state.done:
+                    self.flip_state()
+            self.state.cleanup()
+            pygame.quit()
+        except Exception as e:
+            self.crash(e)
+    
+    def crash(self, exc):
+        self.panel.draw_message_screen(exc.__repr__(), color="RED")
+        traceback.print_exception(exc)
+        input('Press enter to exit')
+        sys.exit()
 
 
 def test():

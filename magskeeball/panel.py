@@ -11,9 +11,6 @@ REAL = 0
 EMULATED = 1
 BOTH = 2
 
-pygame.init()
-
-
 class Panel:
 
     def __init__(self, scale=6):
@@ -34,9 +31,6 @@ class Panel:
         self.draw = ImageDraw.Draw(self.canvas)
         self.paste = self.canvas.paste
 
-        self.draw_load_screen()
-
-
     def init_real_panel(self):
         from rgbmatrix import RGBMatrix, RGBMatrixOptions
 
@@ -50,13 +44,13 @@ class Panel:
         self.matrix = RGBMatrix(options=self.options)
 
     def init_emulated_panel(self, scale):
+        pygame.display.init()
         self.e_size = tuple([x * scale for x in (96, 64)])
         self.emu_panel = pygame.display.set_mode(self.e_size)
         pygame.display.set_caption("MAGskeeball (virtual score panel)")
 
     def update(self):
         if self.real_panel:
-            print('real')
             top = self.canvas.crop((0, 0, 96, 32))
             bottom = self.canvas.crop((0, 32, 96, 64))
             self.buffer_canvas.paste(top, (0, 0))
@@ -100,9 +94,7 @@ class Panel:
         self.draw.rectangle([14 + posx, 3 + posy, 17 + posx, 6 + posy], fill=fill_col)
         self.draw.rectangle([49 + posx, 15 + posy, 52 + posx, 18 + posy], fill=fill_col)
 
-    def draw_load_screen(self):
+    def draw_message_screen(self, message, font="Medium", color="WHITE"):
         self.clear()
-        self.draw.text(
-            (2, 2), 'LOADING...', font=res.FONTS["Medium"], fill=(255, 0, 0)
-        )
+        self.draw_text((2, 2), message, font, color)
         self.update()
