@@ -5,7 +5,7 @@ class State:
 
     def __init__(self, manager):
         self.manager = manager
-        self.sounds = self.manager.sounds
+        self.res = self.manager.res
         self.settings = self.manager.settings
         self.persist = self.manager.persist
         self.done = False

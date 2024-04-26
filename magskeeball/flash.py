@@ -1,5 +1,5 @@
 from .state import GameMode
-from . import resources as res
+from . import constants as const
 import time
 
 
@@ -14,7 +14,7 @@ class Flash(GameMode):
 
     flash_duration_seconds = 0.75
 
-    flash_duration = int(flash_duration_seconds * res.FPS)
+    flash_duration = int(flash_duration_seconds * const.FPS)
     flash_period = flash_duration * 4
 
     def startup(self):
@@ -32,24 +32,24 @@ class Flash(GameMode):
         self.score_flash_counter = 0
 
         self.debug = self.settings["debug"]
-        self.timeout = self.settings["timeout"] * res.FPS
+        self.timeout = self.settings["timeout"] * const.FPS
 
         self.persist["active_game_mode"] = "FLASH"
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
         if self.balls == 0:
             return
-        if event.down and event.button in res.POINTS:
-            self.add_score(res.POINTS[event.button])
-            res.SOUNDS[event.button.name].play()
-        if event.down and event.button == res.B.RETURN:
+        if event.down and event.button in const.POINTS:
+            self.add_score(const.POINTS[event.button])
+            const.SOUNDS[event.button.name].play()
+        if event.down and event.button == const.B.RETURN:
             self.returned_balls -= 1
             if self.returned_balls < self.balls:
                 self.add_score(0)
-                res.SOUNDS["MISS"].play()
-        if event.button == res.B.CONFIG:
+                const.SOUNDS["MISS"].play()
+        if event.button == const.B.CONFIG:
             self.balls = 0
             self.returned_balls = 0
 
@@ -75,7 +75,7 @@ class Flash(GameMode):
 
     def draw_panel(self, panel):
         panel.clear()
-        shared_color = res.BALL_COLORS[self.balls]
+        shared_color = const.BALL_COLORS[self.balls]
         panel.draw_text((42, 41), self.balls, "Digital14", shared_color)
         panel.draw_text((21, 47), "BALL", "Small", shared_color)
         panel.draw_text((56, 47), "LEFT", "Small", shared_color)
@@ -91,21 +91,21 @@ class Flash(GameMode):
             panel.draw_text((24, 32), "x2", "Medium", "WHITE")
             panel.draw_text((61, 32), "x2", "Medium", "WHITE")
 
-        p1_fill = p2_fill = p3_fill = p4_fill = res.COLORS["BLACK"]
-        p1_outl = p2_outl = p3_outl = p4_outl = res.COLORS["GRAY"]
+        p1_fill = p2_fill = p3_fill = p4_fill = const.COLORS["BLACK"]
+        p1_outl = p2_outl = p3_outl = p4_outl = const.COLORS["GRAY"]
 
         if self.flash_counter == 3:
-            p1_fill = res.COLORS["RED"]
-            p1_outl = res.COLORS["RED"]
+            p1_fill = const.COLORS["RED"]
+            p1_outl = const.COLORS["RED"]
         elif self.flash_counter == 2:
-            p2_fill = res.COLORS["RED"]
-            p2_outl = res.COLORS["RED"]
+            p2_fill = const.COLORS["RED"]
+            p2_outl = const.COLORS["RED"]
         elif self.flash_counter == 1:
-            p3_fill = res.COLORS["YELLOW"]
-            p3_outl = res.COLORS["YELLOW"]
+            p3_fill = const.COLORS["YELLOW"]
+            p3_outl = const.COLORS["YELLOW"]
         elif self.flash_counter == 0:
-            p4_fill = res.COLORS["WHITE"]
-            p4_outl = res.COLORS["WHITE"]
+            p4_fill = const.COLORS["WHITE"]
+            p4_outl = const.COLORS["WHITE"]
 
         panel.draw.ellipse((4, 4, 10, 10), fill=p1_fill, outline=p1_outl)
         panel.draw.ellipse((4, 19, 10, 25), fill=p2_fill, outline=p2_outl)
@@ -133,9 +133,9 @@ class Flash(GameMode):
     def add_score(self, score):
         if self.flash_counter == 0:
             score *= 2
-            self.score_flash_counter = int(res.FPS * 1.5)
+            self.score_flash_counter = int(const.FPS * 1.5)
         self.score_buffer += score
-        self.ball_scores.append(score)
+        self.ball_scoconst.append(score)
         self.balls -= 1
         self.advance_score = True
         self.ticks_last_ball = self.ticks

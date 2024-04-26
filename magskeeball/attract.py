@@ -1,5 +1,5 @@
 from .state import State
-from . import resources as res
+from . import constants as const
 import random
 
 
@@ -43,7 +43,7 @@ class Attract(State):
         if mode == "LOGO":
 
             def draw_func(panel):
-                panel.paste(res.IMAGES["MainLogo"], (0, 5))
+                panel.paste(self.res.images["MainLogo"], (0, 5))
 
         else:
 
@@ -53,12 +53,12 @@ class Attract(State):
         return draw_func
 
     def handle_event(self, event):
-        if event.button == res.B.START and event.down:
+        if event.button == const.B.START and event.down:
             self.activate_new_mode(self.red_game)
-        elif event.button == res.B.SELECT and event.down:
+        elif event.button == const.B.SELECT and event.down:
             self.activate_new_mode(self.yellow_game)
 
-        elif event.button == res.B.CONFIG and event.down:
+        elif event.button == const.B.CONFIG and event.down:
             self.activate_new_mode("SETTINGS")
 
     def activate_new_mode(self, mode):
@@ -72,11 +72,11 @@ class Attract(State):
     def update(self):
         self.ticks += 1
         self.current_display_ticks += 1
-        if self.ticks % (90 * res.FPS) == res.FPS * 30:
+        if self.ticks % (90 * const.FPS) == const.FPS * 30:
             # play jingle once every 90 seconds if idle, starting 30 seconds in
-            self.attract_song = random.choice(list(self.sounds['attract'].values()))
+            self.attract_song = random.choice(list(self.const.sounds['attract'].values()))
             self.attract_song.play()
-        if self.current_display_ticks >= (self.current_display_time * res.FPS):
+        if self.current_display_ticks >= (self.current_display_time * const.FPS):
             self.current_display_ticks = 0
             self.current_display = (self.current_display + 1) % len(self.display_queue)
             self.current_display_func, self.current_display_time = self.display_queue[
@@ -93,7 +93,7 @@ class Attract(State):
 
         self.current_display_func(panel)
 
-        if self.ticks % (2 * res.FPS) < (1.5 * res.FPS):
+        if self.ticks % (2 * const.FPS) < (1.5 * const.FPS):
             panel.draw_text((15, 54), "PRESS START", "Medium", "WHITE")
 
     def draw_high_scores(self, panel, game):
@@ -106,8 +106,8 @@ class Attract(State):
 
         for i, (name, score) in enumerate(self.high_scores[game]):
             if self.manager.states[game].is_speed_game:
-                s = (score // res.FPS) % 60
-                f = 5 * (score % res.FPS)
+                s = (score // const.FPS) % 60
+                f = 5 * (score % const.FPS)
                 panel.draw_text(
                     (5 + 8 * i, (i + 1) * 9),
                     f"{name} {s:2d}.{f:02d}",

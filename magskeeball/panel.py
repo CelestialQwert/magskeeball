@@ -5,7 +5,8 @@ import pygame
 import platform
 import time
 
-from . import resources as res
+from . import constants as const
+from . import resources
 
 REAL = 0
 EMULATED = 1
@@ -30,6 +31,9 @@ class Panel:
         self.canvas = Image.new("RGB", (96, 64))
         self.draw = ImageDraw.Draw(self.canvas)
         self.paste = self.canvas.paste
+
+        self.res = resources.ResourceManager()
+        self.res.load_fonts()    
 
     def init_real_panel(self):
         from rgbmatrix import RGBMatrix, RGBMatrixOptions
@@ -75,17 +79,17 @@ class Panel:
 
     def draw_text(self, pos, text, font, color):
         if isinstance(color, str):
-            colour_tuple = res.COLORS[color]
+            colour_tuple = const.COLORS[color]
         else:
             colour_tuple = color
-        self.draw.text(pos, str(text), font=res.FONTS[font], fill=colour_tuple)
+        self.draw.text(pos, str(text), font=self.res.fonts[font], fill=colour_tuple)
 
     def draw_time(self, pos=(7, 6), display_time=0, color="WHITE"):
         posx, posy = pos
-        minutes = display_time // (60 * res.FPS)
-        seconds = (display_time // res.FPS) % 60
-        fraction = round(100.0 / res.FPS * (display_time % res.FPS))
-        fill_col = res.COLORS[color]
+        minutes = display_time // (60 * const.FPS)
+        seconds = (display_time // const.FPS) % 60
+        fraction = round(100.0 / const.FPS * (display_time % const.FPS))
+        fill_col = const.COLORS[color]
 
         self.draw_text((posx, posy), f"{minutes:01d}", "Digital14", color)
         self.draw_text((21 + posx, posy), f"{seconds:02d}", "Digital14", color)

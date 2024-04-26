@@ -4,8 +4,9 @@ import sys
 import time
 import traceback
 
-from . import resources as res
+from . import constants as const
 from . import panel
+from . import resources
 from . import sensor
 
 from .attract import Attract
@@ -49,6 +50,8 @@ class Manager:
         self.settings = {}
         self.persist = {}
         
+        self.res = resources.ResourceManager()
+
         self.panel = panel.Panel()
         self.panel.draw_message_screen('LOADING...')
         
@@ -59,8 +62,8 @@ class Manager:
             self.panel.draw_message_screen('SENSOR ERROR', color="RED")
             while True:
                 pass
-
-        self.sounds = res.load_sounds()
+        
+        self.res.load_all()
 
         if states == None:
             self.states = {
@@ -163,9 +166,9 @@ class Manager:
         # clear events to prevent buffering
         # sleep prevents weird bug where an extra
         # buttonup and buttondown event are generated
-        time.sleep(1 / res.FPS)
+        time.sleep(1 / const.FPS)
         self.sensor.get_events()
-        time.sleep(1 / res.FPS)
+        time.sleep(1 / const.FPS)
         # switch to new state
         self.last_state = self.state_name
         self.state_name = self.next_state
@@ -189,7 +192,7 @@ class Manager:
             self.state.startup()
             while not self.done:
                 self.global_ticks += 1
-                self.clock.tick(res.FPS)
+                self.clock.tick(const.FPS)
                 self.handle_events()
                 self.update()
                 self.draw_panel()

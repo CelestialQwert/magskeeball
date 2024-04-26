@@ -1,4 +1,4 @@
-from . import resources as res
+from . import constants as const
 from .findserial import find_serial_ports
 import sys
 import pygame
@@ -7,8 +7,8 @@ import time
 import os
 import traceback
 
-Button = res.Button
-B = res.Button
+Button = const.Button
+B = const.Button
 
 KEYMAP = {
     pygame.K_1: B.B100,

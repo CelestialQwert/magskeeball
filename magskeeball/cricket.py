@@ -2,16 +2,16 @@ import time
 from enum import Enum
 
 from .state import GameMode
-from . import resources as res
+from . import constants as const
 
 COLOR_MATRIX = ["BLUE", "RED"]
 
 SCORING_BUTTONS = {
-    res.B.B100: 0,
-    res.B.B200: 1,
-    res.B.B300: 2,
-    res.B.B400: 3,
-    res.B.B500: 4,
+    const.B.B100: 0,
+    const.B.B200: 1,
+    const.B.B300: 2,
+    const.B.B400: 3,
+    const.B.B500: 4,
 }
 
 
@@ -65,19 +65,19 @@ class Cricket(GameMode):
         self.game_state = CricketState.PLAY
 
         self.debug = self.settings["debug"]
-        self.timeout = self.settings["timeout"] * res.FPS
+        self.timeout = self.settings["timeout"] * const.FPS
 
         self.persist["active_game_mode"] = "CRICKET"
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
-        if event.button == res.B.CONFIG:
+        if event.button == const.B.CONFIG:
             self.game_state = CricketState.GAME_END
             self.ticks_last_ball = self.ticks
 
         if self.game_state == CricketState.GAME_END:
-            if event.button in [res.B.START, res.B.SELECT] and event.down:
+            if event.button in [const.B.START, const.B.SELECT] and event.down:
                 self.done = True
 
         if self.game_state != CricketState.PLAY:
@@ -89,7 +89,7 @@ class Cricket(GameMode):
         if event.down and event.button in SCORING_BUTTONS:
             btn = event.button
             btn_idx = SCORING_BUTTONS[btn]
-            res.SOUNDS[btn.name].play()
+            const.SOUNDS[btn.name].play()
             self.active_player.hits[btn_idx] += 1
             self.balls -= 1
             self.advance_score = True
@@ -98,12 +98,12 @@ class Cricket(GameMode):
                 self.active_player.hits[btn_idx] > 3
                 and self.inactive_player.hits[btn_idx] < 3
             ):
-                points = res.POINTS[btn]
+                points = const.POINTS[btn]
                 self.active_player.score_buffer += points
                 self.active_player.target_buffers[btn_idx] += points
-                self.active_player.ball_scores.append(points)
+                self.active_player.ball_scoconst.append(points)
 
-        if event.down and event.button == res.B.RETURN:
+        if event.down and event.button == const.B.RETURN:
             self.returned_balls -= 1
             if self.returned_balls < self.balls:
                 self.balls = self.returned_balls
@@ -115,7 +115,7 @@ class Cricket(GameMode):
 
         match self.game_state:
             case CricketState.PLAYER_DONE:
-                if self.ticks - self.ticks_last_ball > 2 * res.FPS:
+                if self.ticks - self.ticks_last_ball > 2 * const.FPS:
                     self.game_state = CricketState.PLAYER_CHANGE
                     self.ticks_last_ball = self.ticks
                 if min(self.active_player.hits) >= 3 and (
@@ -126,7 +126,7 @@ class Cricket(GameMode):
                     self.ticks_last_ball = self.ticks
                 return
             case CricketState.PLAYER_CHANGE:
-                if self.ticks - self.ticks_last_ball > 3 * res.FPS:
+                if self.ticks - self.ticks_last_ball > 3 * const.FPS:
                     self.game_state = CricketState.PLAY
                     self.ticks_last_ball = self.ticks
                     self.balls = 3
@@ -137,7 +137,7 @@ class Cricket(GameMode):
                     )
                 return
             case CricketState.GAME_END:
-                if self.ticks - self.ticks_last_ball > 20 * res.FPS:
+                if self.ticks - self.ticks_last_ball > 20 * const.FPS:
                     self.done = True
 
         if self.balls == 0 and not self.advance_score:
@@ -171,13 +171,13 @@ class Cricket(GameMode):
                 posy = 13 + 8 * y
                 if p.hits[4 - y] > 0:
                     pos = (posx, posy, posx + 6, posy + 6)
-                    panel.draw.ellipse(pos, outline=res.COLORS["WHITE"])
+                    panel.draw.ellipse(pos, outline=const.COLORS["WHITE"])
                 if p.hits[4 - y] > 1:
                     pos = (posx + 5, posy + 1, posx + 1, posy + 5)
-                    panel.draw.line(pos, fill=res.COLORS["WHITE"])
+                    panel.draw.line(pos, fill=const.COLORS["WHITE"])
                 if p.hits[4 - y] > 2:
                     pos = (posx + 1, posy + 1, posx + 5, posy + 5)
-                    panel.draw.line(pos, fill=res.COLORS["WHITE"])
+                    panel.draw.line(pos, fill=const.COLORS["WHITE"])
 
                 num = p.target_scores[4 - y] // 10
                 if p.hits[4 - y] > 3:
