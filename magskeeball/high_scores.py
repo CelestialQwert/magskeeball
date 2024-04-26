@@ -1,5 +1,5 @@
 from .state import State
-from . import resources as res
+from . import constants as const
 import time
 import shutil
 import json
@@ -50,17 +50,17 @@ class HighScore(State):
             ):
                 self.new_score = True
                 self.place = place
-                res.SOUNDS[f"PLACE{self.place}"].play()
+                self.res.sounds['misc'][f"PLACE{self.place}"].play()
                 return
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
         if not self.new_score:
             return
-        if event.down and event.button == res.B.SELECT:
+        if event.down and event.button == const.B.SELECT:
             self.cursor = (self.cursor + 1) % len(LETTERS)
-        if event.down and event.button == res.B.START:
+        if event.down and event.button == const.B.START:
             if self.curr_letter == "<":
                 # keep cursor at same location in LETTERS
                 self.name = self.name[:-1]

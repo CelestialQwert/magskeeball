@@ -89,7 +89,7 @@ class Cricket(GameMode):
         if event.down and event.button in SCORING_BUTTONS:
             btn = event.button
             btn_idx = SCORING_BUTTONS[btn]
-            const.SOUNDS[btn.name].play()
+            self.res.sounds['score'][btn.name].play()
             self.active_player.hits[btn_idx] += 1
             self.balls -= 1
             self.advance_score = True
@@ -101,7 +101,7 @@ class Cricket(GameMode):
                 points = const.POINTS[btn]
                 self.active_player.score_buffer += points
                 self.active_player.target_buffers[btn_idx] += points
-                self.active_player.ball_scoconst.append(points)
+                self.active_player.ball_scores.append(points)
 
         if event.down and event.button == const.B.RETURN:
             self.returned_balls -= 1

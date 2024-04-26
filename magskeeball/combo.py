@@ -1,4 +1,4 @@
-from . import resources as res
+from . import constants as const
 from .state import GameMode
 import random
 import colorsys
@@ -30,7 +30,7 @@ class Combo(GameMode):
         self.ticks_last_ball = 0
 
         self.debug = self.settings["debug"]
-        self.timeout = self.settings["timeout"] * res.FPS
+        self.timeout = self.settings["timeout"] * const.FPS
 
         self.persist["active_game_mode"] = "COMBO"
         self.combo = 0
@@ -38,19 +38,19 @@ class Combo(GameMode):
         self.just_scored = False
     
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
         if self.balls == 0:
             return
-        if event.down and event.button in res.POINTS:
-            self.add_score(res.POINTS[event.button])
-            res.SOUNDS[event.button.name].play()
-        if event.down and event.button == res.B.RETURN:
+        if event.down and event.button in const.POINTS:
+            self.add_score(const.POINTS[event.button])
+            self.res.sounds['score'][event.button.name].play()
+        if event.down and event.button == const.B.RETURN:
             self.returned_balls -= 1
             if self.returned_balls < self.balls:
                 self.add_score(0)
-                res.SOUNDS["MISS"].play()
-        if event.button == res.B.CONFIG:
+                self.res.sounds['score']["MISS"].play()
+        if event.button == const.B.CONFIG:
             self.balls = 0
             self.returned_balls = 0
 
@@ -60,7 +60,7 @@ class Combo(GameMode):
                 self.score += 100
                 self.score_buffer -= 100
             if self.score == 9100:
-                res.SOUNDS["OVER9000"].play()
+                self.res.sounds['misc']["OVER9000"].play()
         if self.score_buffer == 0:
             self.advance_score = False
         self.ticks += 1
@@ -69,7 +69,7 @@ class Combo(GameMode):
         if self.balls == 0 and not self.advance_score:
             self.manager.next_state = "HIGHSCORE"
             self.done = True
-        if self.just_scored and (self.ticks - self.ticks_last_ball) >= 2 * res.FPS:
+        if self.just_scored and (self.ticks - self.ticks_last_ball) >= 2 * const.FPS:
             self.just_scored = False
 
     def add_score(self, score):
@@ -90,7 +90,7 @@ class Combo(GameMode):
     def draw_panel(self, panel):
         panel.clear()
         score_x = 17 if self.score < 10000 else 4
-        shared_color = res.BALL_COLORS[self.balls]
+        shared_color = const.BALL_COLORS[self.balls]
         panel.draw_text((score_x, 4), f"{self.score:04d}", "Digital16", "PURPLE")
         panel.draw_text((31, 31), self.balls, "Digital14", shared_color)
         panel.draw_text((5, 31), "BALL", "Medium", shared_color)

@@ -1,5 +1,5 @@
 from .state import State
-from . import resources as res
+from . import constants as const
 import random
 
 
@@ -15,20 +15,22 @@ class Intro(State):
         self.intro_text = self.mode.intro_text
         self.ticks = 0
         if self.mode_name == "TARGET":
-            self.start_song = res.TARGET_SFX["TARGET_INTRO"]
+            self.start_song = self.res.sounds['target']["TARGET_INTRO"]
         else:
-            self.start_song = res.START_MUSIC[random.choice(res.START_MUSIC_KEYS)]
+            self.start_song = random.choice(
+                list(self.res.sounds['start'].values())
+            )
         self.start_song.play()
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
-        if event.button in [res.B.START, res.B.SELECT] and event.down:
+        if event.button in [const.B.START, const.B.SELECT] and event.down:
             self.done = True
 
     def update(self):
         self.ticks += 1
-        if self.ticks > 10 * res.FPS:
+        if self.ticks > 10 * const.FPS:
             self.done = True
 
     def draw_panel(self, panel):
@@ -38,5 +40,5 @@ class Intro(State):
         panel.draw_text((x, 1), title, "Medium", "PURPLE")
         for i, line in enumerate(self.intro_text):
             panel.draw_text((1, 15 + 8 * i), line, "Small", "YELLOW")
-            if self.ticks > (3 * res.FPS):
+            if self.ticks > (3 * const.FPS):
                 panel.draw_text((15, 48), "PRESS START", "Medium", "WHITE")

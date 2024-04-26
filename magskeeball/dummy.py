@@ -1,6 +1,5 @@
 from .state import GameMode
-from . import resources as res
-
+from . import constants as const
 
 class Dummy(GameMode):
 
@@ -10,9 +9,9 @@ class Dummy(GameMode):
     ]
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
-        if event.button == res.B.START and event.down:
+        if event.button == const.B.START and event.down:
             self.manager.next_state = "ATTRACT"
             self.done = True
 

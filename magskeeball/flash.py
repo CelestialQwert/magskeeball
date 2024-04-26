@@ -43,12 +43,12 @@ class Flash(GameMode):
             return
         if event.down and event.button in const.POINTS:
             self.add_score(const.POINTS[event.button])
-            const.SOUNDS[event.button.name].play()
+            self.res.sounds['score'][event.button.name].play()
         if event.down and event.button == const.B.RETURN:
             self.returned_balls -= 1
             if self.returned_balls < self.balls:
                 self.add_score(0)
-                const.SOUNDS["MISS"].play()
+                self.res.sounds['score']["MISS"].play()
         if event.button == const.B.CONFIG:
             self.balls = 0
             self.returned_balls = 0
@@ -125,8 +125,8 @@ class Flash(GameMode):
         
 
     def cleanup(self):
-        print("Pausing for 1 seconds")
-        time.sleep(1)
+        print("Pausing for 2 seconds")
+        time.sleep(2)
         self.persist["last_score"] = self.score
         return
 
@@ -135,7 +135,7 @@ class Flash(GameMode):
             score *= 2
             self.score_flash_counter = int(const.FPS * 1.5)
         self.score_buffer += score
-        self.ball_scoconst.append(score)
+        self.ball_scores.append(score)
         self.balls -= 1
         self.advance_score = True
         self.ticks_last_ball = self.ticks

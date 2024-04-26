@@ -1,5 +1,5 @@
 from .state import State
-from . import resources as res
+from . import constants as const
 import json
 import os
 import time
@@ -45,7 +45,7 @@ class Settings(State):
 
     def handle_event(self, event):
         if self.page == 0:
-            if event.button == res.B.START and event.down:
+            if event.button == const.B.START and event.down:
                 # if self.cur_loc == len(options):
                 #    self.done = True
                 #    return
@@ -60,9 +60,9 @@ class Settings(State):
                     spot = times.index(self.settings[key])
                     spot = (spot + 1) % len(times)
                     self.settings[key] = times[spot]
-            if event.button == res.B.SELECT and event.down:
+            if event.button == const.B.SELECT and event.down:
                 self.cur_loc = (self.cur_loc + 1) % len(options)
-        if event.button == res.B.CONFIG and event.down:
+        if event.button == const.B.CONFIG and event.down:
             self.page += 1
 
     def update(self):

@@ -1,5 +1,4 @@
-from . import resources as res
-
+from . import constants as const
 
 class State:
 
@@ -15,7 +14,7 @@ class State:
         pass
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
 
     def update(self):

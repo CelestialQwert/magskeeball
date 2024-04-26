@@ -1,5 +1,5 @@
 from .state import GameMode
-from . import resources as res
+from . import constants as const
 import random
 import time
 
@@ -26,36 +26,36 @@ class Speedrun(GameMode):
 
         self.debug = self.settings["debug"]
 
-        self.time_elapsed = -self.countdown_time * res.FPS
-        self.timeout = self.settings["timeout"] * res.FPS
+        self.time_elapsed = -self.countdown_time * const.FPS
+        self.timeout = self.settings["timeout"] * const.FPS
         self.time_last_ball = self.time_elapsed
 
         self.persist["active_game_mode"] = "SPEEDRUN"
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
-        if event.button == res.B.CONFIG:
-            self.time_elapsed = 600 * res.FPS - 2
+        if event.button == const.B.CONFIG:
+            self.time_elapsed = 600 * const.FPS - 2
         if self.time_elapsed < 0:
             return
-        if event.down and event.button in res.POINTS:
-            self.add_score(res.POINTS[event.button])
-            self.last_sound = res.SOUNDS[event.button.name].play()
-        if event.down and event.button == res.B.RETURN:
+        if event.down and event.button in const.POINTS:
+            self.add_score(const.POINTS[event.button])
+            self.last_sound = self.res.sounds['score'][event.button.name].play()
+        if event.down and event.button == const.B.RETURN:
             self.returned_balls += 1
             if self.returned_balls > self.balls:
                 self.add_score(0)
-                res.SOUNDS["MISS"].play()
+                self.res.sounds['score']["MISS"].play()
 
     def update(self):
 
-        if self.time_elapsed == -self.countdown_time * res.FPS:
-            res.SOUNDS["READY"].play()
+        if self.time_elapsed == -self.countdown_time * const.FPS:
+            self.res.sounds['misc']["READY"].play()
         elif (
-            self.time_elapsed == -res.FPS // 4
+            self.time_elapsed == -const.FPS // 4
         ):  # the sound clip has a delay so this syncs it up
-            res.SOUNDS["GO"].play()
+            self.res.sounds['misc']["GO"].play()
 
         if self.advance_score:
             if self.score_buffer > 0:
@@ -65,11 +65,11 @@ class Speedrun(GameMode):
             self.advance_score = False
 
         if (self.time_elapsed - self.time_last_ball) > self.timeout:
-            self.time_elapsed = 600 * res.FPS - 2
+            self.time_elapsed = 600 * const.FPS - 2
 
         if self.manager.sensor.buttons[11] > 0:
             if self.manager.sensor.buttons[12] > 0:
-                self.time_elapsed = 600 * res.FPS - 2
+                self.time_elapsed = 600 * const.FPS - 2
 
         if self.score <= 0:
             if not self.advance_score:
@@ -78,7 +78,7 @@ class Speedrun(GameMode):
         else:
             self.time_elapsed += 1
 
-        if self.time_elapsed >= 599 * res.FPS:
+        if self.time_elapsed >= 599 * const.FPS:
             self.manager.next_state = "HIGHSCORE"
             self.done = True
 
@@ -107,11 +107,11 @@ class Speedrun(GameMode):
 
         if self.time_elapsed < 0:
             display_time = self.time_elapsed
-            seconds = (-display_time // res.FPS) % 60 + 1
+            seconds = (-display_time // const.FPS) % 60 + 1
             panel.draw_text(
                 (15, 54), "READY... {:1}".format(seconds), "Medium", "WHITE"
             )
-        elif self.time_elapsed < 2 * res.FPS:
+        elif self.time_elapsed < 2 * const.FPS:
             panel.draw_text((39, 54), "GO!", "Medium", "WHITE")
 
         if self.debug:
@@ -126,7 +126,7 @@ class Speedrun(GameMode):
     def cleanup(self):
         if self.last_sound:
             self.last_sound.stop()
-        res.TARGET_SFX["COMPLETE"].play()
+        self.res.sounds['target']["COMPLETE"].play()
         print("Pausing for 2 seconds")
         time.sleep(2)
         self.persist["last_score"] = self.time_elapsed

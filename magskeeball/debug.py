@@ -1,5 +1,5 @@
 from .state import GameMode
-from . import resources as res
+from . import constants as const
 import random
 import time
 
@@ -24,23 +24,23 @@ class Debug(GameMode):
         self.persist["active_game_mode"] = "DEBUG"
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
-        if event.down and event.button in [res.B.CONFIG, res.B.START, res.B.SELECT]:
+        if event.down and event.button in [const.B.CONFIG, const.B.START, const.B.SELECT]:
             self.done = True
             self.manager.next_state = "GAMEOVER"
-        if event.down and event.button in res.POINTS:
-            self.add_score(res.POINTS[event.button])
-            res.SOUNDS[event.button.name].play()
-        if event.down and event.button == res.B.RETURN:
+        if event.down and event.button in const.POINTS:
+            self.add_score(const.POINTS[event.button])
+            self.res.sounds['score'][event.button.name].play()
+        if event.down and event.button == const.B.RETURN:
             self.returned_balls += 1
             if self.returned_balls > self.balls:
                 self.add_score(0)
-                res.SOUNDS["MISS"].play()
+                self.res.sounds['score']["MISS"].play()
 
     def update(self):
         if self.advance_score and self.score == 9100:
-            res.SOUNDS["OVER9000"].play()
+            self.res.sounds['misc']["OVER9000"].play()
 
         if self.advance_score:
             if self.score_buffer > 0:

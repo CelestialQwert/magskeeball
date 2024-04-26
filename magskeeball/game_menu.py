@@ -1,5 +1,5 @@
 from .state import State, GameMode
-from . import resources as res
+from . import constants as const
 import random
 
 
@@ -17,30 +17,30 @@ class GameMenu(GameMode):
         self.lock_time = 9999999
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
         if not self.locked:
-            if event.button == res.B.SELECT and event.down:
+            if event.button == const.B.SELECT and event.down:
                 self.next_game()
-            if event.button == res.B.START and event.down:
+            if event.button == const.B.START and event.down:
                 self.manager.next_state = self.mode_name
                 self.persist["active_game_mode"] = self.mode_name
                 self.locked = True
                 self.lock_time = self.ticks
                 if self.mode_name == "TARGET":
-                    self.start_song = self.sounds['target']["TARGET_INTRO"]
+                    self.start_song = self.res.sounds['target']["TARGET_INTRO"]
                 else:
                     self.start_song = random.choice(
-                        list(self.sounds['start'].values())
+                        list(self.res.sounds['start'].values())
                     )
                 self.start_song.play()
         else:
-            if event.button in [res.B.START, res.B.SELECT] and event.down:
+            if event.button in [const.B.START, const.B.SELECT] and event.down:
                 self.done = True
 
     def update(self):
         self.ticks += 1
-        if self.ticks > self.lock_time + 3 * res.FPS:
+        if self.ticks > self.lock_time + 3 * const.FPS:
             self.done = True
 
     def draw_panel(self, panel):
@@ -52,7 +52,7 @@ class GameMenu(GameMode):
             panel.draw_text((1, 13 + 8 * i), line, "Small", "YELLOW")
         if not self.locked:
             panel.draw_text((20, 49), "SELECT MODE", "Small", "WHITE")
-            if self.ticks % (3 * res.FPS) < 1.5 * res.FPS:
+            if self.ticks % (3 * const.FPS) < 1.5 * const.FPS:
                 panel.draw_text((10, 56), "YELLOW = CHANGE", "Small", "WHITE")
             else:
                 panel.draw_text((20, 56), "RED = START", "Small", "WHITE")

@@ -1,6 +1,5 @@
 from .state import State
-from . import resources as res
-
+from . import constants as const
 
 class GameOver(State):
 
@@ -11,12 +10,12 @@ class GameOver(State):
         self.yellow_game = self.settings["yellow_game"]
 
     def handle_event(self, event):
-        if event.button == res.B.START and event.down:
+        if event.button == const.B.START and event.down:
             self.activate_new_mode(self.red_game)
-        elif event.button == res.B.SELECT and event.down:
+        elif event.button == const.B.SELECT and event.down:
             self.activate_new_mode(self.yellow_game)
 
-        elif event.button == res.B.CONFIG and event.down:
+        elif event.button == const.B.CONFIG and event.down:
             self.activate_new_mode("ATTRACT")
 
     def activate_new_mode(self, mode):
@@ -29,7 +28,7 @@ class GameOver(State):
 
     def update(self):
         self.ticks += 1
-        if self.ticks >= res.FPS * 5:
+        if self.ticks >= const.FPS * 5:
             self.manager.next_state = "ATTRACT"
             self.done = True
 
@@ -47,5 +46,5 @@ class GameOver(State):
             score_x = 17 if score < 10000 else 4
             panel.draw_text((score_x, 4), f"{score:04d}", "Digital16", "YELLOW")
 
-        if self.ticks % (2 * res.FPS) < (1.5 * res.FPS):
+        if self.ticks % (2 * const.FPS) < (1.5 * const.FPS):
             panel.draw_text((15, 54), "PRESS START", "Medium", "WHITE")

@@ -1,5 +1,5 @@
 from .state import GameMode
-from . import resources as res
+from . import constants as const
 import time
 
 
@@ -24,24 +24,24 @@ class Classic(GameMode):
         self.ticks_last_ball = 0
 
         self.debug = self.settings["debug"]
-        self.timeout = self.settings["timeout"] * res.FPS
+        self.timeout = self.settings["timeout"] * const.FPS
 
         self.persist["active_game_mode"] = "CLASSIC"
 
     def handle_event(self, event):
-        if event.button == res.B.QUIT:
+        if event.button == const.B.QUIT:
             self.quit = True
         if self.balls == 0:
             return
-        if event.down and event.button in res.POINTS:
-            self.add_score(res.POINTS[event.button])
-            self.sounds['general'][event.button.name].play()
-        if event.down and event.button == res.B.RETURN:
+        if event.down and event.button in const.POINTS:
+            self.add_score(const.POINTS[event.button])
+            self.res.sounds['score'][event.button.name].play()
+        if event.down and event.button == const.B.RETURN:
             self.returned_balls -= 1
             if self.returned_balls < self.balls:
                 self.add_score(0)
-                self.sounds['general']["MISS"].play()
-        if event.button == res.B.CONFIG:
+                self.res.sounds['score']["MISS"].play()
+        if event.button == const.B.CONFIG:
             self.balls = 0
             self.returned_balls = 0
 
@@ -61,7 +61,7 @@ class Classic(GameMode):
 
     def draw_panel(self, panel):
         panel.clear()
-        shared_color = res.BALL_COLORS[self.balls]
+        shared_color = const.BALL_COLORS[self.balls]
         panel.draw_text((42, 39), self.balls, "Digital14", shared_color)
         panel.draw_text((17, 4), f"{self.score:04d}", "Digital16", "PURPLE")
         panel.draw_text((16, 44), "BALL", "Medium", shared_color)
