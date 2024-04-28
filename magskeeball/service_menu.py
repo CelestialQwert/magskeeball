@@ -35,13 +35,6 @@ class ServiceMenu(State):
         else:
             self.draw_stats(panel)
 
-    def draw_stats(self, panel):
-        panel.clear()
-        panel.draw_text((23, 1), "GAME STATS", "Small", "WHITE")
-        for i, key in enumerate(self.manager.game_modes):
-            alltext = f"{key:9}{self.manager.game_log[key]:4d}"
-            panel.draw_text((15, 12 + 8 * i), alltext, "Small", "WHITE")
-
     def draw_settings(self, panel):
         panel.clear()
         panel.draw_text((8, 1), "SKEE-BALL CONFIG", "Small", "WHITE")
@@ -54,14 +47,22 @@ class ServiceMenu(State):
                     val = "NO"
                 case _:
                     val = self.settings[setting]
-            panel.draw_text((6, 12 + 8 * i), f"{lbl}: {val}", "Small", "WHITE")
-        panel.draw_text((0, 12 + 8 * self.cur_loc), ">", "Small", "WHITE")
+            panel.draw_text((6, 12 + 7 * i), f"{lbl}: {val}", "Tiny", "WHITE")
+        panel.draw_text((1, 12 + 7 * self.cur_loc), ">", "Tiny", "WHITE")
+    
+    def draw_stats(self, panel):
+        panel.clear()
+        panel.draw_text((23, 1), "GAME STATS", "Small", "WHITE")
+        for i, key in enumerate(self.manager.game_modes):
+            alltext = f"{key:8}{self.manager.game_log[key]:4d}"
+            colour = "GREEN" if i % 2 else "BLUE"
+            panel.draw_text((18, 10 + 7 * i), alltext, "Small", colour)
 
     def draw_end(self, panel):
         panel.clear()
-        panel.draw_text((8, 20), "SETTINGS SAVED!", "Small", "WHITE")
+        panel.draw_text((2, 2), "SETTINGS SAVED!", "Medium", "WHITE")
         if self.settings["erase_high_scores"]:
-            panel.draw_text((8, 28), "HI SCORES ERASED", "Small", "RED")
+            panel.draw_text((2, 10), "HI SCORES ERASED", "Medium", "RED")
 
     def cleanup(self):
         if self.settings["erase_high_scores"]:
