@@ -92,7 +92,8 @@ class Sensor:
 
     def init_keyboard(self):
         pygame.display.init()
-        self.button_panel = pygame.display.set_mode((480, 320))
+        if not pygame.display.get_surface():
+            pygame.display.set_mode((480, 320))
         pygame.display.set_caption("MAGskeeball - Click to capture keyboard presses")
         pygame.display.update()
 
