@@ -8,13 +8,14 @@ from . import constants as const
 from . import panel
 from . import resources
 from . import sensor
+from . import settings_manager
 
 from .attract import Attract
-from .settings import Settings
 from .intro import Intro
 from .high_scores import HighScore
 from .gameover import GameOver
 
+from .settings import Settings
 from .classic import Classic
 from .target import Target
 from .combo import Combo
@@ -46,9 +47,6 @@ class Manager:
         print("init pygame")
         pygame.init()
         print("done init pygame")
-
-        self.settings = {}
-        self.persist = {}
         
         self.res = resources.ResourceManager()
 
@@ -62,6 +60,11 @@ class Manager:
             self.panel.draw_message_screen('SENSOR ERROR', color="RED")
             while True:
                 pass
+        
+        self.settings = settings_manager.SettingsManager()
+        self.settings.load_settings()
+
+        self.persist = {}
         
         self.res.load_all()
 
@@ -109,6 +112,7 @@ class Manager:
             self.states = {}
             for state in states:
                 self.states[state] = states[state](manager=self)
+
         self.state_name = starting_state
         if self.state_name is None:
             self.state_name = "ATTRACT"
@@ -116,12 +120,6 @@ class Manager:
         self.done = False
         self.clock = pygame.time.Clock()
         self.state = self.states[self.state_name]
-
-        self.settings["red_game"] = "CLASSIC"
-        self.settings["yellow_game"] = "DUMMY"
-        self.settings["timeout"] = 60
-        self.settings["save_high_scores"] = True
-        self.settings["debug"] = False
 
         self.persist["hs_game_hist"] = ["CLASSIC"]
         self.persist["active_game_mode"] = "DUMMY"
@@ -133,11 +131,7 @@ class Manager:
         print(self.game_log)
 
         self.high_scores = self.states["HIGHSCORE"].load_all_high_scores()
-        # lol mutable
-        temp_settings = self.states["SETTINGS"].load_settings()
-        for key, value in temp_settings.items():
-            self.settings[key] = value
-
+        
         self.global_ticks = 0
         
 
