@@ -14,8 +14,8 @@ from .attract import Attract
 from .intro import Intro
 from .high_scores import HighScore
 from .gameover import GameOver
+from .service_menu import ServiceMenu
 
-from .settings import Settings
 from .classic import Classic
 from .target import Target
 from .combo import Combo
@@ -29,20 +29,56 @@ from .dummy import Dummy
 from .debug import Debug
 from .game_menu import GameMenu
 
+STATE_CLASSES = {
+    "ATTRACT": Attract,
+    "SERVICEMENU": ServiceMenu,
+    "INTRO": Intro,
+    "HIGHSCORE": HighScore,
+    "GAMEOVER": GameOver,
+    "CLASSIC": Classic,
+    "TARGET": Target,
+    "COMBO": Combo,
+    "TIMED": Timed,
+    "FLASH": Flash,
+    "SPEEDRUN": Speedrun,
+    "WORLD": World,
+    "CRICKET": Cricket,
+    "DUMMY": Dummy,
+    "DEBUG": Debug,
+    "GAMEMENU": GameMenu,
+}
+
+GAME_MODES = [
+    "CLASSIC",
+    "TARGET",
+    "COMBO",
+    "TIMED",
+    "FLASH",
+    "SPEEDRUN",
+    "WORLD",
+]
+
+SELECTABLE_MODES = GAME_MODES + [
+    "CRICKET",
+    "DUMMY",
+    "DEBUG",
+    "GAMEMENU",
+]
+
 
 class Manager:
 
-    def __init__(self, states=None, starting_state=None):
+    def __init__(self, state_classes=STATE_CLASSES, starting_state="ATTRACT"):
         self.panel = None
         try:
-            self.init(states, starting_state)
+            self.init(state_classes, starting_state)
         except Exception as e:
             if self.panel:
                 self.crash(e)
             else:
                 raise e
                 
-    def init(self, states=None, starting_state=None):
+    def init(self, state_classes=None, starting_state=None):
 
         print("init pygame")
         pygame.init()
@@ -61,61 +97,23 @@ class Manager:
             while True:
                 pass
         
-        self.settings = settings_manager.SettingsManager()
+        self.settings = settings_manager.SettingsManager(SELECTABLE_MODES)
         self.settings.load_settings()
-
         self.persist = {}
         
         self.res.load_all()
 
-        if states == None:
-            self.states = {
-                "ATTRACT": Attract(manager=self),
-                "SETTINGS": Settings(manager=self),
-                "INTRO": Intro(manager=self),
-                "HIGHSCORE": HighScore(manager=self),
-                "GAMEOVER": GameOver(manager=self),
-                "CLASSIC": Classic(manager=self),
-                "TARGET": Target(manager=self),
-                "COMBO": Combo(manager=self),
-                "TIMED": Timed(manager=self),
-                "FLASH": Flash(manager=self),
-                "SPEEDRUN": Speedrun(manager=self),
-                "WORLD": World(manager=self),
-                "CRICKET": Cricket(manager=self),
-                "DUMMY": Dummy(manager=self),
-                "DEBUG": Debug(manager=self),
-                "GAMEMENU": GameMenu(manager=self),
-            }
-            self.game_modes = [
-                "CLASSIC",
-                "TARGET",
-                "COMBO",
-                "TIMED",
-                "FLASH",
-                "SPEEDRUN",
-                "WORLD",
-            ]
-            self.selectable_modes = self.game_modes + [
-                "CRICKET",
-                "DUMMY",
-                "DEBUG",
-                "GAMEMENU",
-            ]
+        self.states = {}
+        for name, StateClass in state_classes.items():
+            self.states[name] = StateClass(manager=self)
+        self.game_modes = GAME_MODES
 
-            self.has_high_scores = {}
-            for game_mode in self.selectable_modes:
-                self.has_high_scores[game_mode] = self.states[game_mode].has_high_scores
-            self.has_high_scores["SETTINGS"] = False
-
-        else:
-            self.states = {}
-            for state in states:
-                self.states[state] = states[state](manager=self)
+        self.has_high_scores = {}
+        for game_mode in SELECTABLE_MODES:
+            self.has_high_scores[game_mode] = self.states[game_mode].has_high_scores
+        self.has_high_scores["SERVICEMENU"] = False
 
         self.state_name = starting_state
-        if self.state_name is None:
-            self.state_name = "ATTRACT"
 
         self.done = False
         self.clock = pygame.time.Clock()
@@ -133,7 +131,6 @@ class Manager:
         self.high_scores = self.states["HIGHSCORE"].load_all_high_scores()
         
         self.global_ticks = 0
-        
 
     def handle_events(self):
         for event in self.sensor.get_events():

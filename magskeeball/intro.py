@@ -40,5 +40,4 @@ class Intro(State):
         panel.draw_text((x, 1), title, "Medium", "PURPLE")
         for i, line in enumerate(self.intro_text):
             panel.draw_text((1, 15 + 8 * i), line, "Small", "YELLOW")
-            if self.ticks > (3 * const.FPS):
-                panel.draw_text((15, 48), "PRESS START", "Medium", "WHITE")
+        panel.draw_text((15, 48), "PRESS START", "Medium", "WHITE")

@@ -59,7 +59,7 @@ class Attract(State):
             self.activate_new_mode(self.yellow_game)
 
         elif event.button == const.B.CONFIG and event.down:
-            self.activate_new_mode("SETTINGS")
+            self.activate_new_mode("SERVICEMENU")
 
     def activate_new_mode(self, mode):
         if mode in self.game_modes:

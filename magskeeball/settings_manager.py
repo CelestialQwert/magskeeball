@@ -53,11 +53,6 @@ class SettingsManager():
         if key not in self.settings_info:
             raise ValueError(f'Key {key} is not in settings!')
         return self.settings_info[key]['current_value']
-    
-    def get_label(self, key):
-        if key not in self.settings_info:
-            raise ValueError(f'Key {key} is not in settings!')
-        return self.settings_info[key]['label']
 
     def __setitem__(self, key, value):
         if key not in self.settings_info:
@@ -66,6 +61,14 @@ class SettingsManager():
             raise ValueError(f'Value {value} is invalid for {key}!')
         self.settings_info[key]['current_value'] = value
         return key
+    
+    def get_label(self, key):
+        if key not in self.settings_info:
+            raise ValueError(f'Key {key} is not in settings!')
+        return self.settings_info[key]['label']
+    
+    def get_all_keys(self):
+        return self.settings_info.keys()
     
     def set_next_option(self, key):
         if key not in self.settings_info:
