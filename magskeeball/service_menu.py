@@ -4,6 +4,8 @@ import json
 import os
 import time
 
+LINES_PER_PAGE = 6
+
 class ServiceMenu(State):
 
     def startup(self):
@@ -11,26 +13,26 @@ class ServiceMenu(State):
         self.manager.next_state = "ATTRACT"
         self.persist["active_game_mode"] = "SERVICEMENU"
         self.settings["erase_high_scores"] = False
-        self.page = 0
+        self.sub_state = 0
         self.setting_names = list(self.settings.get_all_keys())
 
     def handle_event(self, event):
-        if self.page == 0:
+        if self.sub_state == 0:
             if event.button == const.B.START and event.down:
                 self.settings.set_next_option(self.setting_names[self.cur_loc])
             if event.button == const.B.SELECT and event.down:
                 self.cur_loc = (self.cur_loc + 1) % len(self.setting_names)
         if event.button == const.B.CONFIG and event.down:
-            self.page += 1
+            self.sub_state += 1
 
     def update(self):
-        if self.page > 1:
+        if self.sub_state > 1:
             self.done = True
 
     def draw_panel(self, panel):
         if self.done:
             self.draw_end(panel)
-        elif self.page == 0:
+        elif self.sub_state == 0:
             self.draw_settings(panel)
         else:
             self.draw_stats(panel)
@@ -38,7 +40,9 @@ class ServiceMenu(State):
     def draw_settings(self, panel):
         panel.clear()
         panel.draw_text((8, 1), "SKEE-BALL CONFIG", "Small", "WHITE")
-        for i, setting in enumerate(self.setting_names):
+        page = self.cur_loc // 6
+        max_pages = (LINES_PER_PAGE // 6) + 1
+        for i, setting in enumerate(self.setting_names[page*6:(page+1)*6]):
             lbl = self.settings.get_label(setting)
             match self.settings[setting]:
                 case True:
@@ -46,10 +50,11 @@ class ServiceMenu(State):
                 case False:
                     val = "NO"
                 case _:
-                    val = self.settings[setting]
+                    val = str(self.settings[setting]).upper()
             panel.draw_text((6, 12 + 7 * i), f"{lbl}: {val}", "Tiny", "WHITE")
-        panel.draw_text((1, 12 + 7 * self.cur_loc), ">", "Tiny", "WHITE")
-    
+        panel.draw_text((1, 12 + 7 * (self.cur_loc % 6)), ">", "Tiny", "WHITE")
+        panel.draw_text((2, 56), f"PAGE {page+1}/{max_pages}", "Tiny", "WHITE")
+        
     def draw_stats(self, panel):
         panel.clear()
         panel.draw_text((23, 1), "GAME STATS", "Small", "WHITE")
