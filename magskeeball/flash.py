@@ -12,11 +12,6 @@ class Flash(GameMode):
         "GET DOUBLE POINTS!",
     ]
 
-    flash_duration_seconds = 0.75
-
-    flash_duration = int(flash_duration_seconds * const.FPS)
-    flash_period = flash_duration * 4
-
     def startup(self):
         self.score = 0
         self.score_buffer = 0
@@ -30,6 +25,9 @@ class Flash(GameMode):
 
         self.flash_counter = 0
         self.score_flash_counter = 0
+
+        self.flash_duration = int(const.FPS / self.settings['flash_speed'])
+        self.flash_period = self.flash_duration * 4
 
         self.debug = self.settings["debug"]
         self.timeout = self.settings["timeout"] * const.FPS

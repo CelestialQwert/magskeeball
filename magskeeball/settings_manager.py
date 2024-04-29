@@ -17,15 +17,25 @@ SETTINGS_INFO = {
         "options": ["show", "hide", "disable"],
         "default_value": "hide",
     },
+    "flash_speed": {
+        "label": "FLASH SPEED",
+        "options": [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5],
+        "default_value": 2,
+    },
+    "sfx": {
+        "label": "SFX",
+        "options": ["model_h", "model_s", "stuff"],
+        "default_value": "model_s",
+    },
+    "colossus": {
+        "label": "COLOSSUS",
+        "options": [True, False],
+        "default_value": True,
+    },
     "timeout": {
         "label": "TIMEOUT",
         "options": [30, 45, 60, 75, 90, 9999],
         "default_value": 60,
-    },
-    "flash_speed": {
-        "label": "FLASH SPEED",
-        "options": [0.5, 0.75, 1, 1.5, 2, 3, 4, 5],
-        "default_value": 2,
     },
     "save_high_scores": {
         "label": "HI SCORES",
@@ -44,11 +54,6 @@ SETTINGS_INFO = {
     },
     "dummy1": {
         "label": "DUMMY1",
-        "options": [True, False],
-        "default_value": False,
-    },
-    "dummy2": {
-        "label": "DUMMY2",
         "options": [True, False],
         "default_value": False,
     },

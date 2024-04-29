@@ -49,8 +49,10 @@ class ServiceMenu(State):
                     val = "YES"
                 case False:
                     val = "NO"
+                case 9999:
+                    val = "NONE"
                 case _:
-                    val = str(self.settings[setting]).upper()
+                    val = str(self.settings[setting]).upper().replace('_', ' ')
             panel.draw_text((6, 12 + 7 * i), f"{lbl}: {val}", "Tiny", "WHITE")
         panel.draw_text((1, 12 + 7 * (self.cur_loc % 6)), ">", "Tiny", "WHITE")
         panel.draw_text((2, 56), f"PAGE {page+1}/{max_pages}", "Tiny", "WHITE")
