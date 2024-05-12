@@ -5,7 +5,7 @@ class GameOver(State):
 
     def startup(self):
         self.ticks = 0
-        self.game_modes = self.manager.game_modes
+        self.all_game_modes = self.manager.all_game_modes
         self.red_game = self.settings["red_game"]
         self.yellow_game = self.settings["yellow_game"]
 
@@ -19,7 +19,7 @@ class GameOver(State):
             self.activate_new_mode("ATTRACT")
 
     def activate_new_mode(self, mode):
-        if mode in self.game_modes:
+        if mode in self.all_game_modes:
             self.manager.next_state = "INTRO"
             self.persist["active_game_mode"] = mode
         else:

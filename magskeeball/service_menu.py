@@ -60,7 +60,7 @@ class ServiceMenu(State):
     def draw_stats(self, panel):
         panel.clear()
         panel.draw_text((23, 1), "GAME STATS", "Small", "WHITE")
-        for i, key in enumerate(self.manager.game_modes):
+        for i, key in enumerate(self.manager.all_game_modes):
             alltext = f"{key:8}{self.manager.game_log[key]:4d}"
             colour = "GREEN" if i % 2 else "BLUE"
             panel.draw_text((18, 10 + 7 * i), alltext, "Small", colour)

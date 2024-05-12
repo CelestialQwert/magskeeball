@@ -13,7 +13,7 @@ class Attract(State):
         self.red_game = self.settings["red_game"]
         self.yellow_game = self.settings["yellow_game"]
         self.high_scores = self.manager.high_scores
-        self.game_modes = self.manager.game_modes
+        self.all_game_modes = self.manager.all_game_modes
         self.has_high_scores = self.manager.has_high_scores
         if not self.settings["save_high_scores"]:
             self.display_queue = [self.draw_factory("LOGO")]
@@ -63,7 +63,7 @@ class Attract(State):
             self.activate_new_mode("SERVICEMENU")
 
     def activate_new_mode(self, mode):
-        if mode in self.game_modes:
+        if mode in self.all_game_modes:
             self.manager.next_state = "INTRO"
             self.persist["active_game_mode"] = mode
         else:

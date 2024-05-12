@@ -62,13 +62,13 @@ SETTINGS_INFO = {
 
 class SettingsManager:
 
-    def __init__(self, game_modes=None):
+    def __init__(self, sel_modes=None):
         self.settings_info = SETTINGS_INFO.copy()
-        if game_modes:
-            self.settings_info["red_game"]["options"] = game_modes
-            self.settings_info["red_game"]["default_value"] = game_modes[0]
-            self.settings_info["yellow_game"]["options"] = game_modes
-            self.settings_info["yellow_game"]["default_value"] = game_modes[0]
+        if sel_modes:
+            self.settings_info["red_game"]["options"] = sel_modes
+            self.settings_info["red_game"]["default_value"] = sel_modes[0]
+            self.settings_info["yellow_game"]["options"] = sel_modes
+            self.settings_info["yellow_game"]["default_value"] = sel_modes[0]
         self.init_settings()
 
     def init_settings(self):

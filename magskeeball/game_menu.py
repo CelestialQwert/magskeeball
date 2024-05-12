@@ -6,15 +6,18 @@ import random
 class GameMenu(GameMode):
 
     def startup(self):
-        self.game_modes = self.manager.game_modes
-        for bangame in ["DUMMY", "GAMEMENU"]:
-            if bangame in self.game_modes:
-                self.game_modes.remove(bangame)
-        self.game_position = len(self.game_modes) - 1
-        self.next_game()
+        self.refresh_game_modes()
         self.ticks = 0
         self.locked = False
         self.lock_time = 9999999
+        self.showing_hidden_games = False
+    
+    def refresh_game_modes(self, modes=None):
+        if not modes:
+            modes = self.manager.game_modes
+        self.game_modes = modes
+        self.game_position = len(self.game_modes) - 1
+        self.next_game()
 
     def handle_event(self, event):
         if event.button == const.B.QUIT:

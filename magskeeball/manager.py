@@ -58,13 +58,17 @@ GAME_MODES = [
     "WORLD",
 ]
 
-SELECTABLE_MODES = GAME_MODES + [
-    "CRICKET",
+HIDDEN_MODES = [
+    "CRICKET"
+]
+
+EXTRA_MODES = [
     "DUMMY",
     "DEBUG",
     "GAMEMENU",
 ]
 
+SELECTABLE_MODES = GAME_MODES + HIDDEN_MODES + EXTRA_MODES
 
 class Manager:
 
@@ -108,6 +112,7 @@ class Manager:
         for name, StateClass in state_classes.items():
             self.states[name] = StateClass(manager=self)
         self.game_modes = GAME_MODES
+        self.all_game_modes = GAME_MODES + HIDDEN_MODES
 
         self.has_high_scores = {}
         for game_mode in SELECTABLE_MODES:
@@ -164,7 +169,7 @@ class Manager:
         # switch to new state
         self.last_state = self.state_name
         self.state_name = self.next_state
-        if self.state_name in self.game_modes:
+        if self.state_name in self.all_game_modes:
             try:
                 temp_plays = self.game_log[self.state_name]
             except:

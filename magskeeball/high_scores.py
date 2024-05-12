@@ -134,13 +134,13 @@ class HighScore(State):
             self.save_high_scores(self.last_mode, new_high_scores)
 
     def load_all_high_scores(self):
-        for game_mode in self.manager.game_modes:
+        for game_mode in self.manager.all_game_modes:
             if self.manager.states[game_mode].has_high_scores:
                 self.high_scores[game_mode] = self.load_high_scores(game_mode)
         return self.high_scores
 
     def init_all_high_scores(self):
-        for game_mode in self.manager.game_modes:
+        for game_mode in self.manager.all_game_modes:
             if self.manager.states[game_mode].has_high_scores:
                 self.high_scores[game_mode] = self.init_high_scores(game_mode)
         return self.high_scores
@@ -155,7 +155,7 @@ class HighScore(State):
             shutil.move(game_plays_log, dest)
 
         game_log = {}
-        for game in self.manager.game_modes:
+        for game in self.manager.all_game_modes:
             game_log[game] = 0
 
         with open(game_plays_log, "w") as f:
