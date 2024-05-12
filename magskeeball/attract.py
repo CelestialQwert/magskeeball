@@ -23,6 +23,7 @@ class Attract(State):
         self.current_display_func, self.current_display_time = self.display_queue[0]
         self.current_display = 0
         self.attract_song = None
+        self.attract_song_name = None
 
     def get_display_queue(self):
         if len(self.persist["hs_game_hist"]) == 2:
@@ -73,10 +74,14 @@ class Attract(State):
         self.ticks += 1
         self.current_display_ticks += 1
         if self.ticks % (90 * const.FPS) == const.FPS * 30:
-            # play jingle once every 90 seconds if idle, starting 30 seconds in
-            self.attract_song = random.choice(list(self.res.sounds['attract'].values()))
-            self.attract_song.play()
-            print('playing attract song')
+            if self.settings['attract_music']:
+                # play jingle once every 90 seconds if idle, starting 30 seconds in
+                songs = list(self.res.sounds['attract'].items())
+                self.attract_song_name, self.attract_song = random.choice(songs)
+                self.attract_song.play()
+                print(f'playing attract song {self.attract_song_name}')
+            else:
+                print('Not playing a song right now')
         if self.current_display_ticks >= (self.current_display_time * const.FPS):
             self.current_display_ticks = 0
             self.current_display = (self.current_display + 1) % len(self.display_queue)

@@ -32,6 +32,11 @@ SETTINGS_INFO = {
         "options": [True, False],
         "default_value": True,
     },
+    "attract_music": {
+        "label": "ATTRACT MUSIC",
+        "options": [True, False],
+        "default_value": True,
+    },
     "timeout": {
         "label": "TIMEOUT",
         "options": [30, 45, 60, 75, 90, 9999],
@@ -51,12 +56,7 @@ SETTINGS_INFO = {
         "label": "ERASE SCORES",
         "options": [True, False],
         "default_value": False,
-    },
-    "dummy1": {
-        "label": "DUMMY1",
-        "options": [True, False],
-        "default_value": False,
-    },
+    }
 }
 
 
