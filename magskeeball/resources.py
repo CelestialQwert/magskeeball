@@ -10,12 +10,21 @@ FONTS_DIR = impres.files(fonts)
 IMGS_DIR = impres.files(imgs)
 SOUNDS_DIR = impres.files(sounds)
 
+def dict_update(d, u):
+    for k, v in u.items():
+        if isinstance(v, dict):
+            d[k] = dict_update(d.get(k, {}), v)
+        else:
+            d[k] = v
+    return d  
+
 class ResourceManager:
 
     __shared_state = {
-        'sounds': {},
-        'fonts': {},
-        'images': {},
+        "sound_bank": {},
+        "sounds": {},
+        "fonts": {},
+        "images": {},
     }
 
     def __init__(self):
@@ -24,20 +33,31 @@ class ResourceManager:
     def load_all(self):
         self.load_sounds()
         self.load_images()
-
+    
     def load_sounds(self):
-        pygame.mixer.init()
-        for n1, v1 in SOUNDS.items():
-            loaded_sound_group = {}
-            print(f'loading sound group {n1}')
-            for n2, v2 in v1.items():
-                print(f'loading sound {n2}')
-                loaded_sound_group[n2] = pygame.mixer.Sound(v2)
-            self.sounds[n1] = loaded_sound_group
+        with impres.as_file(SOUNDS_DIR) as sounds_dir:
+            self.load_sounds_in_dir(sounds_dir, sounds_dir)
+    
+    def load_sounds_in_dir(self, this_dir, root_dir):
+        for sound_file in this_dir.iterdir():
+            if sound_file.is_dir():
+                self.load_sounds_in_dir(sound_file, root_dir)
+            elif sound_file.suffix.lower() in ['.wav', '.ogg']:
+                rel_name = str(sound_file.relative_to(root_dir)).replace('\\', '/')
+                print(rel_name, sound_file)
+                self.sound_bank[rel_name] = pygame.mixer.Sound(sound_file)
+    
+    def set_sounds(self, sfx_pack="model_s", use_colossus=True):
+        self.sounds = SOUND_BANK['universal'].copy()
+        self.sounds = dict_update(self.sounds, SOUND_BANK[sfx_pack])
+        if use_colossus:
+            self.sounds = dict_update(self.sounds, SOUND_BANK["colossus"])
+        breakpoint()
+
     
     def load_images(self):
         for name, filepath in IMAGES.items():
-            print(f'loading image {name}')
+            print(f"loading image {name}")
             self.images[name] = Image.open(filepath)
 
     def load_fonts(self):
@@ -46,15 +66,15 @@ class ResourceManager:
                 filepath, font_size = fileinfo
             else:
                 filepath = fileinfo    
-            print(f'loading font {name}')
-            if filepath.suffix.lower() == '.pil':
+            print(f"loading font {name}")
+            if filepath.suffix.lower() == ".pil":
                 self.fonts[name] = ImageFont.load(filepath)
             else:
                 self.fonts[name] = ImageFont.truetype(filepath, font_size)
     
     def load_barebones(self):
         # load the one font needed for the load and error screens
-        self.fonts['Medium'] = ImageFont.load(FONTS_DIR / "6x10.pil")
+        self.fonts["Medium"] = ImageFont.load(FONTS_DIR / "6x10.pil")
 
 FONTS = {
     "GameOver": (FONTS_DIR / "GameCube.ttf", 14),
@@ -69,38 +89,78 @@ FONTS = {
 
 IMAGES = {"MainLogo": IMGS_DIR / "combined-logo.png"}
 
-SOUNDS = {
-    'misc': {
-        "OVER9000": SOUNDS_DIR / "its_over_9000.ogg",
-        "PLACE1": SOUNDS_DIR / "place_1.ogg",
-        "PLACE2": SOUNDS_DIR / "place_2.ogg",
-        "PLACE3": SOUNDS_DIR / "place_3.ogg",
-        "PLACE4": SOUNDS_DIR / "place_4.ogg",
-        "PLACE5": SOUNDS_DIR / "place_5.ogg",
-        "READY": SOUNDS_DIR / "ready.ogg",
-        "GO": SOUNDS_DIR / "go.ogg",
+SOUND_BANK = {
+    "universal": {
+        "misc": {
+            "OVER9000": "its_over_9000.ogg",
+
+            "PLACE1": "place_1.ogg",
+            "PLACE2": "place_2.ogg",
+            "PLACE3": "place_3.ogg",
+            "PLACE4": "place_4.ogg",
+            "PLACE5": "place_5.ogg",
+
+            "READY": "ready.ogg",
+            "GO": "go.ogg",
+            "COMPLETE": "complete.ogg",
+        },
+        "target": {
+            "TARGET_INTRO": "break_the_targets.ogg",
+            "TARGET_BGM": "target_theme.ogg",
+            "TARGET_HIT": "target_hit.ogg",
+            "TARGET_MISS": "target_miss.ogg",
+        }
     },
-    'score': {
-        "MISS": SOUNDS_DIR / "mario_death.ogg",
-        "B100": SOUNDS_DIR / "sonic_ring.ogg",
-        "B200": SOUNDS_DIR / "mario_coin.ogg",
-        "B300": SOUNDS_DIR / "pac_man_wakka.ogg",
-        "B400": SOUNDS_DIR / "mega_man_item_get.ogg",
-        "B500": SOUNDS_DIR / "colossus_roar.ogg",
-        "B1000L": SOUNDS_DIR / "colossus_roar.ogg",
-        "B1000R": SOUNDS_DIR / "colossus_roar.ogg",
+    "stuff": {
+        "score": {
+            "MISS": "stuff/mario_death.ogg",
+            "B100": "stuff/sonic_ring.ogg",
+            "B200": "stuff/mario_coin.ogg",
+            "B300": "stuff/pac_man_wakka.ogg",
+            "B400": "stuff/mega_man_item_get.ogg",
+            "B500": "colossus_roar.ogg",
+            "B1000L": "colossus_roar.ogg",
+            "B1000R": "colossus_roar.ogg",
+        },
+        "attract":{
+            "SKEEBALL": "skeeball_jingle.ogg",
+            "BLACK_KNIGHT_2000": "stuff/black_knight_2000.ogg",
+        },
+        "start": {
+            "FIRE": "stuff/great_balls_of_fire.ogg",
+            "WRECKING_BALL": "stuff/wrecking_ball.ogg"
+        },
     },
-    'attract':{
-        "SKEEBALL": SOUNDS_DIR / "skeeball_jingle.ogg",
+    "model_s": {
+        "score": {
+            "MISS": "model_s/no_score_gutter_ball.wav",
+            "B100": "model_s/10_points.wav",
+            "B200": "model_s/20_points.wav",
+            "B300": "model_s/30_points.wav",
+            "B400": "model_s/40_points.wav",
+            "B500": "model_s/50_points.wav",
+            "B1000L": "model_s/100_points.wav",
+            "B1000R": "model_s/100_points.wav",
+        },
+        "attract":{
+            "SKEEBALL": "skeeball_jingle.ogg",
+        },
+        "start": {
+            "COINUP": "model_s/machine_coin_up.wav",
+        },
     },
-    'start': {
-       "FIRE": SOUNDS_DIR / "great_balls_of_fire.ogg",
-    },
-    'target': {
-        "TARGET_INTRO": SOUNDS_DIR / "break_the_targets.ogg",
-        "TARGET_BG": SOUNDS_DIR / "target_theme.ogg",
-        "COMPLETE": SOUNDS_DIR / "complete.ogg",
-        "TARGET_HIT": SOUNDS_DIR / "target_hit.ogg",
-        "TARGET_MISS": SOUNDS_DIR / "target_miss.ogg",
+    "colossus": {
+        "score": {
+            "B500": "colossus_roar.ogg",
+            "B1000L": "colossus_roar.ogg",
+            "B1000R": "colossus_roar.ogg",
+        },
     }
 }
+
+
+if __name__ == "__main__":
+    pygame.mixer.init()
+    res = ResourceManager()
+    res.load_sounds()
+    res.set_sounds()

@@ -22,7 +22,7 @@ SETTINGS_INFO = {
         "options": [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5],
         "default_value": 2,
     },
-    "sfx": {
+    "general_sfx": {
         "label": "SFX",
         "options": ["model_h", "model_s", "stuff"],
         "default_value": "model_s",
