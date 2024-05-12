@@ -109,8 +109,6 @@ class Cricket(GameMode):
                 self.balls = self.returned_balls
 
     def update(self):
-        # print(f'{self.game_state} {self.ticks_last_ball} {self.ticks}')
-
         self.ticks += 1
 
         match self.game_state:
@@ -140,20 +138,21 @@ class Cricket(GameMode):
                 if self.ticks - self.ticks_last_ball > 20 * const.FPS:
                     self.done = True
 
-        if self.balls == 0 and not self.advance_score:
-            self.game_state = CricketState.PLAYER_DONE
-            self.ticks_last_ball = self.ticks
+            case CricketState.PLAY:
+                if self.balls == 0 and not self.advance_score:
+                    self.game_state = CricketState.PLAYER_DONE
+                    self.ticks_last_ball = self.ticks
 
-        if self.advance_score:
-            if self.active_player.score_buffer > 0:
-                self.active_player.score += 100
-                self.active_player.score_buffer -= 100
-            for i in range(5):
-                if self.active_player.target_buffers[i] > 0:
-                    self.active_player.target_scores[i] += 100
-                    self.active_player.target_buffers[i] -= 100
-        if self.active_player.score_buffer == 0:
-            self.advance_score = False
+                if self.advance_score:
+                    if self.active_player.score_buffer > 0:
+                        self.active_player.score += 100
+                        self.active_player.score_buffer -= 100
+                    for i in range(5):
+                        if self.active_player.target_buffers[i] > 0:
+                            self.active_player.target_scores[i] += 100
+                            self.active_player.target_buffers[i] -= 100
+                if self.active_player.score_buffer == 0:
+                    self.advance_score = False
 
         # if (self.ticks - self.ticks_last_ball) > self.timeout:
         #     self.done = True
@@ -180,7 +179,7 @@ class Cricket(GameMode):
                     panel.draw.line(pos, fill=const.COLORS["WHITE"])
 
                 num = p.target_scores[4 - y] // 10
-                if p.hits[4 - y] > 3:
+                if num > 0:
                     txt = f"{num: >3}" if num < 1000 else "XXX"
                     l = len(txt)
                     panel.draw_text(
