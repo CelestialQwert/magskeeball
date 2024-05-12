@@ -53,7 +53,6 @@ class ResourceManager:
         if use_colossus:
             self.sounds = dict_update(self.sounds, SOUND_BANK["colossus"])
         self.map_sounds(self.sounds)
-        breakpoint()
     
     def map_sounds(self, dict_sound):
         for k, v in dict_sound.items():
