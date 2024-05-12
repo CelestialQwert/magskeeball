@@ -52,7 +52,14 @@ class ResourceManager:
         self.sounds = dict_update(self.sounds, SOUND_BANK[sfx_pack])
         if use_colossus:
             self.sounds = dict_update(self.sounds, SOUND_BANK["colossus"])
-        breakpoint()
+        self.map_sounds(self.sounds)
+    
+    def map_sounds(self, dict_sound):
+        for k, v in dict_sound.items():
+            if isinstance(v, dict):
+                self.map_sounds(v)
+            else:
+                dict_sound[k] = self.sound_bank[v]
 
     
     def load_images(self):
