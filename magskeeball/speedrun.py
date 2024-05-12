@@ -126,7 +126,7 @@ class Speedrun(GameMode):
     def cleanup(self):
         if self.last_sound:
             self.last_sound.stop()
-        self.res.sounds['target']["COMPLETE"].play()
+        self.res.sounds['misc']["COMPLETE"].play()
         print("Pausing for 2 seconds")
         time.sleep(2)
         self.persist["last_score"] = self.time_elapsed

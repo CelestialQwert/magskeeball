@@ -77,6 +77,7 @@ class ServiceMenu(State):
             self.settings["erase_high_scores"] = False
 
         self.settings.save_settings()
+        self.res.set_sounds(self.settings['general_sfx'], self.settings['colossus'])
         time.sleep(1.5)
 
     def erase_high_scores(self):

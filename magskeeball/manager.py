@@ -102,6 +102,7 @@ class Manager:
         self.persist = {}
         
         self.res.load_all()
+        self.res.set_sounds(self.settings['general_sfx'], self.settings['colossus'])
 
         self.states = {}
         for name, StateClass in state_classes.items():

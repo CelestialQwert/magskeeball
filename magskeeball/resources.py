@@ -44,15 +44,16 @@ class ResourceManager:
                 self.load_sounds_in_dir(sound_file, root_dir)
             elif sound_file.suffix.lower() in ['.wav', '.ogg']:
                 rel_name = str(sound_file.relative_to(root_dir)).replace('\\', '/')
-                print(rel_name, sound_file)
+                print(f"Loading {rel_name}")
                 self.sound_bank[rel_name] = pygame.mixer.Sound(sound_file)
     
     def set_sounds(self, sfx_pack="model_s", use_colossus=True):
-        self.sounds = SOUND_BANK['universal'].copy()
+        self.sounds = dict_update({}, SOUND_BANK['universal'])
         self.sounds = dict_update(self.sounds, SOUND_BANK[sfx_pack])
         if use_colossus:
             self.sounds = dict_update(self.sounds, SOUND_BANK["colossus"])
         self.map_sounds(self.sounds)
+        breakpoint()
     
     def map_sounds(self, dict_sound):
         for k, v in dict_sound.items():
@@ -139,6 +140,24 @@ SOUND_BANK = {
         },
     },
     "model_s": {
+        "score": {
+            "MISS": "model_s/no_score_gutter_ball.wav",
+            "B100": "model_s/10_points.wav",
+            "B200": "model_s/20_points.wav",
+            "B300": "model_s/30_points.wav",
+            "B400": "model_s/40_points.wav",
+            "B500": "model_s/50_points.wav",
+            "B1000L": "model_s/100_points.wav",
+            "B1000R": "model_s/100_points.wav",
+        },
+        "attract":{
+            "SKEEBALL": "skeeball_jingle.ogg",
+        },
+        "start": {
+            "COINUP": "model_s/machine_coin_up.wav",
+        },
+    },
+    "model_h": {
         "score": {
             "MISS": "model_s/no_score_gutter_ball.wav",
             "B100": "model_s/10_points.wav",
