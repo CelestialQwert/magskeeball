@@ -12,6 +12,7 @@ REAL = 0
 EMULATED = 1
 BOTH = 2
 
+
 class Panel:
 
     def __init__(self, scale=6):
@@ -33,7 +34,7 @@ class Panel:
         self.paste = self.canvas.paste
 
         self.res = resources.ResourceManager()
-        self.res.load_fonts()    
+        self.res.load_fonts()
 
     def init_real_panel(self):
         from rgbmatrix import RGBMatrix, RGBMatrixOptions

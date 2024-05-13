@@ -43,14 +43,14 @@ class HighScore(State):
             their_score = int(their_score)
             if (
                 self.score > their_score
-                and self.manager.states[self.last_mode].score_type == 'score'
+                and self.manager.states[self.last_mode].score_type == "score"
             ) or (
                 self.score < their_score
-                and self.manager.states[self.last_mode].score_type == 'time'
+                and self.manager.states[self.last_mode].score_type == "time"
             ):
                 self.new_score = True
                 self.place = place
-                self.res.sounds['misc'][f"PLACE{self.place}"].play()
+                self.res.sounds["misc"][f"PLACE{self.place}"].play()
                 return
 
     def handle_event(self, event):

@@ -7,7 +7,7 @@ import time
 class Speedrun(GameMode):
 
     has_high_scores = True
-    score_type = 'time'
+    score_type = "time"
     intro_text = [
         "HOW FAST CAN YOU",
         "SCORE 5000 POINTS?",
@@ -41,21 +41,21 @@ class Speedrun(GameMode):
             return
         if event.down and event.button in const.POINTS:
             self.add_score(const.POINTS[event.button])
-            self.last_sound = self.res.sounds['score'][event.button.name].play()
+            self.last_sound = self.res.sounds["score"][event.button.name].play()
         if event.down and event.button == const.B.RETURN:
             self.returned_balls += 1
             if self.returned_balls > self.balls:
                 self.add_score(0)
-                self.res.sounds['score']["MISS"].play()
+                self.res.sounds["score"]["MISS"].play()
 
     def update(self):
 
         if self.time_elapsed == -self.countdown_time * const.FPS:
-            self.res.sounds['misc']["READY"].play()
+            self.res.sounds["misc"]["READY"].play()
         elif (
             self.time_elapsed == -const.FPS // 4
         ):  # the sound clip has a delay so this syncs it up
-            self.res.sounds['misc']["GO"].play()
+            self.res.sounds["misc"]["GO"].play()
 
         if self.advance_score:
             if self.score_buffer > 0:
@@ -126,7 +126,7 @@ class Speedrun(GameMode):
     def cleanup(self):
         if self.last_sound:
             self.last_sound.stop()
-        self.res.sounds['misc']["COMPLETE"].play()
+        self.res.sounds["misc"]["COMPLETE"].play()
         print("Pausing for 2 seconds")
         time.sleep(2)
         self.persist["last_score"] = self.time_elapsed

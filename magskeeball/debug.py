@@ -26,21 +26,25 @@ class Debug(GameMode):
     def handle_event(self, event):
         if event.button == const.B.QUIT:
             self.quit = True
-        if event.down and event.button in [const.B.CONFIG, const.B.START, const.B.SELECT]:
+        if event.down and event.button in [
+            const.B.CONFIG,
+            const.B.START,
+            const.B.SELECT,
+        ]:
             self.done = True
             self.manager.next_state = "GAMEOVER"
         if event.down and event.button in const.POINTS:
             self.add_score(const.POINTS[event.button])
-            self.res.sounds['score'][event.button.name].play()
+            self.res.sounds["score"][event.button.name].play()
         if event.down and event.button == const.B.RETURN:
             self.returned_balls += 1
             if self.returned_balls > self.balls:
                 self.add_score(0)
-                self.res.sounds['score']["MISS"].play()
+                self.res.sounds["score"]["MISS"].play()
 
     def update(self):
         if self.advance_score and self.score == 9100:
-            self.res.sounds['misc']["OVER9000"].play()
+            self.res.sounds["misc"]["OVER9000"].play()
 
         if self.advance_score:
             if self.score_buffer > 0:

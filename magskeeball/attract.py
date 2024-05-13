@@ -74,14 +74,14 @@ class Attract(State):
         self.ticks += 1
         self.current_display_ticks += 1
         if self.ticks % (90 * const.FPS) == const.FPS * 30:
-            if self.settings['attract_music']:
+            if self.settings["attract_music"]:
                 # play jingle once every 90 seconds if idle, starting 30 seconds in
-                songs = list(self.res.sounds['attract'].items())
+                songs = list(self.res.sounds["attract"].items())
                 self.attract_song_name, self.attract_song = random.choice(songs)
                 self.attract_song.play()
-                print(f'playing attract song {self.attract_song_name}')
+                print(f"playing attract song {self.attract_song_name}")
             else:
-                print('Not playing a song right now')
+                print("Not playing a song right now")
         if self.current_display_ticks >= (self.current_display_time * const.FPS):
             self.current_display_ticks = 0
             self.current_display = (self.current_display + 1) % len(self.display_queue)
@@ -103,7 +103,7 @@ class Attract(State):
             panel.draw_text((15, 54), "PRESS START", "Medium", "WHITE")
 
     def draw_high_scores(self, panel, game):
-        if self.manager.states[game].score_type == 'time':
+        if self.manager.states[game].score_type == "time":
             title_text = f"{game} TOP TIMES"
         else:
             title_text = f"{game} HI SCORES"
@@ -111,7 +111,7 @@ class Attract(State):
         panel.draw_text((x, 2), title_text, "Small", "WHITE")
 
         for i, (name, score) in enumerate(self.high_scores[game]):
-            if self.manager.states[game].score_type == 'time':
+            if self.manager.states[game].score_type == "time":
                 s = (score // const.FPS) % 60
                 f = 5 * (score % const.FPS)
                 panel.draw_text(

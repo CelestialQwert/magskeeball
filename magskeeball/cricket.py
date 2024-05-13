@@ -89,7 +89,7 @@ class Cricket(GameMode):
         if event.down and event.button in SCORING_BUTTONS:
             btn = event.button
             btn_idx = SCORING_BUTTONS[btn]
-            self.res.sounds['score'][btn.name].play()
+            self.res.sounds["score"][btn.name].play()
             self.active_player.hits[btn_idx] += 1
             self.balls -= 1
             self.advance_score = True

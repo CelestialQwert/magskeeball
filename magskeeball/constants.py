@@ -2,6 +2,7 @@ from enum import Enum
 
 FPS = 20
 
+
 # these map to the physical pins on the arduino except QUIT
 class Button(Enum):
     QUIT = 0
@@ -24,6 +25,7 @@ class Button(Enum):
     NULL_17 = 17
     NULL_18 = 18
     NULL_19 = 19
+
 
 B = Button
 BUTTON = Button

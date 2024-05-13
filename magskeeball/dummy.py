@@ -1,6 +1,7 @@
 from .state import GameMode
 from . import constants as const
 
+
 class Dummy(GameMode):
 
     intro_text = [

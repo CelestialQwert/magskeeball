@@ -26,7 +26,7 @@ class Flash(GameMode):
         self.flash_counter = 0
         self.score_flash_counter = 0
 
-        self.flash_duration = int(const.FPS / self.settings['flash_speed'])
+        self.flash_duration = int(const.FPS / self.settings["flash_speed"])
         self.flash_period = self.flash_duration * 4
 
         self.debug = self.settings["debug"]
@@ -41,12 +41,12 @@ class Flash(GameMode):
             return
         if event.down and event.button in const.POINTS:
             self.add_score(const.POINTS[event.button])
-            self.res.sounds['score'][event.button.name].play()
+            self.res.sounds["score"][event.button.name].play()
         if event.down and event.button == const.B.RETURN:
             self.returned_balls -= 1
             if self.returned_balls < self.balls:
                 self.add_score(0)
-                self.res.sounds['score']["MISS"].play()
+                self.res.sounds["score"]["MISS"].play()
         if event.button == const.B.CONFIG:
             self.balls = 0
             self.returned_balls = 0
@@ -64,7 +64,7 @@ class Flash(GameMode):
         if self.balls == 0 and not self.advance_score:
             self.manager.next_state = "HIGHSCORE"
             self.done = True
-        
+
         self.flash_counter = (self.ticks % self.flash_period) // self.flash_duration
         self.flash_counter = 3 - self.flash_counter
 
@@ -119,8 +119,6 @@ class Flash(GameMode):
             for i, num in enumerate(self.ball_scores):
                 panel.draw_text((80, 1 + 6 * i), f"{num: >4}", "Tiny", "RED")
             panel.draw_text((90, 57), self.returned_balls, "Small", "ORANGE")
-
-        
 
     def cleanup(self):
         print("Pausing for 2 seconds")

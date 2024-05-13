@@ -35,12 +35,12 @@ class Classic(GameMode):
             return
         if event.down and event.button in const.POINTS:
             self.add_score(const.POINTS[event.button])
-            self.res.sounds['score'][event.button.name].play()
+            self.res.sounds["score"][event.button.name].play()
         if event.down and event.button == const.B.RETURN:
             self.returned_balls -= 1
             if self.returned_balls < self.balls:
                 self.add_score(0)
-                self.res.sounds['score']["MISS"].play()
+                self.res.sounds["score"]["MISS"].play()
         if event.button == const.B.CONFIG:
             self.balls = 0
             self.returned_balls = 0

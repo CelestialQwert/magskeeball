@@ -1,6 +1,7 @@
 from .state import State
 from . import constants as const
 
+
 class GameOver(State):
 
     def startup(self):
@@ -36,7 +37,7 @@ class GameOver(State):
         panel.clear()
         panel.draw_text((3, 34), "GAME OVER", "MAGMini", "RED")
 
-        if self.manager.states[self.persist["active_game_mode"]].score_type == 'time':
+        if self.manager.states[self.persist["active_game_mode"]].score_type == "time":
             display_time = self.persist["last_score"]
             panel.draw_time((7, 6), display_time, "YELLOW")
         else:

@@ -13,7 +13,7 @@ class Target(GameMode):
     ]
 
     def startup(self):
-        self.bg_music = self.res.sounds['target']["TARGET_BGM"]
+        self.bg_music = self.res.sounds["target"]["TARGET_BGM"]
         self.bg_music.set_volume(0.25)
         self.bg_music.play()
 
@@ -55,7 +55,7 @@ class Target(GameMode):
                 self.got_bonus = "idle"
         if self.balls == 0 and not self.playing_outro:
             self.bg_music.stop()
-            self.res.sounds['misc']["COMPLETE"].play()
+            self.res.sounds["misc"]["COMPLETE"].play()
             self.playing_outro = True
 
     def handle_event(self, event):
@@ -79,12 +79,12 @@ class Target(GameMode):
             self.score_buffer += 1000
             self.got_bonus = "yes"
             self.ball_bonuses.append(True)
-            self.res.sounds['target']["TARGET_HIT"].play()
+            self.res.sounds["target"]["TARGET_HIT"].play()
         else:
             self.score_buffer += score
             self.got_bonus = "no"
             self.ball_bonuses.append(False)
-            self.res.sounds['target']["TARGET_MISS"].play()
+            self.res.sounds["target"]["TARGET_MISS"].play()
         self.advance_score = True
         self.balls -= 1
         self.ticks_last_ball = self.ticks

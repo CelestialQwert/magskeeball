@@ -1,5 +1,6 @@
 from . import constants as const
 
+
 class State:
 
     def __init__(self, manager):
@@ -29,5 +30,5 @@ class State:
 
 class GameMode(State):
     has_high_scores = False
-    score_type = 'score'
+    score_type = "score"
     intro_text = ["I'M A SKEE-BALL", "MODE!", "ALLAN PLEASE", "ADD DETAILS"]

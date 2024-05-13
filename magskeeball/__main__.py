@@ -11,7 +11,9 @@ test_mode = parser.parse_args().test_mode
 
 if test_mode == "sensor_test":
     from . import sensor
+
     sensor.main()
 else:
     from . import main
+
     main.run()

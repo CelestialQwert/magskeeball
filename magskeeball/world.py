@@ -7,7 +7,7 @@ import time
 class World(GameMode):
 
     has_high_scores = True
-    score_type = 'time'
+    score_type = "time"
     intro_text = [
         "AROUND THE WORLD!",
         "HIT EVERY TARGET",
@@ -46,22 +46,22 @@ class World(GameMode):
             self.ball_scores.append(const.POINTS[event.button])
             self.balls += 1
             self.time_last_ball = self.time_elapsed
-            self.last_sound = self.res.sounds['score'][event.button.name].play()
+            self.last_sound = self.res.sounds["score"][event.button.name].play()
         if event.down and event.button == const.B.RETURN:
             self.returned_balls += 1
             if self.returned_balls > self.balls:
                 self.hit_targets[9] += 1
                 self.balls += 1
-                self.res.sounds['score']["MISS"].play()
+                self.res.sounds["score"]["MISS"].play()
 
     def update(self):
 
         if self.time_elapsed == -self.countdown_time * const.FPS:
-            self.res.sounds['misc']["READY"].play()
+            self.res.sounds["misc"]["READY"].play()
         elif (
             self.time_elapsed == -const.FPS // 4
         ):  # the sound clip has a delay so this syncs it up
-            self.res.sounds['misc']["GO"].play()
+            self.res.sounds["misc"]["GO"].play()
 
         if (self.time_elapsed - self.time_last_ball) > self.timeout:
             self.time_elapsed = 600 * const.FPS - 2
@@ -123,7 +123,7 @@ class World(GameMode):
     def cleanup(self):
         if self.last_sound:
             self.last_sound.stop()
-        self.res.sounds['misc']["COMPLETE"].play()
+        self.res.sounds["misc"]["COMPLETE"].play()
         print("Pausing for 2.5 seconds")
         time.sleep(2.5)
         self.persist["last_score"] = self.time_elapsed

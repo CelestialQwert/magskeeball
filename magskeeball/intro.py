@@ -15,11 +15,9 @@ class Intro(State):
         self.intro_text = self.mode.intro_text
         self.ticks = 0
         if self.mode_name == "TARGET":
-            self.start_song = self.res.sounds['target']["TARGET_INTRO"]
+            self.start_song = self.res.sounds["target"]["TARGET_INTRO"]
         else:
-            self.start_song = random.choice(
-                list(self.res.sounds['start'].values())
-            )
+            self.start_song = random.choice(list(self.res.sounds["start"].values()))
         self.start_song.play()
 
     def handle_event(self, event):

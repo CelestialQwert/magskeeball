@@ -62,7 +62,7 @@ GAME_MODES = [
 ]
 
 HIDDEN_MODES = [
-    "CRICKET"
+    "CRICKET",
 ]
 
 EXTRA_MODES = [
@@ -72,6 +72,7 @@ EXTRA_MODES = [
 ]
 
 SELECTABLE_MODES = GAME_MODES + HIDDEN_MODES + EXTRA_MODES
+
 
 class Manager:
 
@@ -84,32 +85,32 @@ class Manager:
                 self.crash(e)
             else:
                 raise e
-                
+
     def init(self, state_classes=None, starting_state=None):
 
         print("init pygame")
         pygame.init()
         print("done init pygame")
-        
+
         self.res = resources.ResourceManager()
 
         self.panel = panel.Panel()
-        self.panel.draw_message_screen('LOADING...')
-        
+        self.panel.draw_message_screen("LOADING...")
+
         try:
             self.sensor = sensor.Sensor()
             self.sensor.set_repeat(0, 0)
         except RuntimeError:
-            self.panel.draw_message_screen('SENSOR ERROR', color="RED")
+            self.panel.draw_message_screen("SENSOR ERROR", color="RED")
             while True:
                 pass
-        
+
         self.settings = settings_manager.SettingsManager(SELECTABLE_MODES)
         self.settings.load_settings()
         self.persist = {}
-        
+
         self.res.load_all()
-        self.res.set_sounds(self.settings['general_sfx'], self.settings['colossus'])
+        self.res.set_sounds(self.settings["general_sfx"], self.settings["colossus"])
 
         self.states = {}
         for name, StateClass in state_classes.items():
@@ -138,7 +139,7 @@ class Manager:
         print(self.game_log)
 
         self.high_scores = self.states["HIGHSCORE"].load_all_high_scores()
-        
+
         self.global_ticks = 0
 
     def handle_events(self):
@@ -204,11 +205,11 @@ class Manager:
             pygame.quit()
         except Exception as e:
             self.crash(e)
-    
+
     def crash(self, exc):
         self.panel.draw_message_screen(exc.__repr__(), color="RED")
         traceback.print_exception(exc)
-        input('Press enter to exit')
+        input("Press enter to exit")
         sys.exit()
 
 

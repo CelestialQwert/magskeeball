@@ -56,7 +56,7 @@ SETTINGS_INFO = {
         "label": "ERASE SCORES",
         "options": [True, False],
         "default_value": False,
-    }
+    },
 }
 
 

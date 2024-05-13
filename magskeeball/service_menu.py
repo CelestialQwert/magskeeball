@@ -6,6 +6,7 @@ import time
 
 LINES_PER_PAGE = 6
 
+
 class ServiceMenu(State):
 
     def startup(self):
@@ -42,7 +43,7 @@ class ServiceMenu(State):
         panel.draw_text((8, 1), "SKEE-BALL CONFIG", "Small", "WHITE")
         page = self.cur_loc // 6
         max_pages = (LINES_PER_PAGE // 6) + 1
-        for i, setting in enumerate(self.setting_names[page*6:(page+1)*6]):
+        for i, setting in enumerate(self.setting_names[page * 6 : (page + 1) * 6]):
             lbl = self.settings.get_label(setting)
             match self.settings[setting]:
                 case True:
@@ -52,11 +53,11 @@ class ServiceMenu(State):
                 case 9999:
                     val = "NONE"
                 case _:
-                    val = str(self.settings[setting]).upper().replace('_', ' ')
+                    val = str(self.settings[setting]).upper().replace("_", " ")
             panel.draw_text((6, 12 + 7 * i), f"{lbl}: {val}", "Tiny", "WHITE")
         panel.draw_text((1, 12 + 7 * (self.cur_loc % 6)), ">", "Tiny", "WHITE")
         panel.draw_text((2, 56), f"PAGE {page+1}/{max_pages}", "Tiny", "WHITE")
-        
+
     def draw_stats(self, panel):
         panel.clear()
         panel.draw_text((23, 1), "GAME STATS", "Small", "WHITE")
@@ -77,7 +78,7 @@ class ServiceMenu(State):
             self.settings["erase_high_scores"] = False
 
         self.settings.save_settings()
-        self.res.set_sounds(self.settings['general_sfx'], self.settings['colossus'])
+        self.res.set_sounds(self.settings["general_sfx"], self.settings["colossus"])
         time.sleep(1.5)
 
     def erase_high_scores(self):
