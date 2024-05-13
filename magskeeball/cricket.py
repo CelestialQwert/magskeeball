@@ -111,6 +111,10 @@ class Cricket(GameMode):
     def update(self):
         self.ticks += 1
 
+        if (self.ticks - self.ticks_last_ball) > self.timeout:
+            self.game_state = CricketState.GAME_END
+            self.ticks_last_ball = self.ticks
+
         match self.game_state:
             case CricketState.PLAYER_DONE:
                 if self.ticks - self.ticks_last_ball > 2 * const.FPS:
