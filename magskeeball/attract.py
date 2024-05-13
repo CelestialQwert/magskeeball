@@ -103,7 +103,7 @@ class Attract(State):
             panel.draw_text((15, 54), "PRESS START", "Medium", "WHITE")
 
     def draw_high_scores(self, panel, game):
-        if self.manager.states[game].is_speed_game:
+        if self.manager.states[game].score_type == 'time':
             title_text = f"{game} TOP TIMES"
         else:
             title_text = f"{game} HI SCORES"
@@ -111,7 +111,7 @@ class Attract(State):
         panel.draw_text((x, 2), title_text, "Small", "WHITE")
 
         for i, (name, score) in enumerate(self.high_scores[game]):
-            if self.manager.states[game].is_speed_game:
+            if self.manager.states[game].score_type == 'time':
                 s = (score // const.FPS) % 60
                 f = 5 * (score % const.FPS)
                 panel.draw_text(

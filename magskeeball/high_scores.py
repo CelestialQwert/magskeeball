@@ -43,10 +43,10 @@ class HighScore(State):
             their_score = int(their_score)
             if (
                 self.score > their_score
-                and not self.manager.states[self.last_mode].is_speed_game
+                and self.manager.states[self.last_mode].score_type == 'score'
             ) or (
                 self.score < their_score
-                and self.manager.states[self.last_mode].is_speed_game
+                and self.manager.states[self.last_mode].score_type == 'time'
             ):
                 self.new_score = True
                 self.place = place
@@ -97,7 +97,7 @@ class HighScore(State):
             return
         panel.clear()
 
-        if self.manager.states[self.last_mode].is_speed_game:
+        if self.manager.states[self.last_mode].score_type == "time":
             display_time = self.persist["last_score"]
             panel.draw_time((7, 6), display_time, "PURPLE")
             panel.draw_text((16, 30), "GREAT TIME!", "Medium", "YELLOW")
@@ -186,7 +186,7 @@ class HighScore(State):
             dest = self.high_score_dir / f"{game_mode}_{ts}.txt"
             shutil.move(mode_scores_file, dest)
         with open(mode_scores_file, "w") as sf:
-            if self.manager.states[game_mode].is_speed_game:
+            if self.manager.states[game_mode].score_type == "time":
                 sf.write("MAG,1195\nFES,1196\nTIS,1197\nADO,1198\nNUT,1199\n")
             else:
                 sf.write("MAG,2000\nFES,1600\nTIS,1200\nADO,800\nNUT,400\n")

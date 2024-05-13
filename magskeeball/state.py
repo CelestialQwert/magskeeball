@@ -29,5 +29,5 @@ class State:
 
 class GameMode(State):
     has_high_scores = False
-    is_speed_game = False
+    score_type = 'score'
     intro_text = ["I'M A SKEE-BALL", "MODE!", "ALLAN PLEASE", "ADD DETAILS"]

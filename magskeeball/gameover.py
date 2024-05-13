@@ -36,11 +36,9 @@ class GameOver(State):
         panel.clear()
         panel.draw_text((3, 34), "GAME OVER", "MAGMini", "RED")
 
-        if self.manager.states[self.persist["active_game_mode"]].is_speed_game:
+        if self.manager.states[self.persist["active_game_mode"]].score_type == 'time':
             display_time = self.persist["last_score"]
-
             panel.draw_time((7, 6), display_time, "YELLOW")
-
         else:
             score = self.persist["last_score"]
             score_x = 17 if score < 10000 else 4

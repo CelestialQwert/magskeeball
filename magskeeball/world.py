@@ -7,7 +7,7 @@ import time
 class World(GameMode):
 
     has_high_scores = True
-    is_speed_game = True
+    score_type = 'time'
     intro_text = [
         "AROUND THE WORLD!",
         "HIT EVERY TARGET",
