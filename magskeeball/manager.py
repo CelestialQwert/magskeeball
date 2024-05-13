@@ -22,6 +22,7 @@ from .combo import Combo
 from .timed import Timed
 from .flash import Flash
 from .speedrun import Speedrun
+from .threek import ThreeK
 from .world import World
 from .cricket import Cricket
 
@@ -41,6 +42,7 @@ STATE_CLASSES = {
     "TIMED": Timed,
     "FLASH": Flash,
     "SPEEDRUN": Speedrun,
+    "THREE-K": ThreeK,
     "WORLD": World,
     "CRICKET": Cricket,
     "DUMMY": Dummy,
@@ -55,6 +57,7 @@ GAME_MODES = [
     "TIMED",
     "FLASH",
     "SPEEDRUN",
+    "THREE-K",
     "WORLD",
 ]
 
