@@ -1,14 +1,25 @@
 import pygame
 from importlib import resources as impres
 from PIL import Image, ImageFont
+from pathlib import Path
 
-from . import fonts
-from . import imgs
-from . import sounds
+print(__file__)
 
-FONTS_DIR = impres.files(fonts)
-IMGS_DIR = impres.files(imgs)
-SOUNDS_DIR = impres.files(sounds)
+import sys
+minor_ver = sys.version_info.minor
+
+if minor_ver >= 12:
+    from . import fonts
+    from . import imgs
+    from . import sounds
+    FONTS_DIR = impres.files(fonts)
+    IMGS_DIR = impres.files(imgs)
+    SOUNDS_DIR = impres.files(sounds)
+else:
+    this_file = Path(__file__)
+    FONTS_DIR = this_file.parent / 'fonts'
+    IMGS_DIR = this_file.parent / 'imgs'
+    SOUNDS_DIR = this_file.parent / 'sounds'
 
 
 def dict_update(d, u):
@@ -37,8 +48,12 @@ class ResourceManager:
         self.load_images()
 
     def load_sounds(self):
-        with impres.as_file(SOUNDS_DIR) as sounds_dir:
-            self.load_sounds_in_dir(sounds_dir, sounds_dir)
+        pygame.mixer.init()
+        if minor_ver >= 12:
+            with impres.as_file(SOUNDS_DIR) as sounds_dir:
+                self.load_sounds_in_dir(sounds_dir, sounds_dir)
+        else:
+            self.load_sounds_in_dir(SOUNDS_DIR, SOUNDS_DIR)
 
     def load_sounds_in_dir(self, this_dir, root_dir):
         for sound_file in this_dir.iterdir():
