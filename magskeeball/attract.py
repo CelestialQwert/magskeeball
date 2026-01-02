@@ -78,6 +78,7 @@ class Attract(State):
                 # play jingle once every 90 seconds if idle, starting 30 seconds in
                 songs = list(self.res.sounds["attract"].items())
                 self.attract_song_name, self.attract_song = random.choice(songs)
+                self.attract_song.set_volume(0.50)
                 self.attract_song.play()
                 print(f"playing attract song {self.attract_song_name}")
             else:
