@@ -24,7 +24,7 @@ SETTINGS_INFO = {
     },
     "general_sfx": {
         "label": "SFX",
-        "options": ["model_h", "model_s", "stuff"],
+        "options": ["model_h", "model_s", "stuff", "megaman"],
         "default_value": "model_s",
     },
     "colossus": {

@@ -132,6 +132,7 @@ SOUND_BANK = {
             "TARGET_HIT": "target_hit.ogg",
             "TARGET_MISS": "target_miss.ogg",
         },
+        "menu": {}
     },
     "stuff": {
         "score": {
@@ -187,6 +188,45 @@ SOUND_BANK = {
         },
         "start": {
             "COINUP": "model_s/machine_coin_up.wav",
+        },
+    },
+    "megaman": {
+        "score": {
+            "MISS": "megaman/MegamanDefeat.wav",
+            "B100": "model_s/10_points.wav",
+            "B200": "model_s/20_points.wav",
+            "B300": "megaman/EnergyFill.wav",
+            "B400": "megaman/BonusBall.wav",
+            "B500": "megaman/1up.wav",
+            "B1000L": "megaman/1up.wav",
+            "B1000R": "megaman/1up.wav",
+        },
+        "attract": {
+            "MM2": "megaman/mm2_title.ogg",
+            "MM4": "megaman/mm4_title.ogg",
+            "MM5": "megaman/mm5_title.ogg",
+            "MM6": "megaman/mm6_title.ogg",
+        },
+        "start": {
+            "MM1": "megaman/mm1_game_start.ogg",
+            "MM2": "megaman/mm2_game_start.ogg",
+            "MM3": "megaman/mm3_game_start.ogg",
+            "MM4": "megaman/mm4_game_start.ogg",
+        },
+        "menu": {
+            "MM1": "megaman/mm1_stage_select.ogg",
+            "MM2": "megaman/mm2_stage_select.ogg",
+            "MM3": "megaman/mm3_stage_select.ogg",
+            "MM4": "megaman/mm4_stage_select.ogg",
+            "MM5": "megaman/mm5_stage_select.ogg",
+            "MM6": "megaman/mm6_stage_select.ogg",
+        },
+        "misc": {
+            "PLACE1": "megaman/mm1_clear.ogg",
+            "PLACE2": "megaman/mm2_clear.ogg",
+            "PLACE3": "megaman/mm2_clear.ogg",
+            "PLACE4": "megaman/mm3_clear.ogg",
+            "PLACE5": "megaman/mm3_clear.ogg",
         },
     },
     "colossus": {

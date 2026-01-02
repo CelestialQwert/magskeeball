@@ -19,6 +19,16 @@ class GameMenu(GameMode):
         self.select_hold_time = -1
         self.start_secret_presses = 0
 
+        try:
+            self.bg_music = random.choice(
+                    list(self.res.sounds["menu"].values())
+                )
+            self.bg_music.set_volume(0.50)
+            self.bg_music.play()
+        except IndexError:
+            print('No BG music found')
+            self.bg_music = None
+
     def refresh_game_modes(self, modes):
         self.game_modes = modes
         self.game_position = self.num_std_game_modes - 1
@@ -55,6 +65,8 @@ class GameMenu(GameMode):
                     self.persist["active_game_mode"] = self.mode_name
                     self.locked = True
                     self.lock_time = self.ticks
+                    if self.bg_music:
+                        self.bg_music.stop()
                     if self.mode_name == "TARGET":
                         self.start_song = self.res.sounds["target"]["TARGET_INTRO"]
                     else:
