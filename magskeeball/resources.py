@@ -193,8 +193,8 @@ SOUND_BANK = {
     "megaman": {
         "score": {
             "MISS": "megaman/MegamanDefeat.wav",
-            "B100": "model_s/10_points.wav",
-            "B200": "model_s/20_points.wav",
+            "B100": "megaman/MegaBuster.wav",
+            "B200": "megaman/EnemyDamage.wav",
             "B300": "megaman/EnergyFill.wav",
             "B400": "megaman/BonusBall.wav",
             "B500": "megaman/1up.wav",
