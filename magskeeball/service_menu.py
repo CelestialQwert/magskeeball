@@ -5,6 +5,11 @@ import time
 
 LINES_PER_PAGE = 6
 
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
+
 
 class ServiceMenu(State):
 
@@ -15,7 +20,7 @@ class ServiceMenu(State):
         self.settings["erase_high_scores"] = False
         self.sub_state = 0
         self.setting_names = list(self.settings.get_all_keys())
-        ip = socket.gethostbyname(socket.gethostname())
+        ip = get_ip_address()
         if ip == "127.0.0.1":
             self.my_ip = "NO NETWORK"
         else:
