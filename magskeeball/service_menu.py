@@ -20,11 +20,10 @@ class ServiceMenu(State):
         self.settings["erase_high_scores"] = False
         self.sub_state = 0
         self.setting_names = list(self.settings.get_all_keys())
-        ip = get_ip_address()
-        if ip == "127.0.0.1":
+        try:
+            self.my_ip = get_ip_address()
+        except:
             self.my_ip = "NO NETWORK"
-        else:
-            self.my_ip = ip
 
     def handle_event(self, event):
         if self.sub_state == 0:
