@@ -37,14 +37,14 @@ STATE_CLASSES = {
     "HIGHSCORE": HighScore,
     "GAMEOVER": GameOver,
     "CLASSIC": Classic,
-    "TARGET": Target,
-    "COMBO": Combo,
     "TIMED": Timed,
-    "FLASH": Flash,
+    "TARGET": Target,
     "SPEEDRUN": Speedrun,
-    "THREE-K": ThreeK,
     "WORLD": World,
+    "COMBO": Combo,
+    "THREE-K": ThreeK,
     "CRICKET": Cricket,
+    "FLASH": Flash,
     "DUMMY": Dummy,
     "DEBUG": Debug,
     "GAMEMENU": GameMenu,
@@ -52,17 +52,17 @@ STATE_CLASSES = {
 
 GAME_MODES = [
     "CLASSIC",
-    "TARGET",
-    "COMBO",
     "TIMED",
-    "FLASH",
+    "TARGET",
     "SPEEDRUN",
-    "THREE-K",
     "WORLD",
+    "COMBO",
+    "THREE-K",
 ]
 
 HIDDEN_MODES = [
     "CRICKET",
+    "FLASH",
 ]
 
 EXTRA_MODES = [
