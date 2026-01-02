@@ -209,8 +209,9 @@ class Manager:
     def crash(self, exc):
         self.panel.draw_message_screen(exc.__repr__(), color="RED")
         traceback.print_exception(exc)
-        input("Press enter to exit")
-        sys.exit()
+        print("Press Ctrl+C to exit")
+        while True:
+            pass
 
 
 def test():

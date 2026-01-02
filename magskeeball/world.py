@@ -76,7 +76,7 @@ class World(GameMode):
         else:
             self.time_elapsed += 1
 
-        if self.time_elapsed >= 599 * const.FPS:
+        if self.time_elapsed >= 120 * const.FPS:
             print("that")
 
             self.manager.next_state = "HIGHSCORE"
