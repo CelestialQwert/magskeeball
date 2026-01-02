@@ -1,7 +1,6 @@
 from .state import State
 from . import constants as const
-import json
-import os
+import socket
 import time
 
 LINES_PER_PAGE = 6
@@ -16,6 +15,11 @@ class ServiceMenu(State):
         self.settings["erase_high_scores"] = False
         self.sub_state = 0
         self.setting_names = list(self.settings.get_all_keys())
+        ip = socket.gethostbyname(socket.gethostname())
+        if ip == "127.0.0.1":
+            self.my_ip = "NO NETWORK"
+        else:
+            self.my_ip = ip
 
     def handle_event(self, event):
         if self.sub_state == 0:
@@ -56,7 +60,9 @@ class ServiceMenu(State):
                     val = str(self.settings[setting]).upper().replace("_", " ")
             panel.draw_text((6, 12 + 7 * i), f"{lbl}: {val}", "Tiny", "WHITE")
         panel.draw_text((1, 12 + 7 * (self.cur_loc % 6)), ">", "Tiny", "WHITE")
-        panel.draw_text((2, 56), f"PAGE {page+1}/{max_pages}", "Tiny", "WHITE")
+        panel.draw_text((2, 56), f"{page+1}/{max_pages}", "Tiny", "WHITE")
+        align = 96 - len(self.my_ip) * 4
+        panel.draw_text((align, 58), self.my_ip, "Tiny", "BLUE")
 
     def draw_stats(self, panel):
         panel.clear()
